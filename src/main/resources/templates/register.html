@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Register</title>
+</head>
+<body>
+<h1>Register</h1>
+
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+<form th:action="@{/register}" method="post">
+  <div>
+    <label>Email:</label>
+    <input type="email" name="email" required>
+  </div>
+
+  <div>
+    <label>Password:</label>
+    <input type="password" name="password" required>
+  </div>
+
+  <div>
+    <label>Role:</label>
+    <select name="role" id="roleSelect" required onchange="toggleFields()">
+      <option value="CUSTOMER">Customer</option>
+      <option value="ORGANIZER">Organizer</option>
+    </select>
+  </div>
+
+  <div id="customerFields">
+    <div>
+      <label>First Name:</label>
+      <input type="text" name="firstName">
+    </div>
+    <div>
+      <label>Last Name:</label>
+      <input type="text" name="lastName">
+    </div>
+  </div>
+
+  <div id="organizerFields" style="display:none;">
+    <div>
+      <label>Business Name:</label>
+      <input type="text" name="businessName">
+    </div>
+  </div>
+
+  <button type="submit">Sign Up</button>
+</form>
+
+<script>
+  function toggleFields() {
+    const role = document.getElementById("roleSelect").value;
+    document.getElementById("customerFields").style.display =
+            role === "CUSTOMER" ? "block" : "none";
+    document.getElementById("organizerFields").style.display =
+            role === "ORGANIZER" ? "block" : "none";
+  }
+</script>
+</body>
+</html>
