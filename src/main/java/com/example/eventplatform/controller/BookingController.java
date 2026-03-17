@@ -3,6 +3,7 @@ package com.example.eventplatform.controller;
 import com.example.eventplatform.entity.Booking;
 import com.example.eventplatform.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,12 +43,12 @@ public class BookingController {
     public String confirmBooking(
             @RequestParam String planName,
             @RequestParam String plannerName,
-            @RequestParam LocalDate eventDate,
+            @RequestParam String eventDate,
             @RequestParam Double price,
             Model model) {
 
         Booking savedBooking = bookingService.confirmBooking(
-                planName, plannerName, eventDate, price
+                planName, plannerName, LocalDate.parse(eventDate), price
         );
         model.addAttribute("booking", savedBooking);
         return "thankyou"; // → thankyou.html

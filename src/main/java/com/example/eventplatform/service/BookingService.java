@@ -5,6 +5,8 @@ import com.example.eventplatform.entity.BookingStatus;
 import com.example.eventplatform.entity.CustomerProfile;
 import com.example.eventplatform.entity.OrganizerProfile;
 import com.example.eventplatform.repository.BookingRepository;
+import com.example.eventplatform.repository.CustomerProfileRepository;
+import com.example.eventplatform.repository.OrganizerProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +20,13 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
-    // TODO: Replace with real CustomerProfile from authentication later
-    private CustomerProfile getTemporaryCustomerProfile() {
-        CustomerProfile customer = new CustomerProfile();
-        customer.setId(1L);
-        customer.setName("Temporary Customer");
-        return customer;
-    }
+    // TODO: Replace with real CustomerProfileRepository when authentication is ready
+    @Autowired
+    private CustomerProfileRepository customerProfileRepository;
 
-    // TODO: Replace with real OrganizerProfile from authentication later
-    private OrganizerProfile getTemporaryOrganizerProfile() {
-        OrganizerProfile organizer = new OrganizerProfile();
-        organizer.setId(1L);
-        organizer.setName("Temporary Organizer");
-        return organizer;
-    }
+    // TODO: Replace with real OrganizerProfileRepository when authentication is ready
+    @Autowired
+    private OrganizerProfileRepository organizerProfileRepository;
 
     // Get all available plans
     // TODO: Replace with real data from database later
@@ -83,6 +77,19 @@ public class BookingService {
     public Booking confirmBooking(String planName, String plannerName,
                                   LocalDate eventDate, Double price) {
 
+
+        // TODO: Replace with real profiles when authentication is ready
+        // Fetch first available profiles from database as temporary solution
+        CustomerProfile customerProfile = customerProfileRepository.findAll()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No customer profile found"));
+
+        OrganizerProfile organizerProfile = organizerProfileRepository.findAll()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No organizer profile found"));
+
         Booking booking = new Booking();
 
         // Set only required fields for now
@@ -90,13 +97,12 @@ public class BookingService {
         booking.setPlannerName(plannerName);
         booking.setEventDate(eventDate);
         booking.setPrice(price);
-
+        booking.setStatus(BookingStatus.REQUESTED);
+        booking.setCustomerProfile(customerProfile);
+        booking.setOrganizerProfile(organizerProfile);
         // Set status as REQUESTED
         booking.setStatus(BookingStatus.REQUESTED);
 
-        // TODO: Replace with real profiles when authentication is ready
-        booking.setCustomerProfile(getTemporaryCustomerProfile());
-        booking.setOrganizerProfile(getTemporaryOrganizerProfile());
 
         return bookingRepository.save(booking);
     }
