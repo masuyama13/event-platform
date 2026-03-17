@@ -127,4 +127,7 @@ public class CustomerProfile {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public void setName(String temporaryCustomer) {
+    }
 }
