@@ -137,4 +137,8 @@ public class OrganizerProfile {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public void setName(String temporaryOrganizer) {
+
+    }
 }

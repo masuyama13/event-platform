@@ -38,6 +38,12 @@ public class Booking {
 
     private LocalDateTime updatedAt;
 
+    private String plannerName;
+    private String planName;
+    private Double price;
+
+
+
     public Booking() {
     }
 
@@ -92,6 +98,10 @@ public class Booking {
         return updatedAt;
     }
 
+    public String getPlannerName() { return plannerName; }
+    public String getPlanName() { return planName; }
+    public Double getPrice() { return price; }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -131,4 +141,10 @@ public class Booking {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public void setPlannerName(String plannerName) { this.plannerName = plannerName; }
+
+    public void setPlanName(String planName) { this.planName = planName; }
+
+    public void setPrice(Double price) { this.price = price; }
 }
