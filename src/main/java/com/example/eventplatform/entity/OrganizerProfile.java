@@ -139,5 +139,6 @@ public class OrganizerProfile {
     }
 
     public void setName(String temporaryOrganizer) {
+
     }
 }

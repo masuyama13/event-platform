@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You</title>
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+</head>
+<body>
+
+<div class="container">
+    <div class="thankyou-card">
+        <h1>🎉 Thank You!</h1>
+        <p>Your booking has been confirmed!</p>
+
+        <!-- Show confirmed booking details -->
+        <table class="info-table">
+            <tr>
+                <td>Booking ID:</td>
+                <td th:text="${booking.id}">ID</td>
+            </tr>
+            <tr>
+                <td>Planner Name:</td>
+                <td th:text="${booking.plannerName}">Planner Name</td>
+            </tr>
+            <tr>
+                <td>Plan Name:</td>
+                <td th:text="${booking.planName}">Plan Name</td>
+            </tr>
+            <tr>
+                <td>Date:</td>
+                <td th:text="${booking.eventDate}">Date</td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>$<span th:text="${booking.price}">Price</span></td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td th:text="${booking.status}">Status</td>
+            </tr>
+        </table>
+
+        <a href="/booking/plans" class="btn-back">Back to Plans</a>
+    </div>
+</div>
+
+</body>
+</html>
