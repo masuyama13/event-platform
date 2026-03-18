@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+</head>
+<body>
+<div class="container">
+    <!-- Show who is viewing -->
+    <h1 th:text="${role == 'organizer'} ? 'Organizer View' : 'Customer View'">
+        Messages
+    </h1>
+
+    <!-- Role Switch Buttons for Testing -->
+    <!-- TODO: Remove when real authentication is ready -->
+    <div class="role-switch">
+        <p>Switch View (Temporary for Testing):</p>
+        <a th:href="@{/messages/{id}(id=${bookingId}, role='customer')}"
+           class="btn-back">Customer View</a>
+        <a th:href="@{/messages/{id}(id=${bookingId}, role='organizer')}"
+           class="btn-confirm">Organizer View</a>
+    </div>
+
+    <!-- Conversation Box -->
+    <div class="message-box">
+        <div th:each="message : ${messages}"
+             th:classappend="${message.sender.id == senderId} ?
+                                  'message-sent' : 'message-received'">
+
+            <p class="message-sender"
+               th:text="${message.sender.id == senderId} ?
+                              'You' : message.sender.email">
+                Sender
+            </p>
+            <p class="message-content"
+               th:text="${message.content}">
+                Content
+            </p>
+            <p class="message-time"
+               th:text="${message.sentAt}">
+                Time
+            </p>
+        </div>
+
+        <!-- Show if no messages yet -->
+        <p th:if="${#lists.isEmpty(messages)}"
+           class="no-messages">
+            No messages yet. Start the conversation!
+        </p>
+    </div>
+
+    <!-- Send Message Form -->
+    <div class="send-form">
+        <form action="/messages/send" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+            <input type="hidden" name="bookingId"
+                   th:value="${bookingId}">
+            <input type="hidden" name="senderId"
+                   th:value="${senderId}">
+            <input type="hidden" name="receiverId"
+                   th:value="${receiverId}">
+            <input type="hidden" name="role"
+                   th:value="${role}">
+
+            <textarea name="content"
+                      placeholder="Type your message here..."
+                      rows="3"
+                      required></textarea>
+
+            <button type="submit" class="btn-confirm">Send</button>
+        </form>
+    </div>
+
+    <a href="/booking/plans" class="btn-back">Back to Plans</a>
+</div>
+</body>
+</html>
