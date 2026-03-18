@@ -16,88 +16,41 @@ public class Message {
     private Booking booking;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "sender_user_id", nullable = false)
-    private User senderUser;
+    @JoinColumn(name = "sender_id", nullable = false)
+    private User sender;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "receiver_user_id", nullable = false)
-    private User receiverUser;
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private User receiver;
 
-    @Column(nullable = false, length = 2000)
+    @Column(length = 2000, nullable = false)
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime sentAt;
 
-    private LocalDateTime updatedAt;
-
-    public Message() {
-    }
+    private boolean isRead;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.sentAt = LocalDateTime.now();
+        this.isRead = false;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public Booking getBooking() { return booking; }
+    public User getSender() { return sender; }
+    public User getReceiver() { return receiver; }
+    public String getContent() { return content; }
+    public LocalDateTime getSentAt() { return sentAt; }
+    public boolean isRead() { return isRead; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public User getSenderUser() {
-        return senderUser;
-    }
-
-    public User getReceiverUser() {
-        return receiverUser;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
-
-    public void setSenderUser(User senderUser) {
-        this.senderUser = senderUser;
-    }
-
-    public void setReceiverUser(User receiverUser) {
-        this.receiverUser = receiverUser;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setBooking(Booking booking) { this.booking = booking; }
+    public void setSender(User sender) { this.sender = sender; }
+    public void setReceiver(User receiver) { this.receiver = receiver; }
+    public void setContent(String content) { this.content = content; }
+    public void setSentAt(LocalDateTime sentAt) { this.sentAt = sentAt; }
+    public void setRead(boolean read) { this.isRead = read; }
 }

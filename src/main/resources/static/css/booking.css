@@ -93,3 +93,60 @@ body {
     justify-content: center;
     margin-top: 20px;
 }
+
+/* Message Box */
+.message-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    height: 400px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+/* Sent Messages (right side) */
+.message-sent {
+    text-align: right;
+    background-color: #DCF8C6;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+    margin-left: 30%;
+}
+
+/* Received Messages (left side) */
+.message-received {
+    text-align: left;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+    margin-right: 30%;
+    border: 1px solid #ddd;
+}
+
+.message-sender {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+}
+
+.message-content {
+    margin: 5px 0;
+}
+
+.message-time {
+    font-size: 11px;
+    color: #aaa;
+    margin: 0;
+}
+
+/* Send Form */
+.send-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    resize: none;
+}
