@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Organizer Detail</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Organizer Detail</h1>
+
+<div>
+    <p><strong>ID:</strong> <span th:text="${organizer.id}"></span></p>
+    <p><strong>Business Name:</strong> <span th:text="${organizer.businessName}"></span></p>
+    <p><strong>Description:</strong> <span th:text="${organizer.description}"></span></p>
+    <p><strong>Service Category:</strong> <span th:text="${organizer.serviceCategory}"></span></p>
+    <p><strong>Phone:</strong> <span th:text="${organizer.phone}"></span></p>
+    <p><strong>Website:</strong> <span th:text="${organizer.website}"></span></p>
+    <p><strong>Address:</strong> <span th:text="${organizer.address}"></span></p>
+    <p><strong>Average Rating:</strong> <span th:text="${organizer.averageRating}"></span></p>
+    <p><strong>User Email:</strong> <span th:text="${organizer.user.email}"></span></p>
+    <p><strong>Created At:</strong> <span th:text="${organizer.createdAt}"></span></p>
+    <p><strong>Updated At:</strong> <span th:text="${organizer.updatedAt}"></span></p>
+</div>
+
+<p>
+    <a th:href="@{/organizers/edit/{id}(id=${organizer.id})}">Edit</a>
+    |
+    <a th:href="@{/organizers}">Back to List</a>
+</p>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Organizer List</title>
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Organizer List</h1>
+
+    <p>
+        <a th:href="@{/organizers/new}">Create New Organizer</a>
+    </p>
+
+    <div class="plans-container">
+        <div class="plan-card" th:each="organizer : ${organizers}">
+            <h2 th:text="${organizer.businessName}">Business Name</h2>
+
+            <p>
+                Email:
+                <span th:text="${organizer.user.email}">organizer@email.com</span>
+            </p>
+
+            <p>
+                Category:
+                <span th:text="${organizer.serviceCategory} ?: 'N/A'">Category</span>
+            </p>
+
+            <p>
+                Phone:
+                <span th:text="${organizer.phone} ?: 'N/A'">Phone</span>
+            </p>
+
+            <p>
+                Website:
+                <span th:text="${organizer.website} ?: 'N/A'">Website</span>
+            </p>
+
+            <p>
+                Rating:
+                <span th:text="${organizer.averageRating} ?: 0.0">0.0</span>
+            </p>
+
+            <div style="margin-top: 10px;">
+                <a th:href="@{/organizers/edit/{id}(id=${organizer.id})}">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Organizer List</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Organizer List</h1>
+
+<p><a th:href="@{/organizers/new}">Create New Organizer</a></p>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Business Name</th>
+        <th>Service Category</th>
+        <th>Phone</th>
+        <th>Website</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="organizer : ${organizers}">
+        <td th:text="${organizer.id}"></td>
+        <td th:text="${organizer.businessName}"></td>
+        <td th:text="${organizer.serviceCategory}"></td>
+        <td th:text="${organizer.phone}"></td>
+        <td th:text="${organizer.website}"></td>
+        <td th:text="${organizer.user.email}"></td>
+        <td>
+            <a th:href="@{/organizers/{id}(id=${organizer.id})}">View</a>
+            |
+            <a th:href="@{/organizers/edit/{id}(id=${organizer.id})}">Edit</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
