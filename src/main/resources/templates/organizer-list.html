@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Organizer List</title>
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <style>
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .action-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-link {
+            display: inline-block;
+            padding: 8px 14px;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .btn-link:hover {
+            background-color: #ececec;
+        }
+
+        .btn-primary {
+            background-color: #2d72d9;
+            color: white;
+            border: 1px solid #2d72d9;
+        }
+
+        .btn-primary:hover {
+            background-color: #1f5fbd;
+        }
+
+        .card-actions {
+            margin-top: 14px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .info-label {
+            font-weight: bold;
+        }
+
+        .empty-state {
+            padding: 20px;
+            border: 1px dashed #bbb;
+            border-radius: 8px;
+            background-color: #fafafa;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="top-bar">
+        <div>
+            <h1>Organizer List</h1>
+            <p class="page-subtitle">Manage organizer profiles and view business information.</p>
+        </div>
+
+        <div class="action-links">
+            <a class="btn-link" th:href="@{/booking/plans}">← Back to Plans</a>
+            <a class="btn-link btn-primary" th:href="@{/organizers/new}">+ Create New Organizer</a>
+        </div>
+    </div>
+
+    <div class="plans-container" th:if="${organizers != null and !#lists.isEmpty(organizers)}">
+        <div class="plan-card" th:each="organizer : ${organizers}">
+            <h2 th:text="${organizer.businessName}">Business Name</h2>
+
+            <p>
+                <span class="info-label">Email:</span>
+                <span th:text="${organizer.user.email}">organizer@email.com</span>
+            </p>
+
+            <p>
+                <span class="info-label">Category:</span>
+                <span th:text="${organizer.serviceCategory} ?: 'N/A'">Category</span>
+            </p>
+
+            <p>
+                <span class="info-label">Phone:</span>
+                <span th:text="${organizer.phone} ?: 'N/A'">Phone</span>
+            </p>
+
+            <p>
+                <span class="info-label">Website:</span>
+                <span th:text="${organizer.website} ?: 'N/A'">Website</span>
+            </p>
+
+            <p>
+                <span class="info-label">Rating:</span>
+                <span th:text="${organizer.averageRating} ?: 0.0">0.0</span>
+            </p>
+
+            <div class="card-actions">
+                <a class="btn-link" th:href="@{/organizers/{id}(id=${organizer.id})}">View Details</a>
+                <a class="btn-link" th:href="@{/organizers/edit/{id}(id=${organizer.id})}">Edit</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" th:if="${organizers == null or #lists.isEmpty(organizers)}">
+        <p>No organizers found.</p>
+        <p>Create a new organizer to get started.</p>
+    </div>
+</div>
+
+</body>
+</html>

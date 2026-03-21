@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Organizer Form</title>
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <style>
+        .top-bar {
+            margin-bottom: 20px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .form-card {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .form-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-link, .btn-submit {
+            display: inline-block;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-link:hover,
+        .btn-submit:hover {
+            background-color: #ececec;
+        }
+
+        .btn-submit {
+            background-color: #2d72d9;
+            color: white;
+            border: 1px solid #2d72d9;
+        }
+
+        .btn-submit:hover {
+            background-color: #1f5fbd;
+        }
+
+        .error-box {
+            color: #b00020;
+            background: #fdecef;
+            border: 1px solid #f3b7c0;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="top-bar">
+        <h1 th:text="${isEdit} ? 'Edit Organizer' : 'Create Organizer'">Organizer Form</h1>
+        <p class="page-subtitle" th:text="${isEdit} ? 'Update organizer profile information.' : 'Create a new organizer profile.'">
+            Organizer form page
+        </p>
+    </div>
+
+    <div class="plan-card form-card">
+        <div th:if="${error}" class="error-box" th:text="${error}"></div>
+
+        <form th:action="${isEdit} ? @{/organizers/update/{id}(id=${organizer.id})} : @{/organizers}" method="post">
+
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
+
+            <div class="form-group" th:if="${!isEdit}">
+                <label for="userId">Organizer User</label>
+                <select id="userId" name="userId" required>
+                    <option value="">-- Select Organizer User --</option>
+                    <option th:each="user : ${users}"
+                            th:value="${user.id}"
+                            th:text="${user.email}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="businessName">Business Name</label>
+                <input type="text"
+                       id="businessName"
+                       name="businessName"
+                       th:value="${organizer.businessName}"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description"
+                          name="description"
+                          rows="4"
+                          th:text="${organizer.description}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="serviceCategory">Service Category</label>
+                <input type="text"
+                       id="serviceCategory"
+                       name="serviceCategory"
+                       th:value="${organizer.serviceCategory}">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text"
+                       id="phone"
+                       name="phone"
+                       th:value="${organizer.phone}">
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website</label>
+                <input type="text"
+                       id="website"
+                       name="website"
+                       th:value="${organizer.website}">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text"
+                       id="address"
+                       name="address"
+                       th:value="${organizer.address}">
+            </div>
+
+
+
+            <div class="form-actions">
+                <button type="submit"
+                        class="btn-submit"
+                        th:text="${isEdit} ? 'Save Changes' : 'Create Organizer'">
+                    Save
+                </button>
+
+                <a class="btn-link" th:href="@{/organizers}">← Back to Organizer List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
