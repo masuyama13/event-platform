@@ -29,12 +29,13 @@ public class SecurityConfig {
                                 "/h2-console/**",
                                 "/css/**",
                                 "/booking/**",
+                                "/quotes/**",
                                 "/messages/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**", "/booking/**", "/messages/**")
+                        .ignoringRequestMatchers("/h2-console/**", "/booking/**", "/messages/**","/quotes/**" )
                 )
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.sameOrigin())
