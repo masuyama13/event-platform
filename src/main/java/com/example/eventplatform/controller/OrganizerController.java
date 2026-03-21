@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @Controller
@@ -122,7 +123,8 @@ public class OrganizerController {
                     address,
                     averageRating
             );
-            return "redirect:/organizers/" + id;
+            return "redirect:/organizers/{id}";
+
         } catch (RuntimeException e) {
             OrganizerProfile organizer = organizerService.getOrganizerById(id);
             model.addAttribute("organizer", organizer);
