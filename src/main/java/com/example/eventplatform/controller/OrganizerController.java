@@ -32,6 +32,14 @@ public class OrganizerController {
         return "organizer-list";
     }
 
+    // DETAIL
+    @GetMapping("/{id}")
+    public String showOrganizerDetail(@PathVariable Long id, Model model) {
+        OrganizerProfile organizer = organizerService.getOrganizerById(id);
+        model.addAttribute("organizer", organizer);
+        return "organizer-detail";
+    }
+
     // CREATE PAGE
     @GetMapping("/new")
     public String showCreateForm(Model model) {
@@ -114,7 +122,7 @@ public class OrganizerController {
                     address,
                     averageRating
             );
-            return "redirect:/organizers";
+            return "redirect:/organizers/" + id;
         } catch (RuntimeException e) {
             OrganizerProfile organizer = organizerService.getOrganizerById(id);
             model.addAttribute("organizer", organizer);
