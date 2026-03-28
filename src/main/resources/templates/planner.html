@@ -14,9 +14,14 @@
     <div class="plans-container">
         <div class="plan-card" th:each="plan : ${plans}">
             <h2 th:text="${plan.planName}">Plan Name</h2>
+
+            <!-- Use plannerName which is set from organizer.businessName -->
             <p>Organizer:
-                <span th:text="${plan.organizerProfile != null
-                                 ? plan.organizerProfile.businessName : 'N/A'}">
+                <span th:text="${plan.plannerName != null}
+                               ? ${plan.plannerName}
+                               : (${plan.organizerProfile != null}
+                               ? ${plan.organizerProfile.businessName}
+                               : 'N/A')">
                     Organizer Name
                 </span>
             </p>
