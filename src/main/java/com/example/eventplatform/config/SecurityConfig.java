@@ -30,12 +30,18 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/booking/**",
                                 "/quotes/**",
+                                "/messages",
                                 "/messages/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**", "/booking/**", "/messages/**","/quotes/**" )
+                        .ignoringRequestMatchers(
+                                "/h2-console/**",
+                                "/booking/**",
+                                "/messages",
+                                "/messages/**",
+                                "/quotes/**" )
                 )
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.sameOrigin())

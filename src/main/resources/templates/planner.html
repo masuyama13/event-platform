@@ -14,18 +14,25 @@
     <div class="plans-container">
         <div class="plan-card" th:each="plan : ${plans}">
             <h2 th:text="${plan.planName}">Plan Name</h2>
-            <p>Planner: <span th:text="${plan.plannerName}">Planner Name</span></p>
+            <p>Organizer:
+                <span th:text="${plan.organizerProfile != null
+                                 ? plan.organizerProfile.businessName : 'N/A'}">
+                    Organizer Name
+                </span>
+            </p>
             <p>Date: <span th:text="${plan.eventDate}">Date</span></p>
             <p>Price: $<span th:text="${plan.price}">Price</span></p>
 
             <!-- Button sends selected plan to confirmation page -->
             <form action="/booking/confirm" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <input type="hidden" name="planName" th:value="${plan.planName}">
                 <button type="submit" class="btn-select">Select This Plan</button>
             </form>
         </div>
     </div>
+
+    <br/>
+    <a href="/organizers" class="btn-back">← Back to Organizers</a>
 </div>
 
 </body>

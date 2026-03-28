@@ -11,8 +11,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "booking_id", nullable = false)
+    // Made optional - messages can exist without a booking
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "booking_id", nullable = true)
     private Booking booking;
 
     @ManyToOne(optional = false)

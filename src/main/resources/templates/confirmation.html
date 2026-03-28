@@ -10,13 +10,16 @@
 <div class="container">
     <h1>Booking Confirmation</h1>
 
-    <!-- Show selected plan details -->
     <div class="confirmation-card">
         <h2>Please Review Your Booking</h2>
+
         <table class="info-table">
             <tr>
-                <td>Planner Name:</td>
-                <td th:text="${booking.plannerName}">Planner Name</td>
+                <td>Organizer:</td>
+                <td th:text="${booking.organizerProfile != null
+                               ? booking.organizerProfile.businessName : 'N/A'}">
+                    Organizer Name
+                </td>
             </tr>
             <tr>
                 <td>Plan Name:</td>
@@ -32,19 +35,19 @@
             </tr>
         </table>
 
-        <!-- Confirm Button: sends booking data to thankyou page -->
         <form action="/booking/thankyou" method="post">
-            <!-- Pass all booking details as hidden fields -->
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <input type="hidden" name="plannerName" th:value="${booking.plannerName}">
-            <input type="hidden" name="planName" th:value="${booking.planName}">
-            <input type="hidden" name="eventDate" th:value="${booking.eventDate}">
-            <input type="hidden" name="price" th:value="${booking.price}">
+            <input type="hidden" name="organizerName"
+                   th:value="${booking.organizerProfile != null
+                               ? booking.organizerProfile.businessName : ''}"/>
+            <input type="hidden" name="planName"
+                   th:value="${booking.planName}"/>
+            <input type="hidden" name="eventDate"
+                   th:value="${booking.eventDate}"/>
+            <input type="hidden" name="price"
+                   th:value="${booking.price}"/>
 
             <div class="buttons">
-                <!-- Go back to plans -->
                 <a href="/booking/plans" class="btn-back">Go Back</a>
-                <!-- Confirm and save to database -->
                 <button type="submit" class="btn-confirm">Confirm</button>
             </div>
         </form>

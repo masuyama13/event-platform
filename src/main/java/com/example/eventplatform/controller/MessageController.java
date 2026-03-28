@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @Controller
 @RequestMapping("/messages")
 public class MessageController {
@@ -20,34 +19,33 @@ public class MessageController {
     private final Long TEMP_CUSTOMER_USER_ID = 1L;
     private final Long TEMP_ORGANIZER_USER_ID = 2L;
 
-    // GET /messages/{bookingId}?role=customer or ?role=organizer
-    @GetMapping("/{bookingId}")
+    // GET /messages?organizerUserId=2&role=customer
+    @GetMapping
     public String showMessages(
-            @PathVariable Long bookingId,
+            @RequestParam(defaultValue = "2") Long organizerUserId,
             @RequestParam(defaultValue = "customer") String role,
             Model model) {
 
-        List<Message> messages = messageService
-                .getMessagesByBooking(bookingId);
+        Long customerUserId = TEMP_CUSTOMER_USER_ID;
 
-        // TODO: Replace with real user from authentication later
-        // Switch sender and receiver based on role
+        // Always fetch all messages between customer and organizer
+        List<Message> messages = messageService
+                .getMessagesBetweenUsers(customerUserId, organizerUserId);
+
+        // Sender and receiver swap based on who is viewing
         Long senderId;
         Long receiverId;
 
         if (role.equals("organizer")) {
-            senderId = TEMP_ORGANIZER_USER_ID;
-            receiverId = TEMP_CUSTOMER_USER_ID;
+            senderId = organizerUserId;
+            receiverId = customerUserId;
         } else {
-            senderId = TEMP_CUSTOMER_USER_ID;
-            receiverId = TEMP_ORGANIZER_USER_ID;
+            senderId = customerUserId;
+            receiverId = organizerUserId;
         }
 
-        // Mark messages as read for current user
-        messageService.markAsRead(bookingId, senderId);
-
         model.addAttribute("messages", messages);
-        model.addAttribute("bookingId", bookingId);
+        model.addAttribute("organizerUserId", organizerUserId);
         model.addAttribute("senderId", senderId);
         model.addAttribute("receiverId", receiverId);
         model.addAttribute("role", role);
@@ -58,17 +56,15 @@ public class MessageController {
     // POST /messages/send
     @PostMapping("/send")
     public String sendMessage(
-            @RequestParam Long bookingId,
+            @RequestParam Long organizerUserId,
             @RequestParam Long senderId,
             @RequestParam Long receiverId,
             @RequestParam String content,
             @RequestParam String role) {
 
-        messageService.sendMessage(
-                bookingId, senderId, receiverId, content
-        );
+        messageService.sendMessage(senderId, receiverId, content);
 
-        // Redirect back to conversation with same role
-        return "redirect:/messages/" + bookingId + "?role=" + role;
+        return "redirect:/messages?organizerUserId="
+                + organizerUserId + "&role=" + role;
     }
 }
