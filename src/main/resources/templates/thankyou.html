@@ -12,15 +12,17 @@
         <h1>🎉 Thank You!</h1>
         <p>Your booking has been confirmed!</p>
 
-        <!-- Show confirmed booking details -->
         <table class="info-table">
             <tr>
                 <td>Booking ID:</td>
                 <td th:text="${booking.id}">ID</td>
             </tr>
             <tr>
-                <td>Planner Name:</td>
-                <td th:text="${booking.plannerName}">Planner Name</td>
+                <td>Organizer:</td>
+                <td th:text="${booking.organizerProfile != null
+                               ? booking.organizerProfile.businessName : 'N/A'}">
+                    Organizer Name
+                </td>
             </tr>
             <tr>
                 <td>Plan Name:</td>
@@ -40,11 +42,11 @@
             </tr>
         </table>
 
-        <a href="/booking/plans" class="btn-back">Back to Plans</a>
-        <a th:href="@{/messages/{id}(id=${booking.id}, role='customer')}"
-           class="btn-confirm">
-            Contact Organizer
-        </a>
+        <div class="buttons">
+            <a href="/organizers" class="btn-confirm">
+                Back to Organizer List
+            </a>
+        </div>
     </div>
 </div>
 

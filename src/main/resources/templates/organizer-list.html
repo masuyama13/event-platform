@@ -11,25 +11,68 @@
     <h1>Organizer List</h1>
 
     <p>
-        <a th:href="@{/booking/plans}">Back</a>
-        |
         <a th:href="@{/organizers/new}">Create New Organizer</a>
     </p>
 
-    <div class="plans-container" th:if="${organizers != null and !#lists.isEmpty(organizers)}">
+    <div class="plans-container"
+         th:if="${organizers != null and !#lists.isEmpty(organizers)}">
+
         <div class="plan-card" th:each="organizer : ${organizers}">
             <h2 th:text="${organizer.businessName}">Business Name</h2>
 
-            <p>Email: <span th:text="${organizer.user.email}">organizer@email.com</span></p>
-            <p>Category: <span th:text="${organizer.serviceCategory} ?: 'N/A'">Category</span></p>
-            <p>Phone: <span th:text="${organizer.phone} ?: 'N/A'">Phone</span></p>
-            <p>Website: <span th:text="${organizer.website} ?: 'N/A'">Website</span></p>
-            <p>Rating: <span th:text="${organizer.averageRating} ?: 0.0">0.0</span></p>
+            <p>Email:
+                <span th:text="${organizer.user.email}">
+                    organizer@email.com
+                </span>
+            </p>
+            <p>Category:
+                <span th:text="${organizer.serviceCategory} ?: 'N/A'">
+                    Category
+                </span>
+            </p>
+            <p>Phone:
+                <span th:text="${organizer.phone} ?: 'N/A'">
+                    Phone
+                </span>
+            </p>
+            <p>Website:
+                <span th:text="${organizer.website} ?: 'N/A'">
+                    Website
+                </span>
+            </p>
+            <p>Rating:
+                <span th:text="${organizer.averageRating} ?: 0.0">
+                    0.0
+                </span>
+            </p>
 
-            <p>
-                <a th:href="@{/organizers/{id}(id=${organizer.id})}">View Details</a>
-                |
-                <a th:href="@{/organizers/edit/{id}(id=${organizer.id})}">Edit</a>
+            <!-- Action Buttons -->
+            <div class="buttons">
+                <a th:href="@{/organizers/{id}(id=${organizer.id})}"
+                   class="btn-back">
+                    View Details
+                </a>
+            </div>
+
+            <div class="buttons" style="margin-top: 8px;">
+                <a th:href="@{/booking/plans}"
+                   class="btn-confirm">
+                    View Plans
+                </a>
+            </div>
+
+            <div class="buttons" style="margin-top: 8px;">
+                <a th:href="@{/messages(organizerUserId=${organizer.user.id},
+                             role='customer')}"
+                   class="btn-confirm">
+                    Message
+                </a>
+            </div>
+
+            <p style="margin-top: 12px;">
+                <a th:href="@{/organizers/edit/{id}(id=${organizer.id})}">
+                    Edit
+                </a>
             </p>
         </div>
     </div>

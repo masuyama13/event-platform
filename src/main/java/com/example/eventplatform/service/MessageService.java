@@ -18,31 +18,23 @@ public class MessageService {
     private MessageRepository messageRepository;
 
     @Autowired
-    private BookingRepository bookingRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
-    // Get all messages for a booking
-    public List<Message> getMessagesByBooking(Long bookingId) {
-        return messageRepository.findByBookingIdOrderBySentAtAsc(bookingId);
+    // Get all messages between two users (both directions)
+    public List<Message> getMessagesBetweenUsers(Long userId1, Long userId2) {
+        return messageRepository.findMessagesBetweenUsers(userId1, userId2);
     }
 
     // Send a message
-    public Message sendMessage(Long bookingId, Long senderId,
-                               Long receiverId, String content) {
-
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    public Message sendMessage(Long senderId, Long receiverId, String content) {
 
         User sender = userRepository.findById(senderId)
-                .orElseThrow(() -> new RuntimeException("Sender not found"));
+                .orElseThrow(() -> new RuntimeException("Sender not found: " + senderId));
 
         User receiver = userRepository.findById(receiverId)
-                .orElseThrow(() -> new RuntimeException("Receiver not found"));
+                .orElseThrow(() -> new RuntimeException("Receiver not found: " + receiverId));
 
         Message message = new Message();
-        message.setBooking(booking);
         message.setSender(sender);
         message.setReceiver(receiver);
         message.setContent(content);
@@ -50,13 +42,15 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    // Mark messages as read
-    public void markAsRead(Long bookingId, Long receiverId) {
+    // Mark messages as read for the current viewer
+    // currentUserId = person currently viewing (receiver of incoming messages)
+    // otherUserId   = person who sent the messages
+    public void markAsRead(Long currentUserId, Long otherUserId) {
         List<Message> unreadMessages = messageRepository
-                .findByReceiverIdAndIsReadFalse(receiverId);
+                .findByReceiverIdAndIsReadFalse(currentUserId);
 
         unreadMessages.forEach(message -> {
-            if (message.getBooking().getId().equals(bookingId)) {
+            if (message.getSender().getId().equals(otherUserId)) {
                 message.setRead(true);
                 messageRepository.save(message);
             }
