@@ -10,10 +10,6 @@
 <div class="container">
     <h1>Organizer List</h1>
 
-    <p>
-        <a th:href="@{/organizer/register}">Create New Organizer</a>
-    </p>
-
     <div class="plans-container"
          th:if="${organizers != null and !#lists.isEmpty(organizers)}">
 

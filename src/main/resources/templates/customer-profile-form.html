@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Profile</title>
+</head>
+<body>
+<h1>Edit Customer Profile</h1>
+
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+<form th:action="@{/profile/customer}" method="post">
+    <div>
+        <label for="firstName">First Name:</label>
+        <input id="firstName" name="firstName" type="text" th:value="${customer.firstName}" required>
+    </div>
+
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input id="lastName" name="lastName" type="text" th:value="${customer.lastName}" required>
+    </div>
+
+    <div>
+        <label for="phone">Phone:</label>
+        <input id="phone" name="phone" type="text" th:value="${customer.phone}">
+    </div>
+
+    <div>
+        <label for="address">Address:</label>
+        <input id="address" name="address" type="text" th:value="${customer.address}">
+    </div>
+
+    <div>
+        <label for="city">City:</label>
+        <input id="city" name="city" type="text" th:value="${customer.city}">
+    </div>
+
+    <div>
+        <label for="country">Country:</label>
+        <input id="country" name="country" type="text" th:value="${customer.country}">
+    </div>
+
+    <button type="submit">Save Profile</button>
+</form>
+</body>
+</html>
