@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .row {
+            margin: 10px 0;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Invoice</h2>
+
+    <div class="row">
+        <span class="label">Invoice ID:</span>
+        <span th:text="${invoice.id}"></span>
+    </div>
+
+    <div class="row">
+        <span class="label">Booking ID:</span>
+        <span th:text="${booking.id}"></span>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <span class="label">Organizer:</span>
+        <span th:text="${booking.plannerName}"></span>
+    </div>
+
+    <div class="row">
+        <span class="label">Plan Name:</span>
+        <span th:text="${booking.planName}"></span>
+    </div>
+
+    <div class="row">
+        <span class="label">Event Date:</span>
+        <span th:text="${booking.eventDate}"></span>
+    </div>
+
+    <hr>
+
+
+    <div class="row">
+        <span class="label">Base Price:</span>
+        <span th:text="${booking.price}"></span>
+    </div>
+
+    <div class="row">
+        <span class="label">Tax (10%):</span>
+        <span th:text="${#numbers.formatDecimal(booking.price * 0.1, 1, 2)}"></span>
+    </div>
+
+    <div class="row">
+        <span class="label">Discount:</span>
+        <span>0</span>
+    </div>
+
+    <hr>
+
+
+    <div class="row total">
+        Total Amount:
+        <span th:text="${invoice.totalAmount}"></span>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <span class="label">Status:</span>
+        <span th:text="${invoice.status}"></span>
+    </div>
+
+    <div class="row">
+        <span class="label">Created At:</span>
+        <span th:text="${#temporals.format(invoice.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+    </div>
+
+    <button class="btn">Proceed to Payment</button>
+
+</div>
+
+</body>
+</html>
