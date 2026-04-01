@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Register</title>
+  <title th:text="${pageTitle}">Register</title>
 </head>
 <body>
-<h1>Register</h1>
+<h1 th:text="${pageTitle}">Register</h1>
 
 <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
-<form th:action="@{/register}" method="post">
+<form th:action="${formAction}" method="post">
   <div>
     <label>Email:</label>
     <input type="email" name="email" required>
@@ -19,43 +19,55 @@
     <input type="password" name="password" required>
   </div>
 
-  <div>
-    <label>Role:</label>
-    <select name="role" id="roleSelect" required onchange="toggleFields()">
-      <option value="CUSTOMER">Customer</option>
-      <option value="ORGANIZER">Organizer</option>
-    </select>
-  </div>
-
-  <div id="customerFields">
+  <div th:if="${pageTitle == 'Customer Register'}">
     <div>
       <label>First Name:</label>
-      <input type="text" name="firstName">
+      <input type="text" name="firstName" required>
     </div>
     <div>
       <label>Last Name:</label>
-      <input type="text" name="lastName">
+      <input type="text" name="lastName" required>
     </div>
   </div>
 
-  <div id="organizerFields" style="display:none;">
+  <div th:if="${pageTitle == 'Organizer Register'}">
     <div>
       <label>Business Name:</label>
-      <input type="text" name="businessName">
+      <input type="text" name="businessName" required>
+    </div>
+
+    <div>
+      <label>Description:</label>
+      <textarea name="description" rows="4" cols="40"></textarea>
+    </div>
+
+    <div>
+      <label>Service Category:</label>
+      <input type="text" name="serviceCategory">
+    </div>
+
+    <div>
+      <label>Phone:</label>
+      <input type="text" name="phone">
+    </div>
+
+    <div>
+      <label>Website:</label>
+      <input type="text" name="website">
+    </div>
+
+    <div>
+      <label>Address:</label>
+      <input type="text" name="address">
     </div>
   </div>
 
   <button type="submit">Sign Up</button>
 </form>
 
-<script>
-  function toggleFields() {
-    const role = document.getElementById("roleSelect").value;
-    document.getElementById("customerFields").style.display =
-            role === "CUSTOMER" ? "block" : "none";
-    document.getElementById("organizerFields").style.display =
-            role === "ORGANIZER" ? "block" : "none";
-  }
-</script>
+<p>
+  <a th:href="${alternateRegisterPath}"
+     th:text="'Register as ' + ${alternateRegisterLabel}">Register as Organizer</a>
+</p>
 </body>
 </html>

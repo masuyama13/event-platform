@@ -33,44 +33,90 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String registerPage() {
+    public String customerRegisterPage(Model model) {
+        populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(
+    public String registerCustomer(
             @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String role,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String businessName,
+            @RequestParam String firstName,
+            @RequestParam String lastName,
             Model model
     ) {
         if (userRepository.existsByEmail(email)) {
             model.addAttribute("error", "Email is already in use.");
+            populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
             return "register";
         }
 
+        User user = createUser(email, password, UserRole.CUSTOMER);
+        CustomerProfile profile = new CustomerProfile();
+        profile.setUser(user);
+        profile.setFirstName(firstName);
+        profile.setLastName(lastName);
+        customerProfileRepository.save(profile);
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/organizer/register")
+    public String organizerRegisterPage(Model model) {
+        populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
+        return "register";
+    }
+
+    @PostMapping("/organizer/register")
+    public String registerOrganizer(
+            @RequestParam String email,
+            @RequestParam String password,
+            @RequestParam String businessName,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String serviceCategory,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String website,
+            @RequestParam(required = false) String address,
+            Model model
+    ) {
+        if (userRepository.existsByEmail(email)) {
+            model.addAttribute("error", "Email is already in use.");
+            populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
+            return "register";
+        }
+
+        User user = createUser(email, password, UserRole.ORGANIZER);
+        OrganizerProfile profile = new OrganizerProfile();
+        profile.setUser(user);
+        profile.setBusinessName(businessName);
+        profile.setDescription(description);
+        profile.setServiceCategory(serviceCategory);
+        profile.setPhone(phone);
+        profile.setWebsite(website);
+        profile.setAddress(address);
+        profile.setAverageRating(0.0);
+        organizerProfileRepository.save(profile);
+
+        return "redirect:/login";
+    }
+
+    private User createUser(String email, String password, UserRole role) {
         User user = new User();
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(password));
-        user.setRole(UserRole.valueOf(role));
-        userRepository.save(user);
+        user.setRole(role);
+        return userRepository.save(user);
+    }
 
-        if (user.getRole() == UserRole.CUSTOMER) {
-            CustomerProfile profile = new CustomerProfile();
-            profile.setUser(user);
-            profile.setFirstName(firstName);
-            profile.setLastName(lastName);
-            customerProfileRepository.save(profile);
-        } else if (user.getRole() == UserRole.ORGANIZER) {
-            OrganizerProfile profile = new OrganizerProfile();
-            profile.setUser(user);
-            profile.setBusinessName(businessName);
-            organizerProfileRepository.save(profile);
-        }
-
-        return "redirect:/login";
+    private void populateRegisterPage(Model model,
+                                      String pageTitle,
+                                      String formAction,
+                                      String alternateRegisterPath,
+                                      String alternateRegisterLabel) {
+        model.addAttribute("pageTitle", pageTitle);
+        model.addAttribute("formAction", formAction);
+        model.addAttribute("alternateRegisterPath", alternateRegisterPath);
+        model.addAttribute("alternateRegisterLabel", alternateRegisterLabel);
     }
 }
