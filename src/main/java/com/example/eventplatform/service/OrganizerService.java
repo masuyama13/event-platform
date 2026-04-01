@@ -41,8 +41,7 @@ public class OrganizerService {
                                             String serviceCategory,
                                             String phone,
                                             String website,
-                                            String address,
-                                            Double averageRating) {
+                                            String address) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
@@ -55,6 +54,10 @@ public class OrganizerService {
             throw new RuntimeException("Organizer profile already exists for this user");
         }
 
+        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
+            throw new RuntimeException("Please select a valid category");
+        }
+
         OrganizerProfile organizerProfile = new OrganizerProfile();
         organizerProfile.setUser(user);
         organizerProfile.setBusinessName(businessName);
@@ -63,7 +66,7 @@ public class OrganizerService {
         organizerProfile.setPhone(phone);
         organizerProfile.setWebsite(website);
         organizerProfile.setAddress(address);
-        organizerProfile.setAverageRating(averageRating != null ? averageRating : 0.0);
+        organizerProfile.setAverageRating(0.0);
 
         return organizerProfileRepository.save(organizerProfile);
     }
@@ -74,10 +77,13 @@ public class OrganizerService {
                                             String serviceCategory,
                                             String phone,
                                             String website,
-                                            String address,
-                                            Double averageRating) {
+                                            String address) {
 
         OrganizerProfile organizerProfile = getOrganizerById(id);
+
+        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
+            throw new RuntimeException("Please select a valid category");
+        }
 
         organizerProfile.setBusinessName(businessName);
         organizerProfile.setDescription(description);
@@ -85,8 +91,26 @@ public class OrganizerService {
         organizerProfile.setPhone(phone);
         organizerProfile.setWebsite(website);
         organizerProfile.setAddress(address);
-        organizerProfile.setAverageRating(averageRating);
 
         return organizerProfileRepository.save(organizerProfile);
+    }
+
+    public OrganizerProfile updateProfile(Long userId,
+                                          String businessName,
+                                          String description,
+                                          String serviceCategory,
+                                          String phone,
+                                          String website,
+                                          String address) {
+        OrganizerProfile organizerProfile = getOrganizerByUserId(userId);
+        return updateOrganizer(
+                organizerProfile.getId(),
+                businessName,
+                description,
+                serviceCategory,
+                phone,
+                website,
+                address
+        );
     }
 }

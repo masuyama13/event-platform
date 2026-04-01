@@ -1,6 +1,7 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.OrganizerProfile;
+import com.example.eventplatform.service.OrganizerCategoryOptions;
 import com.example.eventplatform.service.OrganizerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +43,6 @@ public class OrganizerController {
                                   @RequestParam(required = false) String phone,
                                   @RequestParam(required = false) String website,
                                   @RequestParam(required = false) String address,
-                                  @RequestParam(required = false) Double averageRating,
                                   Model model) {
         try {
             organizerService.createOrganizer(
@@ -52,57 +52,16 @@ public class OrganizerController {
                     serviceCategory,
                     phone,
                     website,
-                    address,
-                    averageRating
+                    address
             );
             return "redirect:/organizers";
         } catch (RuntimeException e) {
             model.addAttribute("organizer", new OrganizerProfile());
             model.addAttribute("isEdit", false);
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
             return "organizer-form";
         }
     }
 
-    // EDIT PAGE
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        OrganizerProfile organizer = organizerService.getOrganizerById(id);
-        model.addAttribute("organizer", organizer);
-        model.addAttribute("isEdit", true);
-        return "organizer-form";
-    }
-
-    // UPDATE SUBMIT
-    @PostMapping("/update/{id}")
-    public String updateOrganizer(@PathVariable Long id,
-                                  @RequestParam String businessName,
-                                  @RequestParam(required = false) String description,
-                                  @RequestParam(required = false) String serviceCategory,
-                                  @RequestParam(required = false) String phone,
-                                  @RequestParam(required = false) String website,
-                                  @RequestParam(required = false) String address,
-                                  @RequestParam(required = false) Double averageRating,
-                                  Model model) {
-        try {
-            organizerService.updateOrganizer(
-                    id,
-                    businessName,
-                    description,
-                    serviceCategory,
-                    phone,
-                    website,
-                    address,
-                    averageRating
-            );
-            return "redirect:/organizers/{id}";
-
-        } catch (RuntimeException e) {
-            OrganizerProfile organizer = organizerService.getOrganizerById(id);
-            model.addAttribute("organizer", organizer);
-            model.addAttribute("isEdit", true);
-            model.addAttribute("error", e.getMessage());
-            return "organizer-form";
-        }
-    }
 }

@@ -4,6 +4,7 @@ import com.example.eventplatform.entity.*;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.service.OrganizerCategoryOptions;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +45,10 @@ public class AuthController {
             @RequestParam String password,
             @RequestParam String firstName,
             @RequestParam String lastName,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
             Model model
     ) {
         if (userRepository.existsByEmail(email)) {
@@ -57,6 +62,10 @@ public class AuthController {
         profile.setUser(user);
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
+        profile.setPhone(phone);
+        profile.setAddress(address);
+        profile.setCity(city);
+        profile.setCountry(country);
         customerProfileRepository.save(profile);
 
         return "redirect:/login";
@@ -82,6 +91,12 @@ public class AuthController {
     ) {
         if (userRepository.existsByEmail(email)) {
             model.addAttribute("error", "Email is already in use.");
+            populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
+            return "register";
+        }
+
+        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
+            model.addAttribute("error", "Please select a valid category.");
             populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
             return "register";
         }
@@ -118,5 +133,6 @@ public class AuthController {
         model.addAttribute("formAction", formAction);
         model.addAttribute("alternateRegisterPath", alternateRegisterPath);
         model.addAttribute("alternateRegisterLabel", alternateRegisterLabel);
+        model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
     }
 }

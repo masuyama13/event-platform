@@ -13,7 +13,7 @@
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
     <div class="plan-card">
-        <form th:action="${isEdit} ? @{/organizers/update/{id}(id=${organizer.id})} : @{/organizers}" method="post">
+        <form th:action="${isEdit} ? @{/organizers/profile/organizer} : @{/organizers}" method="post">
 
             <input type="hidden"
                    th:if="${_csrf != null}"
@@ -57,10 +57,16 @@
 
             <div>
                 <label for="serviceCategory">Service Category:</label><br>
-                <input type="text"
-                       id="serviceCategory"
-                       name="serviceCategory"
-                       th:value="${organizer.serviceCategory}">
+                <select id="serviceCategory"
+                        name="serviceCategory"
+                        required>
+                    <option value="">Select a category</option>
+                    <option th:each="category : ${serviceCategories}"
+                            th:value="${category}"
+                            th:text="${category}"
+                            th:selected="${category == organizer.serviceCategory}">
+                    </option>
+                </select>
             </div>
 
             <br>
