@@ -43,7 +43,6 @@ public class OrganizerController {
                                   @RequestParam(required = false) String phone,
                                   @RequestParam(required = false) String website,
                                   @RequestParam(required = false) String address,
-                                  @RequestParam(required = false) Double averageRating,
                                   Model model) {
         try {
             organizerService.createOrganizer(
@@ -53,14 +52,14 @@ public class OrganizerController {
                     serviceCategory,
                     phone,
                     website,
-                    address,
-                    averageRating
+                    address
             );
             return "redirect:/organizers";
         } catch (RuntimeException e) {
             model.addAttribute("organizer", new OrganizerProfile());
             model.addAttribute("isEdit", false);
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
             return "organizer-form";
         }
     }
@@ -84,7 +83,6 @@ public class OrganizerController {
                                   @RequestParam(required = false) String phone,
                                   @RequestParam(required = false) String website,
                                   @RequestParam(required = false) String address,
-                                  @RequestParam(required = false) Double averageRating,
                                   Model model) {
         try {
             organizerService.updateOrganizer(
@@ -94,8 +92,7 @@ public class OrganizerController {
                     serviceCategory,
                     phone,
                     website,
-                    address,
-                    averageRating
+                    address
             );
             return "redirect:/organizers/{id}";
 

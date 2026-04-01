@@ -41,8 +41,7 @@ public class OrganizerService {
                                             String serviceCategory,
                                             String phone,
                                             String website,
-                                            String address,
-                                            Double averageRating) {
+                                            String address) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
@@ -67,7 +66,7 @@ public class OrganizerService {
         organizerProfile.setPhone(phone);
         organizerProfile.setWebsite(website);
         organizerProfile.setAddress(address);
-        organizerProfile.setAverageRating(averageRating != null ? averageRating : 0.0);
+        organizerProfile.setAverageRating(0.0);
 
         return organizerProfileRepository.save(organizerProfile);
     }
@@ -78,8 +77,7 @@ public class OrganizerService {
                                             String serviceCategory,
                                             String phone,
                                             String website,
-                                            String address,
-                                            Double averageRating) {
+                                            String address) {
 
         OrganizerProfile organizerProfile = getOrganizerById(id);
 
@@ -93,7 +91,6 @@ public class OrganizerService {
         organizerProfile.setPhone(phone);
         organizerProfile.setWebsite(website);
         organizerProfile.setAddress(address);
-        organizerProfile.setAverageRating(averageRating);
 
         return organizerProfileRepository.save(organizerProfile);
     }
