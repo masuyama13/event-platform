@@ -1,6 +1,7 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.OrganizerProfile;
+import com.example.eventplatform.service.OrganizerCategoryOptions;
 import com.example.eventplatform.service.OrganizerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,6 +71,7 @@ public class OrganizerController {
         OrganizerProfile organizer = organizerService.getOrganizerById(id);
         model.addAttribute("organizer", organizer);
         model.addAttribute("isEdit", true);
+        model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
         return "organizer-form";
     }
 
@@ -102,6 +104,7 @@ public class OrganizerController {
             model.addAttribute("organizer", organizer);
             model.addAttribute("isEdit", true);
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
             return "organizer-form";
         }
     }

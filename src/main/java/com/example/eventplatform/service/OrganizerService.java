@@ -55,6 +55,10 @@ public class OrganizerService {
             throw new RuntimeException("Organizer profile already exists for this user");
         }
 
+        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
+            throw new RuntimeException("Please select a valid category");
+        }
+
         OrganizerProfile organizerProfile = new OrganizerProfile();
         organizerProfile.setUser(user);
         organizerProfile.setBusinessName(businessName);
@@ -78,6 +82,10 @@ public class OrganizerService {
                                             Double averageRating) {
 
         OrganizerProfile organizerProfile = getOrganizerById(id);
+
+        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
+            throw new RuntimeException("Please select a valid category");
+        }
 
         organizerProfile.setBusinessName(businessName);
         organizerProfile.setDescription(description);

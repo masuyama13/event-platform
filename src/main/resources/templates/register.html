@@ -43,7 +43,12 @@
 
     <div>
       <label>Service Category:</label>
-      <input type="text" name="serviceCategory">
+      <select name="serviceCategory" required>
+        <option value="">Select a category</option>
+        <option th:each="category : ${serviceCategories}"
+                th:value="${category}"
+                th:text="${category}"></option>
+      </select>
     </div>
 
     <div>

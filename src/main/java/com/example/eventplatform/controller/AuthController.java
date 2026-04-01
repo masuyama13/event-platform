@@ -4,6 +4,7 @@ import com.example.eventplatform.entity.*;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.service.OrganizerCategoryOptions;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,6 +87,12 @@ public class AuthController {
             return "register";
         }
 
+        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
+            model.addAttribute("error", "Please select a valid category.");
+            populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
+            return "register";
+        }
+
         User user = createUser(email, password, UserRole.ORGANIZER);
         OrganizerProfile profile = new OrganizerProfile();
         profile.setUser(user);
@@ -118,5 +125,6 @@ public class AuthController {
         model.addAttribute("formAction", formAction);
         model.addAttribute("alternateRegisterPath", alternateRegisterPath);
         model.addAttribute("alternateRegisterLabel", alternateRegisterLabel);
+        model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
     }
 }
