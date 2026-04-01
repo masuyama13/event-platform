@@ -62,7 +62,19 @@ public class InvoiceService {
 
     public Invoice markPaidBySessionId(String stripeSessionId, String stripePaymentIntentId) {
         Invoice invoice = getInvoiceBySessionId(stripeSessionId);
+        return markPaid(invoice, stripeSessionId, stripePaymentIntentId);
+    }
+
+    public Invoice markPaidByInvoiceId(Long invoiceId, String stripeSessionId, String stripePaymentIntentId) {
+        Invoice invoice = getInvoiceById(invoiceId);
+        return markPaid(invoice, stripeSessionId, stripePaymentIntentId);
+    }
+
+    private Invoice markPaid(Invoice invoice, String stripeSessionId, String stripePaymentIntentId) {
         invoice.setStatus(InvoiceStatus.PAID);
+        if (stripeSessionId != null && !stripeSessionId.isBlank()) {
+            invoice.setStripeSessionId(stripeSessionId);
+        }
         invoice.setStripePaymentIntentId(stripePaymentIntentId);
         invoice.setPaidAt(LocalDateTime.now());
         return invoiceRepository.save(invoice);

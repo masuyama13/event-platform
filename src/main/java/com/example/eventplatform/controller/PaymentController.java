@@ -6,6 +6,8 @@ import com.example.eventplatform.service.InvoiceService;
 import com.example.eventplatform.service.PaymentService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PaymentController {
+
+    private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 
     private final InvoiceService invoiceService;
     private final PaymentService paymentService;
@@ -70,10 +74,25 @@ public class PaymentController {
     public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload,
                                                       @RequestHeader("Stripe-Signature") String signatureHeader) {
         var event = paymentService.parseWebhookEvent(payload, signatureHeader);
+        log.info("Received Stripe webhook event type={}", event.getType());
 
         if ("checkout.session.completed".equals(event.getType())) {
             Session session = paymentService.extractCheckoutSession(event);
-            invoiceService.markPaidBySessionId(session.getId(), session.getPaymentIntent());
+            String invoiceIdValue = session.getMetadata() == null ? null : session.getMetadata().get("invoiceId");
+
+            try {
+                invoiceService.markPaidBySessionId(session.getId(), session.getPaymentIntent());
+                log.info("Marked invoice as paid using Stripe session id={}", session.getId());
+            } catch (RuntimeException ex) {
+                if (invoiceIdValue == null || invoiceIdValue.isBlank()) {
+                    log.error("Unable to match invoice for Stripe session id={}", session.getId(), ex);
+                    throw ex;
+                }
+
+                Long invoiceId = Long.valueOf(invoiceIdValue);
+                invoiceService.markPaidByInvoiceId(invoiceId, session.getId(), session.getPaymentIntent());
+                log.info("Marked invoice id={} as paid using webhook metadata fallback", invoiceId);
+            }
         }
 
         return ResponseEntity.ok("received");
