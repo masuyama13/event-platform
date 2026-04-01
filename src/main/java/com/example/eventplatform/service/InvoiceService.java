@@ -22,7 +22,7 @@ public class InvoiceService {
         double price = booking.getPrice();
 
 
-        double tax = price * 0.13;
+        double tax = price * 0.05;
         tax = Math.round(tax * 100.0) / 100.0;
 
 
