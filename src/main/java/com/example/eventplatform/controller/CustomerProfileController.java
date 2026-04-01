@@ -9,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
 @Controller
+@RequestMapping("/profile/customer")
 public class CustomerProfileController {
 
     private final UserRepository userRepository;
@@ -25,7 +27,7 @@ public class CustomerProfileController {
         this.customerProfileService = customerProfileService;
     }
 
-    @GetMapping("/profile/customer")
+    @GetMapping
     public String customerProfilePage(Principal principal, Model model) {
         User user = getCurrentUser(principal);
         if (user.getRole() != UserRole.CUSTOMER) {
@@ -36,7 +38,7 @@ public class CustomerProfileController {
         return "customer-profile-form";
     }
 
-    @PostMapping("/profile/customer")
+    @PostMapping
     public String updateCustomerProfile(Principal principal,
                                         @RequestParam String firstName,
                                         @RequestParam String lastName,
