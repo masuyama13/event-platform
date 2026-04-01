@@ -24,9 +24,14 @@
 
 <div th:each="quote : ${quotes}">
     <p>ID: <span th:text="${quote.id}"></span></p>
-    <p>Amount: <span th:text="${quote.quotedAmount}"></span></p>
+
+    <p>Plan Name: <span th:text="${quote.booking.planName}"></span></p>
+    <p>Original Price: <span th:text="${quote.booking.price}"></span></p>
+
+    <p>Suggested Price: <span th:text="${quote.quotedAmount}"></span></p>
     <p>Description: <span th:text="${quote.description}"></span></p>
     <p>Status: <span th:text="${quote.status}"></span></p>
+
     <div th:if="${quote.status.name() == 'PENDING'}">
         <form action="/quotes/update-status" method="post">
             <input type="hidden" name="quoteId" th:value="${quote.id}">
@@ -35,7 +40,12 @@
             <button type="submit" name="status" value="ACCEPTED">Accept</button>
             <button type="submit" name="status" value="REJECTED">Reject</button>
         </form>
+
+        <form th:action="@{/invoices/create/{id}(id=${quote.id})}" method="post">
+            <button type="submit">Generate Invoice</button>
+        </form>
     </div>
+
     <hr>
 </div>
 
