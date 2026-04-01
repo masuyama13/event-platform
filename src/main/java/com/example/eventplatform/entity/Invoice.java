@@ -1,6 +1,7 @@
 package com.example.eventplatform.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,11 +17,18 @@ public class Invoice {
     @JoinColumn(name = "booking_id", nullable = false, unique = true)
     private Booking booking;
 
-    private Double totalAmount;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalAmount;
+
+    @Column(nullable = false, length = 3)
+    private String currency = "cad";
 
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
 
+    private String stripeSessionId;
+    private String stripePaymentIntentId;
+    private LocalDateTime paidAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -42,9 +50,17 @@ public class Invoice {
 
     public Booking getBooking() { return booking; }
 
-    public Double getTotalAmount() { return totalAmount; }
+    public BigDecimal getTotalAmount() { return totalAmount; }
+
+    public String getCurrency() { return currency; }
 
     public InvoiceStatus getStatus() { return status; }
+
+    public String getStripeSessionId() { return stripeSessionId; }
+
+    public String getStripePaymentIntentId() { return stripePaymentIntentId; }
+
+    public LocalDateTime getPaidAt() { return paidAt; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 
@@ -54,9 +70,17 @@ public class Invoice {
 
     public void setBooking(Booking booking) { this.booking = booking; }
 
-    public void setTotalAmount(Double totalAmount) { this.totalAmount = totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
+
+    public void setCurrency(String currency) { this.currency = currency; }
 
     public void setStatus(InvoiceStatus status) { this.status = status; }
+
+    public void setStripeSessionId(String stripeSessionId) { this.stripeSessionId = stripeSessionId; }
+
+    public void setStripePaymentIntentId(String stripePaymentIntentId) { this.stripePaymentIntentId = stripePaymentIntentId; }
+
+    public void setPaidAt(LocalDateTime paidAt) { this.paidAt = paidAt; }
 
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 

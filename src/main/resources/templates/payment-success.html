@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Submitted</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .status {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Payment Submitted</h2>
+    <p>Your payment was submitted through Stripe. The invoice will be finalized after the webhook is received.</p>
+    <p th:if="${invoice != null}">
+        Current invoice status:
+        <span class="status" th:text="${invoice.status}"></span>
+    </p>
+    <a th:if="${invoice != null}"
+       th:href="@{/invoices/view/{bookingId}(bookingId=${invoice.booking.id})}">
+        Back to Invoice
+    </a>
+</div>
+</body>
+</html>
