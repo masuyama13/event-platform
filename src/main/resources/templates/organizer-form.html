@@ -13,7 +13,7 @@
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
     <div class="plan-card">
-        <form th:action="${isEdit} ? @{/organizers/update/{id}(id=${organizer.id})} : @{/organizers}" method="post">
+        <form th:action="${isEdit} ? @{/organizers/profile/organizer} : @{/organizers}" method="post">
 
             <input type="hidden"
                    th:if="${_csrf != null}"

@@ -94,4 +94,23 @@ public class OrganizerService {
 
         return organizerProfileRepository.save(organizerProfile);
     }
+
+    public OrganizerProfile updateProfile(Long userId,
+                                          String businessName,
+                                          String description,
+                                          String serviceCategory,
+                                          String phone,
+                                          String website,
+                                          String address) {
+        OrganizerProfile organizerProfile = getOrganizerByUserId(userId);
+        return updateOrganizer(
+                organizerProfile.getId(),
+                businessName,
+                description,
+                serviceCategory,
+                phone,
+                website,
+                address
+        );
+    }
 }

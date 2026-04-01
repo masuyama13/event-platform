@@ -1,21 +1,28 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.OrganizerProfile;
+import com.example.eventplatform.entity.User;
+import com.example.eventplatform.entity.UserRole;
+import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.service.OrganizerCategoryOptions;
 import com.example.eventplatform.service.OrganizerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/organizers")
 public class OrganizerController {
 
     private final OrganizerService organizerService;
+    private final UserRepository userRepository;
 
-    public OrganizerController(OrganizerService organizerService) {
+    public OrganizerController(OrganizerService organizerService,
+                               UserRepository userRepository) {
         this.organizerService = organizerService;
+        this.userRepository = userRepository;
     }
 
     // LIST
@@ -64,19 +71,22 @@ public class OrganizerController {
         }
     }
 
-    // EDIT PAGE
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        OrganizerProfile organizer = organizerService.getOrganizerById(id);
+    @GetMapping("/profile/organizer")
+    public String organizerProfilePage(Principal principal, Model model) {
+        User user = getCurrentUser(principal);
+        if (user.getRole() != UserRole.ORGANIZER) {
+            return "redirect:/organizers";
+        }
+
+        OrganizerProfile organizer = organizerService.getOrganizerByUserId(user.getId());
         model.addAttribute("organizer", organizer);
         model.addAttribute("isEdit", true);
         model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
         return "organizer-form";
     }
 
-    // UPDATE SUBMIT
-    @PostMapping("/update/{id}")
-    public String updateOrganizer(@PathVariable Long id,
+    @PostMapping("/profile/organizer")
+    public String updateOrganizer(Principal principal,
                                   @RequestParam String businessName,
                                   @RequestParam(required = false) String description,
                                   @RequestParam(required = false) String serviceCategory,
@@ -84,9 +94,14 @@ public class OrganizerController {
                                   @RequestParam(required = false) String website,
                                   @RequestParam(required = false) String address,
                                   Model model) {
+        User user = getCurrentUser(principal);
+        if (user.getRole() != UserRole.ORGANIZER) {
+            return "redirect:/organizers";
+        }
+
         try {
-            organizerService.updateOrganizer(
-                    id,
+            organizerService.updateProfile(
+                    user.getId(),
                     businessName,
                     description,
                     serviceCategory,
@@ -94,15 +109,24 @@ public class OrganizerController {
                     website,
                     address
             );
-            return "redirect:/organizers/{id}";
+            return "redirect:/profile/organizer";
 
         } catch (RuntimeException e) {
-            OrganizerProfile organizer = organizerService.getOrganizerById(id);
+            OrganizerProfile organizer = organizerService.getOrganizerByUserId(user.getId());
             model.addAttribute("organizer", organizer);
             model.addAttribute("isEdit", true);
             model.addAttribute("error", e.getMessage());
             model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
             return "organizer-form";
         }
+    }
+
+    private User getCurrentUser(Principal principal) {
+        if (principal == null) {
+            throw new RuntimeException("User is not authenticated");
+        }
+
+        return userRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getName()));
     }
 }
