@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rate Organizer</title>
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/rating.css}">
+</head>
+<body>
+
+<div class="container">
+    <div class="rating-card">
+        <h1>Rate This Organizer</h1>
+
+        <!-- Show existing rating if already rated -->
+        <p class="current-rating"
+           th:if="${existingRating != null and existingRating > 0}">
+            Your current rating:
+            <strong th:text="${existingRating} + ' / 5'">0 / 5</strong>
+        </p>
+        <p th:if="${existingRating == null or existingRating == 0}"
+           style="color: #999;">
+            You have not rated this organizer yet.
+        </p>
+
+        <form action="/ratings/submit" method="post">
+            <input type="hidden" name="organizerId"
+                   th:value="${organizerId}"/>
+
+            <!-- Star Rating -->
+            <div class="star-container">
+                <input type="radio" id="star5" name="ratingValue" value="5"/>
+                <label for="star5" title="5 stars">&#9733;</label>
+
+                <input type="radio" id="star4" name="ratingValue" value="4"/>
+                <label for="star4" title="4 stars">&#9733;</label>
+
+                <input type="radio" id="star3" name="ratingValue" value="3"/>
+                <label for="star3" title="3 stars">&#9733;</label>
+
+                <input type="radio" id="star2" name="ratingValue" value="2"/>
+                <label for="star2" title="2 stars">&#9733;</label>
+
+                <input type="radio" id="star1" name="ratingValue" value="1"/>
+                <label for="star1" title="1 star">&#9733;</label>
+            </div>
+
+            <div class="buttons">
+                <a href="/organizers" class="btn-back">Cancel</a>
+                <button type="submit" class="btn-confirm">Submit Rating</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

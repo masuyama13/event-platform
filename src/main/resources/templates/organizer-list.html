@@ -40,10 +40,14 @@
                     Website
                 </span>
             </p>
+              <!-- Average Rating Display -->
             <p>Rating:
-                <span th:text="${organizer.averageRating} ?: 0.0">
-                    0.0
-                </span>
+                <strong style="color: #f5a623;"
+                        th:text="${organizer.averageRating != null}
+                                  ? (${organizer.averageRating} + ' / 5')
+                                  : '0.0 / 5'">
+                    0.0 / 5
+                </strong>
             </p>
 
             <!-- Action Buttons -->
@@ -66,6 +70,13 @@
                              role='customer')}"
                    class="btn-confirm">
                     Message
+                </a>
+            </div>
+            <!-- Rate Button -->
+            <div class="buttons" style="margin-top: 8px;">
+                <a th:href="@{/ratings/organizer/{id}(id=${organizer.id})}"
+                   class="btn-back">
+                    ★ Rate
                 </a>
             </div>
 
