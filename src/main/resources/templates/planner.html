@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Select a Plan</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{fragments :: siteHeader}"></header>
+<main class="app-main">
 
 <div class="container">
     <h1>Available Plans</h1>
@@ -39,6 +42,7 @@
     <br/>
     <a href="/organizers" class="btn-back">← Back to Organizers</a>
 </div>
-
+ </main>
+<footer th:replace="~{fragments :: siteFooter}"></footer>
 </body>
 </html>

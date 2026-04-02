@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Write Review</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{fragments :: siteHeader}"></header>
+<main class="app-main">
 
 <div class="container">
     <div class="plan-card">
@@ -42,6 +45,7 @@
         </form>
     </div>
 </div>
-
+ </main>
+<footer th:replace="~{fragments :: siteFooter}"></footer>
 </body>
 </html>

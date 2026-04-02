@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Payment Cancelled</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <style>
         body {
             font-family: Arial;
@@ -18,11 +19,15 @@
         }
     </style>
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{fragments :: siteHeader}"></header>
+<main class="app-main">
 <div class="container">
     <h2>Payment Cancelled</h2>
     <p>Your payment has not been completed. You can return to the invoice and try again.</p>
     <a th:href="@{/invoices/view/{bookingId}(bookingId=${invoice.booking.id})}">Back to Invoice</a>
 </div>
+ </main>
+<footer th:replace="~{fragments :: siteFooter}"></footer>
 </body>
 </html>

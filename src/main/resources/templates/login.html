@@ -2,8 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Sign In</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{fragments :: siteHeader}"></header>
+<main class="app-main">
 <h1>Sign In</h1>
 
 <form th:action="@{/login}" method="post">
@@ -20,5 +23,7 @@
 
 <p><a th:href="@{/register}">Create a customer account</a></p>
 <p><a th:href="@{/organizer/register}">Create an organizer account</a></p>
+ </main>
+<footer th:replace="~{fragments :: siteFooter}"></footer>
 </body>
 </html>

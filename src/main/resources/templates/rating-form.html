@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Rate Organizer</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
     <link rel="stylesheet" th:href="@{/css/rating.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{fragments :: siteHeader}"></header>
+<main class="app-main">
 
 <div class="container">
     <div class="rating-card">
@@ -52,6 +55,7 @@
         </form>
     </div>
 </div>
-
+ </main>
+<footer th:replace="~{fragments :: siteFooter}"></footer>
 </body>
 </html>

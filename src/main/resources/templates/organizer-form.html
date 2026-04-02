@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Organizer Form</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{fragments :: siteHeader}"></header>
+<main class="app-main">
 
 <div class="container">
     <h1 th:text="${isEdit} ? 'Edit Organizer' : 'Create Organizer'">Organizer Form</h1>
@@ -116,6 +119,7 @@
         </p>
     </div>
 </div>
-
+ </main>
+<footer th:replace="~{fragments :: siteFooter}"></footer>
 </body>
 </html>
