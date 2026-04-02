@@ -12,7 +12,7 @@
 <div class="container">
 
     <!-- Show who is viewing -->
-    <h1 th:text="${role == 'organizer'} ? 'Organizer View' : 'Customer View'">
+    <h1 th:text="${role == 'organizer' ? 'Organizer View' : 'Customer View'}">
         Messages
     </h1>
 
@@ -39,7 +39,7 @@
                               'message-received' : 'message-sent'">
 
             <p class="message-sender"
-               th:text="${message.sender.id == 1} ? 'Customer' : 'Organizer'">
+               th:text="${message.sender.id == 1 ? 'Customer' : 'Organizer'}">
                 Sender
             </p>
             <p class="message-content"
