@@ -11,7 +11,7 @@
 <main class="app-main">
 
 <div class="container">
-    <h1 th:text="${isEdit} ? 'Edit Organizer' : 'Create Organizer'">Organizer Form</h1>
+    <h1 th:text="${isEdit ? 'Edit Organizer' : 'Create Organizer'}">Organizer Form</h1>
 
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
@@ -106,7 +106,7 @@
 
             <div>
                 <button type="submit"
-                        th:text="${isEdit} ? 'Save Changes' : 'Create Organizer'">
+                        th:text="${isEdit ? 'Save Changes' : 'Create Organizer'}">
                     Save
                 </button>
             </div>
