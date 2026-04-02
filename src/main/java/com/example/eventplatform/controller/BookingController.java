@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class BookingController {
             @RequestParam String planName,
             @RequestParam String organizerName,
             @RequestParam String eventDate,
-            @RequestParam Double price,
+            @RequestParam BigDecimal price,
             Model model) {
 
         Booking savedBooking = bookingService.confirmBooking(

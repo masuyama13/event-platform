@@ -28,6 +28,7 @@ public class SecurityConfig {
                                 "/register",
                                 "/organizer/register",
                                 "/h2-console/**",
+                                "/stripe/webhook",
                                 "/css/**",
                                 "/booking/**",
                                 "/quotes/**",
@@ -40,6 +41,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(
                                 "/h2-console/**",
+                                "/stripe/webhook",
                                 "/booking/**",
                                 "/messages",
                                 "/messages/**",

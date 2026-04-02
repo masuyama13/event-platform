@@ -4,7 +4,6 @@ import com.example.eventplatform.entity.Booking;
 import com.example.eventplatform.entity.Invoice;
 import com.example.eventplatform.repository.BookingRepository;
 import com.example.eventplatform.service.InvoiceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/invoices")
 public class InvoiceController {
 
-    @Autowired
-    private InvoiceService invoiceService;
+    private final InvoiceService invoiceService;
+    private final BookingRepository bookingRepository;
 
-    @Autowired
-    private BookingRepository bookingRepository;
+    public InvoiceController(InvoiceService invoiceService, BookingRepository bookingRepository) {
+        this.invoiceService = invoiceService;
+        this.bookingRepository = bookingRepository;
+    }
 
 
     @GetMapping("/view/{bookingId}")

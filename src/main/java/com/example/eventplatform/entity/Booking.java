@@ -1,6 +1,7 @@
 package com.example.eventplatform.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -40,7 +41,8 @@ public class Booking {
 
     private String plannerName;
     private String planName;
-    private Double price;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal price;
 
 
 
@@ -100,7 +102,7 @@ public class Booking {
 
     public String getPlannerName() { return plannerName; }
     public String getPlanName() { return planName; }
-    public Double getPrice() { return price; }
+    public BigDecimal getPrice() { return price; }
 
     public void setId(Long id) {
         this.id = id;
@@ -146,6 +148,5 @@ public class Booking {
 
     public void setPlanName(String planName) { this.planName = planName; }
 
-    public void setPrice(Double price) { this.price = price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 }
-

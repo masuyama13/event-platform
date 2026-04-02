@@ -104,6 +104,7 @@
     <div class="row total">
         Total Amount:
         <span th:text="${invoice.totalAmount}"></span>
+        <span th:text="${#strings.toUpperCase(invoice.currency)}"></span>
     </div>
 
     <hr>
@@ -118,7 +119,20 @@
         <span th:text="${#temporals.format(invoice.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
     </div>
 
-    <button class="btn">Proceed to Payment</button>
+    <div class="row" th:if="${invoice.paidAt != null}">
+        <span class="label">Paid At:</span>
+        <span th:text="${#temporals.format(invoice.paidAt, 'yyyy-MM-dd HH:mm')}"></span>
+    </div>
+
+    <form th:if="${invoice.status.name() != 'PAID'}"
+          th:action="@{/payments/checkout/{invoiceId}(invoiceId=${invoice.id})}"
+          method="post">
+        <button class="btn" type="submit">Proceed to Payment</button>
+    </form>
+
+    <div class="row" th:if="${invoice.status.name() == 'PAID'}">
+        <span class="label">Payment completed.</span>
+    </div>
 
 </div>
 
