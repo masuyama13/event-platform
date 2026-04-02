@@ -3,9 +3,11 @@ package com.example.eventplatform.controller;
 import com.example.eventplatform.entity.OrganizerProfile;
 import com.example.eventplatform.service.OrganizerCategoryOptions;
 import com.example.eventplatform.service.OrganizerService;
+import com.example.eventplatform.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
@@ -13,12 +15,14 @@ import java.util.List;
 public class OrganizerController {
 
     private final OrganizerService organizerService;
+    private final ReviewService reviewService;
 
-    public OrganizerController(OrganizerService organizerService) {
+    public OrganizerController(OrganizerService organizerService,
+                               ReviewService reviewService) {
         this.organizerService = organizerService;
+        this.reviewService = reviewService;
     }
 
-    // LIST
     @GetMapping
     public String showOrganizerList(Model model) {
         List<OrganizerProfile> organizers = organizerService.getAllOrganizers();
@@ -26,15 +30,14 @@ public class OrganizerController {
         return "organizer-list";
     }
 
-    // DETAIL
     @GetMapping("/{id}")
     public String showOrganizerDetail(@PathVariable Long id, Model model) {
         OrganizerProfile organizer = organizerService.getOrganizerById(id);
         model.addAttribute("organizer", organizer);
+        model.addAttribute("reviews", reviewService.getReviewsByOrganizer(id));
         return "organizer-detail";
     }
 
-    // CREATE SUBMIT
     @PostMapping
     public String createOrganizer(@RequestParam Long userId,
                                   @RequestParam String businessName,
@@ -63,5 +66,4 @@ public class OrganizerController {
             return "organizer-form";
         }
     }
-
 }

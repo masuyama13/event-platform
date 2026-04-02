@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Write Review</title>
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+</head>
+<body>
+
+<div class="container">
+    <div class="plan-card">
+        <h1>Write a Review</h1>
+
+        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+        <p th:if="${existingReview != null and !existingReview.isEmpty()}">
+            Your current review:
+        </p>
+
+        <form th:action="@{/reviews/submit}" method="post">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
+
+            <input type="hidden" name="organizerId" th:value="${organizerId}"/>
+
+            <div>
+        <textarea name="reviewText"
+                  rows="6"
+                  cols="50"
+                  placeholder="Write your review here..."
+                  th:text="${existingReview}"></textarea>
+            </div>
+
+            <br>
+
+            <div class="buttons">
+                <a th:href="@{/organizers/{id}(id=${organizerId})}" class="btn-back">Cancel</a>
+                <button type="submit" class="btn-confirm">Submit Review</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
