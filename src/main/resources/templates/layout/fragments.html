@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="siteHeader" class="site-header">
+    <div class="site-header__inner">
+        <a sec:authorize="isAuthenticated()"
+           th:href="@{/organizers}"
+           class="site-brand">EventOmakase</a>
+        <a sec:authorize="isAnonymous()"
+           th:href="@{/login}"
+           class="site-brand">EventOmakase</a>
+
+        <details class="site-menu" sec:authorize="isAuthenticated()">
+            <summary class="site-menu__toggle" aria-label="Open user menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </summary>
+            <nav class="site-menu__panel">
+                <span class="site-menu__user"
+                      th:text="${#authentication.name}">user@example.com</span>
+                <a th:href="@{/profile}" class="site-menu__link">Profile</a>
+                <form th:action="@{/logout}" method="post" class="site-menu__logout">
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+                    <button type="submit" class="site-menu__button">Logout</button>
+                </form>
+            </nav>
+        </details>
+    </div>
+</header>
+
+<footer th:fragment="siteFooter" class="site-footer">
+    <div class="site-footer__inner">
+        <small>&copy; 2026 EventOmakase</small>
+    </div>
+</footer>
+</body>
+</html>

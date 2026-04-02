@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Invoice</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <style>
         body {
             font-family: Arial;
@@ -47,7 +48,9 @@
         }
     </style>
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
 
 <div class="container">
 
@@ -135,6 +138,7 @@
     </div>
 
 </div>
-
+ </main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

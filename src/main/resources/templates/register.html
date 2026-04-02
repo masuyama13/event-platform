@@ -2,8 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title th:text="${pageTitle}">Register</title>
+  <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
 <h1 th:text="${pageTitle}">Register</h1>
 
 <p th:if="${error}" th:text="${error}" style="color:red;"></p>
@@ -90,5 +93,7 @@
   <a th:href="${alternateRegisterPath}"
      th:text="'Register as ' + ${alternateRegisterLabel}">Register as Organizer</a>
 </p>
+ </main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

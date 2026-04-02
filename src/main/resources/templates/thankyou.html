@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Thank You</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
 
 <div class="container">
     <div class="thankyou-card">
@@ -52,6 +55,7 @@
         </div>
     </div>
 </div>
-
+ </main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

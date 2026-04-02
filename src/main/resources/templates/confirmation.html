@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Confirm Booking</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
 
 <div class="container">
     <h1>Booking Confirmation</h1>
@@ -53,6 +56,7 @@
         </form>
     </div>
 </div>
-
+ </main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

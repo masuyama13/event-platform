@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Payment Submitted</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <style>
         body {
             font-family: Arial;
@@ -23,7 +24,9 @@
         }
     </style>
 </head>
-<body>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
 <div class="container">
     <h2>Payment Submitted</h2>
     <p>Your payment was submitted through Stripe. The invoice will be finalized after the webhook is received.</p>
@@ -36,5 +39,7 @@
         Back to Invoice
     </a>
 </div>
+ </main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

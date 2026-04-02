@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
+    <section class="profile-page">
+        <div class="profile-card">
+            <div class="profile-heading">
+                <p class="profile-eyebrow">User Profile</p>
+                <span class="profile-role" th:text="${user.role == T(com.example.eventplatform.entity.UserRole).CUSTOMER} ? 'Customer' : 'Organizer'">Customer</span>
+            </div>
+            <h1 th:text="${profileTitle}">Profile Name</h1>
+            <p class="profile-subtitle" th:text="${user.email}">user@example.com</p>
+
+            <dl class="profile-details">
+                <div th:if="${customerProfile != null}">
+                    <div class="profile-details__row">
+                        <dt>Phone</dt>
+                        <dd th:text="${customerProfile.phone} ?: '-'">-</dd>
+                    </div>
+                    <div class="profile-details__row">
+                        <dt>Address</dt>
+                        <dd th:text="${customerProfile.address} ?: '-'">-</dd>
+                    </div>
+                    <div class="profile-details__row">
+                        <dt>City</dt>
+                        <dd th:text="${customerProfile.city} ?: '-'">-</dd>
+                    </div>
+                    <div class="profile-details__row">
+                        <dt>Country</dt>
+                        <dd th:text="${customerProfile.country} ?: '-'">-</dd>
+                    </div>
+                </div>
+
+                <div th:if="${organizerProfile != null}">
+                    <div class="profile-details__row">
+                        <dt>Category</dt>
+                        <dd th:text="${organizerProfile.serviceCategory} ?: '-'">-</dd>
+                    </div>
+                    <div class="profile-details__row">
+                        <dt>Phone</dt>
+                        <dd th:text="${organizerProfile.phone} ?: '-'">-</dd>
+                    </div>
+                    <div class="profile-details__row">
+                        <dt>Website</dt>
+                        <dd th:text="${organizerProfile.website} ?: '-'">-</dd>
+                    </div>
+                    <div class="profile-details__row">
+                        <dt>Address</dt>
+                        <dd th:text="${organizerProfile.address} ?: '-'">-</dd>
+                    </div>
+                </div>
+            </dl>
+
+            <div class="profile-actions">
+                <a th:href="@{/organizers}" class="profile-button profile-button--secondary">Back</a>
+                <a th:href="${editPath}" class="profile-button">Edit Profile</a>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+</body>
+</html>
