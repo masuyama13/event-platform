@@ -18,24 +18,26 @@ public class QuoteController {
     @Autowired
     private QuoteService quoteService;
 
-    // Show all quotes for a booking
-    @GetMapping("/booking/{bookingId}")
-    public String getQuotesByBooking(@PathVariable Long bookingId, Model model) {
-        List<Quote> quotes = quoteService.getQuotesByBooking(bookingId);
+    // Show all quotes for an organizer
+    @GetMapping("/organizer/{organizerId}")
+    public String getQuotesByOrganizer(
+            @PathVariable Long organizerId,
+            Model model) {
+        List<Quote> quotes = quoteService.getQuotesByOrganizer(organizerId);
         model.addAttribute("quotes", quotes);
-        model.addAttribute("bookingId", bookingId);
-        return "quotes"; // → quotes.html (can be created later)
+        model.addAttribute("organizerId", organizerId);
+        return "quotes";
     }
 
     // Create a new quote
     @PostMapping("/create")
     public String createQuote(
-            @RequestParam Long bookingId,
-            @RequestParam BigDecimal amount,
+            @RequestParam String planName,
+            @RequestParam BigDecimal price,
             @RequestParam String description
     ) {
-        quoteService.createQuote(bookingId, amount, description);
-        return "redirect:/quotes/booking/" + bookingId;
+        quoteService.createQuote(planName, price, description);
+        return "redirect:/quotes/organizer/1";
     }
 
     // Update quote status (ACCEPT / REJECT)
@@ -43,9 +45,9 @@ public class QuoteController {
     public String updateQuoteStatus(
             @RequestParam Long quoteId,
             @RequestParam QuoteStatus status,
-            @RequestParam Long bookingId
+            @RequestParam Long organizerId
     ) {
         quoteService.updateQuoteStatus(quoteId, status);
-        return "redirect:/quotes/booking/" + bookingId;
+        return "redirect:/quotes/organizer/" + organizerId;
     }
 }

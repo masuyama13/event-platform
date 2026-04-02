@@ -1,19 +1,17 @@
 package com.example.eventplatform.service;
 
-import com.example.eventplatform.entity.Booking;
-import com.example.eventplatform.entity.BookingStatus;
-import com.example.eventplatform.entity.CustomerProfile;
-import com.example.eventplatform.entity.OrganizerProfile;
+import com.example.eventplatform.entity.*;
 import com.example.eventplatform.repository.BookingRepository;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
+import com.example.eventplatform.repository.QuoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class BookingService {
 
@@ -26,52 +24,19 @@ public class BookingService {
     @Autowired
     private OrganizerProfileRepository organizerProfileRepository;
 
-    // Get all available plans using real organizer data
-    public List<Booking> getAvailablePlans() {
-        List<Booking> plans = new ArrayList<>();
+    @Autowired
+    private QuoteRepository quoteRepository;
 
-        // Fetch first organizer from database
-        OrganizerProfile organizer = organizerProfileRepository.findAll()
-                .stream()
-                .findFirst()
-                .orElse(null);
-
-        String[] planNames = {"Plan A", "Plan B", "Plan C", "Plan D"};
-        BigDecimal[] prices = {
-                new BigDecimal("99.99"),
-                new BigDecimal("149.99"),
-                new BigDecimal("199.99"),
-                new BigDecimal("249.99")
-        };
-        LocalDate[] dates = {
-                LocalDate.of(2024, 12, 1),
-                LocalDate.of(2024, 12, 2),
-                LocalDate.of(2024, 12, 3),
-                LocalDate.of(2024, 12, 4)
-        };
-
-        for (int i = 0; i < planNames.length; i++) {
-            Booking plan = new Booking();
-            plan.setPlanName(planNames[i]);
-            plan.setPrice(prices[i]);
-            plan.setEventDate(dates[i]);
-
-            // Set real organizer from database
-            if (organizer != null) {
-                plan.setOrganizerProfile(organizer);
-                plan.setPlannerName(organizer.getBusinessName());
-            }
-
-            plans.add(plan);
-        }
-
-        return plans;
+    // Get all available plans from quotes table
+    public List<Quote> getAvailablePlans() {
+        return quoteRepository.findByStatus(QuoteStatus.PENDING);
     }
 
-    // Get a specific plan detail for confirmation page
-    public Booking getPlanDetail(String planName) {
-        return getAvailablePlans().stream()
-                .filter(plan -> plan.getPlanName().equals(planName))
+    // Get a specific plan detail from quotes table
+    public Quote getPlanDetail(String planName) {
+        return quoteRepository.findByStatus(QuoteStatus.PENDING)
+                .stream()
+                .filter(q -> q.getPlanName().equals(planName))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException(
                         "Plan not found: " + planName));

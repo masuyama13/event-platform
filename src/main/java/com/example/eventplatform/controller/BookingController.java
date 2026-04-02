@@ -1,9 +1,9 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.Booking;
+import com.example.eventplatform.entity.Quote;
 import com.example.eventplatform.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class BookingController {
     // GET /booking/plans
     @GetMapping("/plans")
     public String showPlans(Model model) {
-        List<Booking> plans = bookingService.getAvailablePlans();
+        List<Quote> plans = bookingService.getAvailablePlans();
         model.addAttribute("plans", plans);
         return "planner";
     }
@@ -32,8 +32,8 @@ public class BookingController {
     public String showConfirmation(
             @RequestParam String planName,
             Model model) {
-        Booking selectedPlan = bookingService.getPlanDetail(planName);
-        model.addAttribute("booking", selectedPlan);
+        Quote selectedPlan = bookingService.getPlanDetail(planName);
+        model.addAttribute("quote", selectedPlan);
         return "confirmation";
     }
 
@@ -47,7 +47,9 @@ public class BookingController {
             Model model) {
 
         Booking savedBooking = bookingService.confirmBooking(
-                planName, organizerName, LocalDate.parse(eventDate), price
+                planName, organizerName,
+                LocalDate.parse(eventDate),
+                price
         );
         model.addAttribute("booking", savedBooking);
         return "thankyou";

@@ -3,38 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Select a Plan</title>
-    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
-<body class="app-shell">
-<header th:replace="~{layout/fragments :: siteHeader}"></header>
-<main class="app-main">
+<body>
 
 <div class="container">
     <h1>Available Plans</h1>
 
-    <!-- Show each plan as a card -->
     <div class="plans-container">
         <div class="plan-card" th:each="plan : ${plans}">
             <h2 th:text="${plan.planName}">Plan Name</h2>
 
-            <!-- Use plannerName which is set from organizer.businessName -->
             <p>Organizer:
-                <span th:text="${plan.plannerName != null}
-                               ? ${plan.plannerName}
-                               : (${plan.organizerProfile != null}
-                               ? ${plan.organizerProfile.businessName}
-                               : 'N/A')">
+                <span th:text="${plan.organizer != null}
+                               ? ${plan.organizer.businessName} : 'N/A'">
                     Organizer Name
                 </span>
             </p>
-            <p>Date: <span th:text="${plan.eventDate}">Date</span></p>
-            <p>Price: $<span th:text="${plan.price}">Price</span></p>
 
-            <!-- Button sends selected plan to confirmation page -->
+            <p>Description:
+                <span th:text="${plan.description} ?: 'N/A'">
+                    Description
+                </span>
+            </p>
+
+            <p>Price:
+                $<span th:text="${plan.price}">Price</span>
+            </p>
+
             <form action="/booking/confirm" method="post">
-                <input type="hidden" name="planName" th:value="${plan.planName}">
-                <button type="submit" class="btn-select">Select This Plan</button>
+                <input type="hidden" name="planName"
+                       th:value="${plan.planName}">
+                <button type="submit" class="btn-select">
+                    Select This Plan
+                </button>
             </form>
         </div>
     </div>
@@ -42,7 +44,6 @@
     <br/>
     <a href="/organizers" class="btn-back">← Back to Organizers</a>
 </div>
- </main>
-<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+
 </body>
 </html>

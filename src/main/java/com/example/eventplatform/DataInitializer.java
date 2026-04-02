@@ -1,17 +1,15 @@
 package com.example.eventplatform;
 
-import com.example.eventplatform.entity.CustomerProfile;
-import com.example.eventplatform.entity.OrganizerProfile;
-import com.example.eventplatform.entity.UserRole;
-import com.example.eventplatform.repository.CustomerProfileRepository;
-import com.example.eventplatform.repository.OrganizerProfileRepository;
-import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.entity.*;
+import com.example.eventplatform.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import com.example.eventplatform.entity.User;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Component
 public class DataInitializer {
@@ -26,11 +24,13 @@ public class DataInitializer {
     private OrganizerProfileRepository organizerProfileRepository;
 
     @Autowired
+    private QuoteRepository quoteRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initData() {
-        // TODO: Remove when real authentication is ready
 
         if (userRepository.count() == 0) {
 
@@ -74,6 +74,34 @@ public class DataInitializer {
             organizerProfileRepository.save(organizer);
 
             System.out.println(">>> Temporary organizer profile created");
+
+            // Create Plan A to D quotes
+            String[][] plans = {
+                    {"Plan A", "Basic event package with standard decorations and setup."},
+                    {"Plan B", "Standard event package with catering and photography."},
+                    {"Plan C", "Premium event package with full catering, photography and DJ."},
+                    {"Plan D", "Luxury event package with all-inclusive services and VIP setup."}
+            };
+
+            BigDecimal[] prices = {
+                    new BigDecimal("99.99"),
+                    new BigDecimal("149.99"),
+                    new BigDecimal("199.99"),
+                    new BigDecimal("249.99")
+            };
+
+            for (int i = 0; i < plans.length; i++) {
+                Quote quote = new Quote();
+                quote.setOrganizer(organizer);
+                quote.setPlanName(plans[i][0]);
+                quote.setDescription(plans[i][1]);
+                quote.setPrice(prices[i]);
+                quote.setStatus(QuoteStatus.PENDING);
+                quote.setExpiresAt(LocalDateTime.now().plusDays(30));
+                quoteRepository.save(quote);
+            }
+
+            System.out.println(">>> Temporary quotes (Plan A to D) created");
         }
     }
 }

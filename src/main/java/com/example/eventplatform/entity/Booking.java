@@ -41,13 +41,11 @@ public class Booking {
 
     private String plannerName;
     private String planName;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
-
-
-    public Booking() {
-    }
+    public Booking() {}
 
     @PrePersist
     protected void onCreate() {
@@ -60,93 +58,37 @@ public class Booking {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public CustomerProfile getCustomerProfile() {
-        return customerProfile;
-    }
-
-    public OrganizerProfile getOrganizerProfile() {
-        return organizerProfile;
-    }
-
-    public String getEventType() {
-        return eventType;
-    }
-
-    public LocalDate getEventDate() {
-        return eventDate;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getRequestDetails() {
-        return requestDetails;
-    }
-
-    public BookingStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
+    public Long getId() { return id; }
+    public CustomerProfile getCustomerProfile() { return customerProfile; }
+    public OrganizerProfile getOrganizerProfile() { return organizerProfile; }
+    public String getEventType() { return eventType; }
+    public LocalDate getEventDate() { return eventDate; }
+    public String getLocation() { return location; }
+    public String getRequestDetails() { return requestDetails; }
+    public BookingStatus getStatus() { return status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
     public String getPlannerName() { return plannerName; }
     public String getPlanName() { return planName; }
     public BigDecimal getPrice() { return price; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    public void setId(Long id) { this.id = id; }
     public void setCustomerProfile(CustomerProfile customerProfile) {
         this.customerProfile = customerProfile;
     }
-
     public void setOrganizerProfile(OrganizerProfile organizerProfile) {
         this.organizerProfile = organizerProfile;
     }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
+    public void setEventType(String eventType) { this.eventType = eventType; }
+    public void setEventDate(LocalDate eventDate) { this.eventDate = eventDate; }
+    public void setLocation(String location) { this.location = location; }
     public void setRequestDetails(String requestDetails) {
         this.requestDetails = requestDetails;
     }
-
-    public void setStatus(BookingStatus status) {
-        this.status = status;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
+    public void setStatus(BookingStatus status) { this.status = status; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
     public void setPlannerName(String plannerName) { this.plannerName = plannerName; }
-
     public void setPlanName(String planName) { this.planName = planName; }
-
     public void setPrice(BigDecimal price) { this.price = price; }
 }
