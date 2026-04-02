@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Organizer Detail</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
@@ -25,6 +24,12 @@
         <p>Rating: <span th:text="${organizer.averageRating} ?: 0.0">0.0</span></p>
         <p>Created At: <span th:text="${organizer.createdAt}">Created Time</span></p>
         <p>Updated At: <span th:text="${organizer.updatedAt}">Updated Time</span></p>
+
+        <p>
+            <a th:href="@{/booking/plans}">View Plans</a>
+            |
+            <a th:href="@{/messages(organizerUserId=${organizer.user.id}, role='customer')}">Message</a>
+        </p>
 
         <p>
             <a th:href="@{/organizers}">Back</a>
