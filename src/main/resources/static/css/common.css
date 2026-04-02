@@ -36,6 +36,13 @@
     padding: 16px 20px;
 }
 
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
 .site-footer__inner {
     text-align: center;
 }
@@ -48,6 +55,92 @@
     text-decoration: none;
 }
 
+.site-menu {
+    position: relative;
+}
+
+.site-menu__toggle {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.site-menu__toggle::-webkit-details-marker {
+    display: none;
+}
+
+.site-menu__toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 999px;
+}
+
+.site-menu__panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+    border: 1px solid #e5e7eb;
+    z-index: 20;
+}
+
+.site-menu:not([open]) .site-menu__panel {
+    display: none;
+}
+
+.site-menu__user {
+    color: #6b7280;
+    font-size: 0.9rem;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.site-menu__link,
+.site-menu__button {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: #111827;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.site-menu__link:hover,
+.site-menu__button:hover {
+    background: #f3f4f6;
+}
+
+.site-menu__button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.site-menu__logout {
+    margin: 0;
+}
+
 @media (max-width: 640px) {
     .app-main {
         padding: 24px 12px;
@@ -56,5 +149,19 @@
     .site-header__inner,
     .site-footer__inner {
         padding: 14px 16px;
+    }
+
+    .site-header__inner,
+    .profile-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .site-menu {
+        align-self: flex-end;
+    }
+
+    .site-menu__panel {
+        min-width: min(260px, calc(100vw - 24px));
     }
 }

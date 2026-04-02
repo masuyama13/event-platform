@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
 <body class="app-shell">
-<header th:replace="~{fragments :: siteHeader}"></header>
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
 <h1>Edit Customer Profile</h1>
 
@@ -46,6 +46,6 @@
 <button type="submit">Save Profile</button>
 </form>
  </main>
-<footer th:replace="~{fragments :: siteFooter}"></footer>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
