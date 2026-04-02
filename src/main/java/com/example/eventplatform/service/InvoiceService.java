@@ -28,7 +28,7 @@ public class InvoiceService {
             return existing;
         }
 
-        BigDecimal price = BigDecimal.valueOf(booking.getPrice())
+        BigDecimal price = booking.getPrice()
                 .setScale(2, RoundingMode.HALF_UP);
         BigDecimal tax = price.multiply(TAX_RATE)
                 .setScale(2, RoundingMode.HALF_UP);

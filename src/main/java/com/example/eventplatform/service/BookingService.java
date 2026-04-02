@@ -10,6 +10,7 @@ import com.example.eventplatform.repository.OrganizerProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,12 @@ public class BookingService {
                 .orElse(null);
 
         String[] planNames = {"Plan A", "Plan B", "Plan C", "Plan D"};
-        Double[] prices = {99.99, 149.99, 199.99, 249.99};
+        BigDecimal[] prices = {
+                new BigDecimal("99.99"),
+                new BigDecimal("149.99"),
+                new BigDecimal("199.99"),
+                new BigDecimal("249.99")
+        };
         LocalDate[] dates = {
                 LocalDate.of(2024, 12, 1),
                 LocalDate.of(2024, 12, 2),
@@ -73,7 +79,7 @@ public class BookingService {
 
     // Save confirmed booking to database with REQUESTED status
     public Booking confirmBooking(String planName, String organizerName,
-                                  LocalDate eventDate, Double price) {
+                                  LocalDate eventDate, BigDecimal price) {
 
         // TODO: Replace with real profiles when authentication is ready
         CustomerProfile customerProfile = customerProfileRepository.findAll()
