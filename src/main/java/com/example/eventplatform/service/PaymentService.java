@@ -2,6 +2,7 @@ package com.example.eventplatform.service;
 
 import com.example.eventplatform.entity.Invoice;
 import com.stripe.Stripe;
+import com.stripe.exception.EventDataObjectDeserializationException;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
@@ -75,9 +76,20 @@ public class PaymentService {
     }
 
     public Session extractCheckoutSession(Event event) {
-        StripeObject stripeObject = event.getDataObjectDeserializer()
-                .getObject()
-                .orElseThrow(() -> new IllegalStateException("Unable to deserialize Stripe event payload"));
+        var dataObjectDeserializer = event.getDataObjectDeserializer();
+        StripeObject stripeObject = dataObjectDeserializer.getObject().orElse(null);
+
+        if (stripeObject == null) {
+            try {
+                stripeObject = dataObjectDeserializer.deserializeUnsafe();
+            } catch (EventDataObjectDeserializationException e) {
+                throw new IllegalStateException("Unable to deserialize Stripe event payload", e);
+            }
+        }
+        if (stripeObject == null) {
+            throw new IllegalStateException("Unable to deserialize Stripe event payload");
+        }
+
         return (Session) stripeObject;
     }
 
