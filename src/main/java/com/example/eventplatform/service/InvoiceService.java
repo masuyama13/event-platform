@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Service
 public class InvoiceService {
 
-    private static final BigDecimal TAX_RATE = new BigDecimal("0.10");
+    private static final BigDecimal TAX_RATE = new BigDecimal("0.05");
     private static final String DEFAULT_CURRENCY = "cad";
 
     private final InvoiceRepository invoiceRepository;
