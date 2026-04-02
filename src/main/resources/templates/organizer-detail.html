@@ -25,7 +25,34 @@
 
         <p>
             <a th:href="@{/organizers}">Back</a>
+            |
+            <a th:href="@{/reviews/organizer/{id}(id=${organizer.id})}">Write Review</a>
         </p>
+    </div>
+
+    <div class="plan-card" style="margin-top: 20px;">
+        <h2>Reviews</h2>
+
+        <div th:if="${reviews != null and !#lists.isEmpty(reviews)}">
+            <div th:each="review : ${reviews}" style="margin-bottom: 16px; border-bottom: 1px solid #ddd; padding-bottom: 12px;">
+                <p>
+                    <strong>User:</strong>
+                    <span th:text="${review.user.email}">user@email.com</span>
+                </p>
+                <p>
+                    <strong>Review:</strong>
+                    <span th:text="${review.reviewText}">Review text</span>
+                </p>
+                <p>
+                    <strong>Created At:</strong>
+                    <span th:text="${review.createdAt}">Created time</span>
+                </p>
+            </div>
+        </div>
+
+        <div th:if="${reviews == null or #lists.isEmpty(reviews)}">
+            <p>No reviews yet.</p>
+        </div>
     </div>
 </div>
 
