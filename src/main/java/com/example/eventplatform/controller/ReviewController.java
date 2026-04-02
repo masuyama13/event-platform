@@ -1,6 +1,6 @@
 package com.example.eventplatform.controller;
 
-import com.example.eventplatform.service.FeedbackService;
+import com.example.eventplatform.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reviews")
 public class ReviewController {
 
-    private final FeedbackService feedbackService;
+    private final ReviewService reviewService;
 
     // TODO: Replace with real user from authentication later
     private static final Long TEMP_CUSTOMER_USER_ID = 1L;
 
-    public ReviewController(FeedbackService feedbackService) {
-        this.feedbackService = feedbackService;
+    public ReviewController(ReviewService reviewService) {
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/organizer/{organizerId}")
     public String showReviewForm(@PathVariable Long organizerId, Model model) {
-        String existingReview = feedbackService.getUserReviewText(TEMP_CUSTOMER_USER_ID, organizerId);
-        Double existingRating = feedbackService.getUserRating(TEMP_CUSTOMER_USER_ID, organizerId);
+        String existingReview = reviewService.getUserReviewText(TEMP_CUSTOMER_USER_ID, organizerId);
+        Integer existingRating = reviewService.getUserRating(TEMP_CUSTOMER_USER_ID, organizerId);
 
         model.addAttribute("organizerId", organizerId);
         model.addAttribute("existingReview", existingReview);
@@ -33,10 +33,10 @@ public class ReviewController {
     @PostMapping("/submit")
     public String submitReview(@RequestParam Long organizerId,
                                @RequestParam String reviewText,
-                               @RequestParam Double ratingValue,
+                               @RequestParam Integer ratingValue,
                                Model model) {
         try {
-            feedbackService.submitFeedback(TEMP_CUSTOMER_USER_ID, organizerId, reviewText, ratingValue);
+            reviewService.submitReview(TEMP_CUSTOMER_USER_ID, organizerId, reviewText, ratingValue);
             return "redirect:/organizers/" + organizerId;
         } catch (RuntimeException e) {
             model.addAttribute("organizerId", organizerId);
