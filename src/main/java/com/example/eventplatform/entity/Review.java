@@ -23,6 +23,9 @@ public class Review {
     private String reviewText;
 
     @Column(nullable = false)
+    private Integer ratingValue;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -57,6 +60,10 @@ public class Review {
         return reviewText;
     }
 
+    public Integer getRatingValue() {
+        return ratingValue;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -79,6 +86,10 @@ public class Review {
 
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
+    }
+
+    public void setRatingValue(Integer ratingValue) {
+        this.ratingValue = ratingValue;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

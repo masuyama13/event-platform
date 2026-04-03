@@ -2,6 +2,8 @@ package com.example.eventplatform.repository;
 
 import com.example.eventplatform.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +15,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByOrganizerIdOrderByCreatedAtDesc(Long organizerId);
 
     Optional<Review> findByUserIdAndOrganizerId(Long userId, Long organizerId);
+
+    @Query("SELECT AVG(r.ratingValue) FROM Review r WHERE r.organizer.id = :organizerId")
+    Double findAverageRatingByOrganizerId(@Param("organizerId") Long organizerId);
 }

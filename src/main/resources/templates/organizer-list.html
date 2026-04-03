@@ -57,27 +57,6 @@
                 </a>
             </div>
 
-            <div class="buttons" style="margin-top: 8px;">
-                <a th:href="@{/booking/plans}"
-                   class="btn-confirm">
-                    View Plans
-                </a>
-            </div>
-
-            <div class="buttons" style="margin-top: 8px;">
-                <a th:href="@{/messages(organizerUserId=${organizer.user.id},
-                             role='customer')}"
-                   class="btn-confirm">
-                    Message
-                </a>
-            </div>
-            <!-- Rate Button -->
-            <div class="buttons" style="margin-top: 8px;">
-                <a th:href="@{/ratings/organizer/{id}(id=${organizer.id})}"
-                   class="btn-back">
-                    ★ Rate
-                </a>
-            </div>
         </div>
     </div>
 

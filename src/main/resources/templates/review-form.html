@@ -16,6 +16,11 @@
 
         <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
+        <p th:if="${existingRating != null and existingRating > 0}">
+            Your current rating:
+            <strong th:text="${existingRating} + ' / 5'">0 / 5</strong>
+        </p>
+
         <p th:if="${existingReview != null and !existingReview.isEmpty()}">
             Your current review:
         </p>
@@ -29,11 +34,25 @@
             <input type="hidden" name="organizerId" th:value="${organizerId}"/>
 
             <div>
-        <textarea name="reviewText"
-                  rows="6"
-                  cols="50"
-                  placeholder="Write your review here..."
-                  th:text="${existingReview}"></textarea>
+                <label for="ratingValue">Rating</label>
+                <select id="ratingValue" name="ratingValue" required>
+                    <option value="">Select a rating</option>
+                    <option value="5" th:selected="${existingRating == 5}">5</option>
+                    <option value="4" th:selected="${existingRating == 4}">4</option>
+                    <option value="3" th:selected="${existingRating == 3}">3</option>
+                    <option value="2" th:selected="${existingRating == 2}">2</option>
+                    <option value="1" th:selected="${existingRating == 1}">1</option>
+                </select>
+            </div>
+
+            <br>
+
+            <div>
+                <textarea name="reviewText"
+                          rows="6"
+                          cols="50"
+                          placeholder="Write your review here..."
+                          th:text="${existingReview}"></textarea>
             </div>
 
             <br>

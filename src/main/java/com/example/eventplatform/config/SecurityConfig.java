@@ -33,8 +33,7 @@ public class SecurityConfig {
                                 "/booking/**",
                                 "/quotes/**",
                                 "/messages",
-                                "/messages/**",
-                                "/ratings/**"
+                                "/messages/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -45,8 +44,7 @@ public class SecurityConfig {
                                 "/booking/**",
                                 "/messages",
                                 "/messages/**",
-                                "/quotes/**",
-                                "/ratings/**")
+                                "/quotes/**")
                 )
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.sameOrigin())
