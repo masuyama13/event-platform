@@ -13,27 +13,26 @@ public class Quote {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking;
+    @JoinColumn(name = "organizer_id", nullable = false)
+    private OrganizerProfile organizer;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "organizer_profile_id", nullable = false)
-    private OrganizerProfile organizerProfile;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal quotedAmount;
+    @Column(nullable = false)
+    private String planName;
 
     @Column(length = 2000)
     private String description;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private QuoteStatus status;
 
-    private LocalDateTime expiresAt;
-
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    private LocalDateTime expiresAt;
 
     private LocalDateTime updatedAt;
 
@@ -50,75 +49,23 @@ public class Quote {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public OrganizerProfile getOrganizer() { return organizer; }
+    public String getPlanName() { return planName; }
+    public String getDescription() { return description; }
+    public BigDecimal getPrice() { return price; }
+    public QuoteStatus getStatus() { return status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getExpiresAt() { return expiresAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public OrganizerProfile getOrganizerProfile() {
-        return organizerProfile;
-    }
-
-    public BigDecimal getQuotedAmount() {
-        return quotedAmount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public QuoteStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
-
-    public void setOrganizerProfile(OrganizerProfile organizerProfile) {
-        this.organizerProfile = organizerProfile;
-    }
-
-    public void setQuotedAmount(BigDecimal quotedAmount) {
-        this.quotedAmount = quotedAmount;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setStatus(QuoteStatus status) {
-        this.status = status;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setOrganizer(OrganizerProfile organizer) { this.organizer = organizer; }
+    public void setPlanName(String planName) { this.planName = planName; }
+    public void setDescription(String description) { this.description = description; }
+    public void setPrice(BigDecimal price) { this.price = price; }
+    public void setStatus(QuoteStatus status) { this.status = status; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setExpiresAt(LocalDateTime expiresAt) { this.expiresAt = expiresAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
