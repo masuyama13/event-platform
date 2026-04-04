@@ -39,7 +39,7 @@
         </table>
 
         <div class="buttons">
-            <a th:href="@{/booking/plans}" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
+            <a th:href="@{/booking/plans(organizerId=${organizerId})}" class="btn-back">Back</a>
             <a th:href="@{/plan/{planId}/book(planId=${plan.id})}" class="btn-confirm">Book Now</a>
         </div>
     </div>

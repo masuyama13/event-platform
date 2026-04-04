@@ -26,13 +26,13 @@
         <p>Updated At: <span th:text="${organizer.updatedAt}">Updated Time</span></p>
 
         <p>
-            <a th:href="@{/booking/plans}">View Plans</a>
+            <a th:href="@{/booking/plans(organizerId=${organizer.id})}">View Plans</a>
             |
             <a th:href="@{/messages(organizerUserId=${organizer.user.id}, role='customer')}">Message</a>
         </p>
 
         <p>
-            <a th:href="@{/organizers}" onclick="if (history.length > 1) { history.back(); return false; }">Back</a>
+            <a th:href="@{/organizers}">Back</a>
             |
             <a th:href="@{/reviews/organizer/{id}(id=${organizer.id})}">Write Review</a>
         </p>
