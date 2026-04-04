@@ -24,6 +24,9 @@ public class DataInitializer {
     private OrganizerProfileRepository organizerProfileRepository;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private QuoteRepository quoteRepository;
 
     @Autowired
@@ -33,6 +36,11 @@ public class DataInitializer {
     public void initData() {
 
         if (userRepository.count() == 0) {
+            Category wedding = ensureCategory("Wedding");
+            Category meeting = ensureCategory("Meeting");
+            ensureCategory("Conference");
+            ensureCategory("Birthday Party");
+            ensureCategory("Workshop");
 
             // Create temporary customer user
             User customerUser = new User();
@@ -67,7 +75,7 @@ public class DataInitializer {
             organizer.setPhone("987-654-3210");
             organizer.setAddress("456 Event St");
             organizer.setDescription("Test organizer");
-            organizer.setServiceCategory("Events");
+            organizer.setCategories(java.util.Set.of(wedding, meeting));
             organizer.setWebsite("www.test.com");
             organizer.setAverageRating(0.0);
             organizer.setUser(organizerUser);
@@ -103,5 +111,10 @@ public class DataInitializer {
 
             System.out.println(">>> Temporary quotes (Plan A to D) created");
         }
+    }
+
+    private Category ensureCategory(String name) {
+        return categoryRepository.findByName(name)
+                .orElseGet(() -> categoryRepository.save(new Category(name)));
     }
 }

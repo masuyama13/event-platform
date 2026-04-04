@@ -61,13 +61,13 @@
     </div>
 
     <div>
-      <label>Service Category:</label>
-      <select name="serviceCategory" required>
-        <option value="">Select a category</option>
-        <option th:each="category : ${serviceCategories}"
-                th:value="${category}"
-                th:text="${category}"></option>
-      </select>
+      <label>Service Categories:</label>
+      <div th:each="category : ${categories}">
+        <label>
+          <input type="checkbox" name="categoryIds" th:value="${category.id}">
+          <span th:text="${category.name}">Category</span>
+        </label>
+      </div>
     </div>
 
     <div>

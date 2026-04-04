@@ -59,17 +59,16 @@
             <br>
 
             <div>
-                <label for="serviceCategory">Service Category:</label><br>
-                <select id="serviceCategory"
-                        name="serviceCategory"
-                        required>
-                    <option value="">Select a category</option>
-                    <option th:each="category : ${serviceCategories}"
-                            th:value="${category}"
-                            th:text="${category}"
-                            th:selected="${category == organizer.serviceCategory}">
-                    </option>
-                </select>
+                <label>Service Categories:</label><br>
+                <div th:each="category : ${categories}">
+                    <label>
+                        <input type="checkbox"
+                               name="categoryIds"
+                               th:value="${category.id}"
+                               th:checked="${organizer.categories != null and #lists.contains(organizer.categories.![id], category.id)}">
+                        <span th:text="${category.name}">Category</span>
+                    </label>
+                </div>
             </div>
 
             <br>

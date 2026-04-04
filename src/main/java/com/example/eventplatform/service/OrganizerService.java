@@ -1,5 +1,6 @@
 package com.example.eventplatform.service;
 
+import com.example.eventplatform.entity.Category;
 import com.example.eventplatform.entity.OrganizerProfile;
 import com.example.eventplatform.entity.User;
 import com.example.eventplatform.entity.UserRole;
@@ -8,21 +9,25 @@ import com.example.eventplatform.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrganizerService {
 
     private final OrganizerProfileRepository organizerProfileRepository;
     private final UserRepository userRepository;
+    private final CategoryService categoryService;
 
     public OrganizerService(OrganizerProfileRepository organizerProfileRepository,
-                            UserRepository userRepository) {
+                            UserRepository userRepository,
+                            CategoryService categoryService) {
         this.organizerProfileRepository = organizerProfileRepository;
         this.userRepository = userRepository;
+        this.categoryService = categoryService;
     }
 
-    public List<OrganizerProfile> getAllOrganizers() {
-        return organizerProfileRepository.findAll();
+    public List<OrganizerProfile> getAllOrganizers(Long categoryId) {
+        return organizerProfileRepository.findAllByCategoryIdOrderByRatingDesc(categoryId);
     }
 
     public OrganizerProfile getOrganizerById(Long id) {
@@ -38,7 +43,7 @@ public class OrganizerService {
     public OrganizerProfile createOrganizer(Long userId,
                                             String businessName,
                                             String description,
-                                            String serviceCategory,
+                                            List<Long> categoryIds,
                                             String phone,
                                             String website,
                                             String address) {
@@ -54,15 +59,13 @@ public class OrganizerService {
             throw new RuntimeException("Organizer profile already exists for this user");
         }
 
-        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
-            throw new RuntimeException("Please select a valid category");
-        }
+        Set<Category> categories = categoryService.getCategoriesByIds(categoryIds);
 
         OrganizerProfile organizerProfile = new OrganizerProfile();
         organizerProfile.setUser(user);
         organizerProfile.setBusinessName(businessName);
         organizerProfile.setDescription(description);
-        organizerProfile.setServiceCategory(serviceCategory);
+        organizerProfile.setCategories(categories);
         organizerProfile.setPhone(phone);
         organizerProfile.setWebsite(website);
         organizerProfile.setAddress(address);
@@ -74,20 +77,17 @@ public class OrganizerService {
     public OrganizerProfile updateOrganizer(Long id,
                                             String businessName,
                                             String description,
-                                            String serviceCategory,
+                                            List<Long> categoryIds,
                                             String phone,
                                             String website,
                                             String address) {
 
         OrganizerProfile organizerProfile = getOrganizerById(id);
-
-        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
-            throw new RuntimeException("Please select a valid category");
-        }
+        Set<Category> categories = categoryService.getCategoriesByIds(categoryIds);
 
         organizerProfile.setBusinessName(businessName);
         organizerProfile.setDescription(description);
-        organizerProfile.setServiceCategory(serviceCategory);
+        organizerProfile.setCategories(categories);
         organizerProfile.setPhone(phone);
         organizerProfile.setWebsite(website);
         organizerProfile.setAddress(address);
@@ -98,7 +98,7 @@ public class OrganizerService {
     public OrganizerProfile updateProfile(Long userId,
                                           String businessName,
                                           String description,
-                                          String serviceCategory,
+                                          List<Long> categoryIds,
                                           String phone,
                                           String website,
                                           String address) {
@@ -107,7 +107,7 @@ public class OrganizerService {
                 organizerProfile.getId(),
                 businessName,
                 description,
-                serviceCategory,
+                categoryIds,
                 phone,
                 website,
                 address

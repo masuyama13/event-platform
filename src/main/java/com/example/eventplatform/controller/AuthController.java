@@ -1,14 +1,16 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.*;
+import com.example.eventplatform.service.CategoryService;
 import com.example.eventplatform.repository.CustomerProfileRepository;
-import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
-import com.example.eventplatform.service.OrganizerCategoryOptions;
+import com.example.eventplatform.repository.OrganizerProfileRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class AuthController {
@@ -17,15 +19,18 @@ public class AuthController {
     private final CustomerProfileRepository customerProfileRepository;
     private final OrganizerProfileRepository organizerProfileRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CategoryService categoryService;
 
     public AuthController(UserRepository userRepository,
                           CustomerProfileRepository customerProfileRepository,
                           OrganizerProfileRepository organizerProfileRepository,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder,
+                          CategoryService categoryService) {
         this.userRepository = userRepository;
         this.customerProfileRepository = customerProfileRepository;
         this.organizerProfileRepository = organizerProfileRepository;
         this.passwordEncoder = passwordEncoder;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/login")
@@ -83,7 +88,7 @@ public class AuthController {
             @RequestParam String password,
             @RequestParam String businessName,
             @RequestParam(required = false) String description,
-            @RequestParam(required = false) String serviceCategory,
+            @RequestParam(name = "categoryIds", required = false) List<Long> categoryIds,
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) String website,
             @RequestParam(required = false) String address,
@@ -95,25 +100,25 @@ public class AuthController {
             return "register";
         }
 
-        if (!OrganizerCategoryOptions.isValid(serviceCategory)) {
-            model.addAttribute("error", "Please select a valid category.");
+        try {
+            User user = createUser(email, password, UserRole.ORGANIZER);
+            OrganizerProfile profile = new OrganizerProfile();
+            profile.setUser(user);
+            profile.setBusinessName(businessName);
+            profile.setDescription(description);
+            profile.setCategories(categoryService.getCategoriesByIds(categoryIds));
+            profile.setPhone(phone);
+            profile.setWebsite(website);
+            profile.setAddress(address);
+            profile.setAverageRating(0.0);
+            organizerProfileRepository.save(profile);
+
+            return "redirect:/login";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
             populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
             return "register";
         }
-
-        User user = createUser(email, password, UserRole.ORGANIZER);
-        OrganizerProfile profile = new OrganizerProfile();
-        profile.setUser(user);
-        profile.setBusinessName(businessName);
-        profile.setDescription(description);
-        profile.setServiceCategory(serviceCategory);
-        profile.setPhone(phone);
-        profile.setWebsite(website);
-        profile.setAddress(address);
-        profile.setAverageRating(0.0);
-        organizerProfileRepository.save(profile);
-
-        return "redirect:/login";
     }
 
     private User createUser(String email, String password, UserRole role) {
@@ -133,6 +138,6 @@ public class AuthController {
         model.addAttribute("formAction", formAction);
         model.addAttribute("alternateRegisterPath", alternateRegisterPath);
         model.addAttribute("alternateRegisterLabel", alternateRegisterLabel);
-        model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
+        model.addAttribute("categories", categoryService.getAllCategories());
     }
 }
