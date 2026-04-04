@@ -42,7 +42,7 @@
     </div>
 
     <br/>
-    <a href="/organizers" class="btn-back">← Back to Organizers</a>
+    <a href="/" th:href="@{/}" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
 </div>
 
 </body>

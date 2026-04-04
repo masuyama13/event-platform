@@ -83,7 +83,7 @@
         </form>
     </div>
 
-    <a href="/organizers" class="btn-back">← Back to Organizers</a>
+    <a href="/" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
 </div>
  </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>

@@ -59,7 +59,7 @@
             </dl>
 
             <div class="profile-actions">
-                <a th:href="@{/organizers}" class="profile-button profile-button--secondary">Back</a>
+                <a th:href="@{/}" onclick="if (history.length > 1) { history.back(); return false; }" class="profile-button profile-button--secondary">Back</a>
                 <a th:href="${editPath}" class="profile-button">Edit Profile</a>
             </div>
         </div>

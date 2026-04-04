@@ -5,7 +5,7 @@
 <header th:fragment="siteHeader" class="site-header">
     <div class="site-header__inner">
         <a sec:authorize="isAuthenticated()"
-           th:href="@{/organizers}"
+           th:href="@{/}"
            class="site-brand">EventOmakase</a>
         <a sec:authorize="isAnonymous()"
            th:href="@{/login}"

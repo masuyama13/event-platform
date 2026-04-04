@@ -48,7 +48,7 @@
                    th:value="${quote.price}"/>
 
             <div class="buttons">
-                <a href="/booking/plans" class="btn-back">Go Back</a>
+                <a href="/booking/plans" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
                 <button type="submit" class="btn-confirm">Confirm</button>
             </div>
         </form>

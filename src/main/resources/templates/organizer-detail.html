@@ -32,7 +32,7 @@
         </p>
 
         <p>
-            <a th:href="@{/organizers}">Back</a>
+            <a th:href="@{/organizers}" onclick="if (history.length > 1) { history.back(); return false; }">Back</a>
             |
             <a th:href="@{/reviews/organizer/{id}(id=${organizer.id})}">Write Review</a>
         </p>
