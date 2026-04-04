@@ -8,27 +8,10 @@
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
 
-<h2>Create Plan</h2>
-
-<form action="/plans/create" method="post">
-    <input type="hidden"
-           th:if="${_csrf != null}"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}"/>
-    <label>Plan Name:</label>
-    <input type="text" name="planName" required />
-
-    <label>Price:</label>
-    <input type="number" name="price" step="0.01" required />
-
-    <label>Description:</label>
-    <input type="text" name="description" required />
-
-    <button type="submit">Create Plan</button>
-</form>
+<h1>Plans List</h1>
+<a th:href="@{/plans/new}">Create Plan</a>
 
 <hr>
-<h1>Plans List</h1>
 
 <div th:each="plan : ${plans}">
     <p>ID: <span th:text="${plan.id}"></span></p>
@@ -37,6 +20,7 @@
     <p>Price: <span th:text="${plan.price}"></span></p>
     <p>Description: <span th:text="${plan.description}"></span></p>
     <p>Organizer: <span th:text="${plan.organizer != null ? plan.organizer.businessName : 'N/A'}"></span></p>
+    <a th:href="@{/plans/{planId}/edit(planId=${plan.id})}">Edit</a>
 
     <hr>
 </div>

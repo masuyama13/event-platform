@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,16 +35,15 @@ class PlanServiceTest {
     @Test
     void testCreatePlan() {
         // Setup
-        // Configure OrganizerProfileRepository.findAll(...).
         final OrganizerProfile organizerProfile = new OrganizerProfile();
         organizerProfile.setId(0L);
         final User user = new User();
         user.setId(0L);
-        user.setEmail("email");
+        user.setEmail("organizer@example.com");
         user.setPasswordHash("passwordHash");
         organizerProfile.setUser(user);
-        final List<OrganizerProfile> organizerProfiles = List.of(organizerProfile);
-        when(mockOrganizerProfileRepository.findAll()).thenReturn(organizerProfiles);
+        when(mockOrganizerProfileRepository.findByUserEmail("organizer@example.com"))
+                .thenReturn(Optional.of(organizerProfile));
 
         // Configure PlanRepository.save(...).
         final Plan plan = new Plan();
@@ -56,18 +56,30 @@ class PlanServiceTest {
         when(mockPlanRepository.save(any(Plan.class))).thenReturn(plan);
 
         // Run the test
-        final Plan result = planServiceUnderTest.createPlan("planName", new BigDecimal("0.00"), "description");
+        final Plan result = planServiceUnderTest.createPlan(
+                "organizer@example.com",
+                "planName",
+                new BigDecimal("0.00"),
+                "description"
+        );
 
         // Verify the results
+        assertThat(result).isSameAs(plan);
     }
 
     @Test
     void testCreatePlan_OrganizerProfileRepositoryReturnsNoItems() {
         // Setup
-        when(mockOrganizerProfileRepository.findAll()).thenReturn(Collections.emptyList());
+        when(mockOrganizerProfileRepository.findByUserEmail("organizer@example.com"))
+                .thenReturn(Optional.empty());
 
         // Run the test
-        assertThatThrownBy(() -> planServiceUnderTest.createPlan("planName", new BigDecimal("0.00"), "description"))
+        assertThatThrownBy(() -> planServiceUnderTest.createPlan(
+                "organizer@example.com",
+                "planName",
+                new BigDecimal("0.00"),
+                "description"
+        ))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -89,6 +101,7 @@ class PlanServiceTest {
         final List<Plan> result = planServiceUnderTest.getPlansByOrganizer(0L);
 
         // Verify the results
+        assertThat(result).isEqualTo(plans);
     }
 
     @Test
@@ -101,5 +114,39 @@ class PlanServiceTest {
 
         // Verify the results
         assertThat(result).isEqualTo(Collections.emptyList());
+    }
+
+    @Test
+    void testUpdatePlan() {
+        final OrganizerProfile organizer = new OrganizerProfile();
+        organizer.setId(3L);
+        final User user = new User();
+        user.setEmail("organizer@example.com");
+        organizer.setUser(user);
+
+        final Plan plan = new Plan();
+        plan.setId(5L);
+        plan.setOrganizer(organizer);
+        plan.setPlanName("before");
+        plan.setDescription("before description");
+        plan.setPrice(new BigDecimal("10.00"));
+
+        when(mockOrganizerProfileRepository.findByUserEmail("organizer@example.com"))
+                .thenReturn(Optional.of(organizer));
+        when(mockPlanRepository.findByIdAndOrganizerId(5L, 3L))
+                .thenReturn(Optional.of(plan));
+        when(mockPlanRepository.save(any(Plan.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        final Plan result = planServiceUnderTest.updatePlan(
+                5L,
+                "organizer@example.com",
+                "after",
+                new BigDecimal("20.00"),
+                "after description"
+        );
+
+        assertThat(result.getPlanName()).isEqualTo("after");
+        assertThat(result.getPrice()).isEqualByComparingTo("20.00");
+        assertThat(result.getDescription()).isEqualTo("after description");
     }
 }

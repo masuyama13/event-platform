@@ -13,7 +13,7 @@ public class Plan {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "organizer_id", nullable = false)
+    @JoinColumn(name = "organizer_profile_id", nullable = false)
     private OrganizerProfile organizer;
 
     @Column(nullable = false)
