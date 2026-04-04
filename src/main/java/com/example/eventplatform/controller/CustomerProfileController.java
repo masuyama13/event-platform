@@ -54,7 +54,7 @@ public class CustomerProfileController {
 
         try {
             customerProfileService.updateProfile(user.getId(), firstName, lastName, phone, address, city, country);
-            return "redirect:/profile/customer";
+            return "redirect:/profile";
         } catch (RuntimeException e) {
             CustomerProfile profile = customerProfileService.getByUserId(user.getId());
             model.addAttribute("customer", profile);

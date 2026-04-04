@@ -4,7 +4,7 @@ import com.example.eventplatform.entity.OrganizerProfile;
 import com.example.eventplatform.entity.User;
 import com.example.eventplatform.entity.UserRole;
 import com.example.eventplatform.repository.UserRepository;
-import com.example.eventplatform.service.OrganizerCategoryOptions;
+import com.example.eventplatform.service.CategoryService;
 import com.example.eventplatform.service.OrganizerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/profile/organizer")
@@ -21,11 +22,14 @@ public class OrganizerProfileController {
 
     private final OrganizerService organizerService;
     private final UserRepository userRepository;
+    private final CategoryService categoryService;
 
     public OrganizerProfileController(OrganizerService organizerService,
-                                      UserRepository userRepository) {
+                                      UserRepository userRepository,
+                                      CategoryService categoryService) {
         this.organizerService = organizerService;
         this.userRepository = userRepository;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -37,18 +41,18 @@ public class OrganizerProfileController {
 
         model.addAttribute("organizer", organizerService.getOrganizerByUserId(user.getId()));
         model.addAttribute("isEdit", true);
-        model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "organizer-form";
     }
 
     @PostMapping
     public String updateOrganizerProfile(Principal principal,
                                          @RequestParam String businessName,
-                                         @RequestParam(required = false) String description,
-                                         @RequestParam(required = false) String serviceCategory,
-                                         @RequestParam(required = false) String phone,
-                                         @RequestParam(required = false) String website,
-                                         @RequestParam(required = false) String address,
+                                         @RequestParam String description,
+                                         @RequestParam(name = "categoryIds") List<Long> categoryIds,
+                                         @RequestParam String phone,
+                                         @RequestParam String website,
+                                         @RequestParam String address,
                                          Model model) {
         User user = getCurrentUser(principal);
         if (user.getRole() != UserRole.ORGANIZER) {
@@ -60,18 +64,18 @@ public class OrganizerProfileController {
                     user.getId(),
                     businessName,
                     description,
-                    serviceCategory,
+                    categoryIds,
                     phone,
                     website,
                     address
             );
-            return "redirect:/profile/organizer";
+            return "redirect:/profile";
         } catch (RuntimeException e) {
             OrganizerProfile organizer = organizerService.getOrganizerByUserId(user.getId());
             model.addAttribute("organizer", organizer);
             model.addAttribute("isEdit", true);
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "organizer-form";
         }
     }

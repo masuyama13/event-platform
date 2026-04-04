@@ -16,7 +16,7 @@
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
     <div class="plan-card">
-        <form th:action="${isEdit} ? @{/organizers/profile/organizer} : @{/organizers}" method="post">
+        <form th:action="${isEdit} ? @{/profile/organizer} : @{/organizers}" method="post">
 
             <input type="hidden"
                    th:if="${_csrf != null}"
@@ -53,23 +53,23 @@
                           name="description"
                           rows="4"
                           cols="40"
+                          required
                           th:text="${organizer.description}"></textarea>
             </div>
 
             <br>
 
             <div>
-                <label for="serviceCategory">Service Category:</label><br>
-                <select id="serviceCategory"
-                        name="serviceCategory"
-                        required>
-                    <option value="">Select a category</option>
-                    <option th:each="category : ${serviceCategories}"
-                            th:value="${category}"
-                            th:text="${category}"
-                            th:selected="${category == organizer.serviceCategory}">
-                    </option>
-                </select>
+                <label>Service Categories:</label><br>
+                <div th:each="category : ${categories}">
+                    <label>
+                        <input type="checkbox"
+                               name="categoryIds"
+                               th:value="${category.id}"
+                               th:checked="${organizer.categories != null and #lists.contains(organizer.categories.![id], category.id)}">
+                        <span th:text="${category.name}">Category</span>
+                    </label>
+                </div>
             </div>
 
             <br>
@@ -79,6 +79,7 @@
                 <input type="text"
                        id="phone"
                        name="phone"
+                       required
                        th:value="${organizer.phone}">
             </div>
 
@@ -89,6 +90,7 @@
                 <input type="text"
                        id="website"
                        name="website"
+                       required
                        th:value="${organizer.website}">
             </div>
 
@@ -99,6 +101,7 @@
                 <input type="text"
                        id="address"
                        name="address"
+                       required
                        th:value="${organizer.address}">
             </div>
 

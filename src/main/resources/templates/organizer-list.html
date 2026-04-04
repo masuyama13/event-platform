@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Organizer List</title>
+    <title>Find Your Perfect Event Partner</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
@@ -11,7 +11,20 @@
 <main class="app-main">
 
 <div class="container">
-    <h1>Organizer List</h1>
+    <h1>Find Your Perfect Event Partner</h1>
+
+    <form method="get" th:action="@{/organizers}" style="margin-bottom: 16px;">
+        <label for="categoryId">Filter by category:</label>
+        <select id="categoryId" name="categoryId">
+            <option value="">All categories</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"
+                    th:selected="${selectedCategoryId != null and selectedCategoryId == category.id}">
+            </option>
+        </select>
+        <button type="submit">Apply</button>
+    </form>
 
     <div class="plans-container"
          th:if="${organizers != null and !#lists.isEmpty(organizers)}">
@@ -24,8 +37,8 @@
                     organizer@email.com
                 </span>
             </p>
-            <p>Category:
-                <span th:text="${organizer.serviceCategory} ?: 'N/A'">
+            <p>Categories:
+                <span th:text="${organizer.categories != null and !#sets.isEmpty(organizer.categories) ? #strings.listJoin(organizer.categories.![name], ', ') : 'N/A'}">
                     Category
                 </span>
             </p>

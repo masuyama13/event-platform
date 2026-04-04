@@ -2,6 +2,8 @@ package com.example.eventplatform.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "organizer_profiles")
@@ -18,15 +20,24 @@ public class OrganizerProfile {
     @Column(nullable = false)
     private String businessName;
 
-    @Column(length = 2000)
+    @Column(nullable = false, length = 2000)
     private String description;
 
-    private String serviceCategory;
+    @ManyToMany
+    @JoinTable(
+            name = "organizer_profile_categories",
+            joinColumns = @JoinColumn(name = "organizer_profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new LinkedHashSet<>();
 
+    @Column(nullable = false)
     private String phone;
 
+    @Column(nullable = false)
     private String website;
 
+    @Column(nullable = false)
     private String address;
 
     private Double averageRating;
@@ -66,8 +77,8 @@ public class OrganizerProfile {
         return description;
     }
 
-    public String getServiceCategory() {
-        return serviceCategory;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
     public String getPhone() {
@@ -110,8 +121,8 @@ public class OrganizerProfile {
         this.description = description;
     }
 
-    public void setServiceCategory(String serviceCategory) {
-        this.serviceCategory = serviceCategory;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     public void setPhone(String phone) {

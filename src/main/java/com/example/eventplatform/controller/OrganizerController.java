@@ -1,7 +1,7 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.OrganizerProfile;
-import com.example.eventplatform.service.OrganizerCategoryOptions;
+import com.example.eventplatform.service.CategoryService;
 import com.example.eventplatform.service.OrganizerService;
 import com.example.eventplatform.service.ReviewService;
 import org.springframework.stereotype.Controller;
@@ -16,17 +16,22 @@ public class OrganizerController {
 
     private final OrganizerService organizerService;
     private final ReviewService reviewService;
+    private final CategoryService categoryService;
 
     public OrganizerController(OrganizerService organizerService,
-                               ReviewService reviewService) {
+                               ReviewService reviewService,
+                               CategoryService categoryService) {
         this.organizerService = organizerService;
         this.reviewService = reviewService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
-    public String showOrganizerList(Model model) {
-        List<OrganizerProfile> organizers = organizerService.getAllOrganizers();
+    public String showOrganizerList(@RequestParam(required = false) Long categoryId, Model model) {
+        List<OrganizerProfile> organizers = organizerService.getAllOrganizers(categoryId);
         model.addAttribute("organizers", organizers);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("selectedCategoryId", categoryId);
         return "organizer-list";
     }
 
@@ -41,18 +46,18 @@ public class OrganizerController {
     @PostMapping
     public String createOrganizer(@RequestParam Long userId,
                                   @RequestParam String businessName,
-                                  @RequestParam(required = false) String description,
-                                  @RequestParam(required = false) String serviceCategory,
-                                  @RequestParam(required = false) String phone,
-                                  @RequestParam(required = false) String website,
-                                  @RequestParam(required = false) String address,
+                                  @RequestParam String description,
+                                  @RequestParam(name = "categoryIds") List<Long> categoryIds,
+                                  @RequestParam String phone,
+                                  @RequestParam String website,
+                                  @RequestParam String address,
                                   Model model) {
         try {
             organizerService.createOrganizer(
                     userId,
                     businessName,
                     description,
-                    serviceCategory,
+                    categoryIds,
                     phone,
                     website,
                     address
@@ -62,7 +67,7 @@ public class OrganizerController {
             model.addAttribute("organizer", new OrganizerProfile());
             model.addAttribute("isEdit", false);
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("serviceCategories", OrganizerCategoryOptions.OPTIONS);
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "organizer-form";
         }
     }

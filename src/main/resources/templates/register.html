@@ -57,32 +57,32 @@
 
     <div>
       <label>Description:</label>
-      <textarea name="description" rows="4" cols="40"></textarea>
+      <textarea name="description" rows="4" cols="40" required></textarea>
     </div>
 
     <div>
-      <label>Service Category:</label>
-      <select name="serviceCategory" required>
-        <option value="">Select a category</option>
-        <option th:each="category : ${serviceCategories}"
-                th:value="${category}"
-                th:text="${category}"></option>
-      </select>
+      <label>Service Categories:</label>
+      <div th:each="category : ${categories}">
+        <label>
+          <input type="checkbox" name="categoryIds" th:value="${category.id}">
+          <span th:text="${category.name}">Category</span>
+        </label>
+      </div>
     </div>
 
     <div>
       <label>Phone:</label>
-      <input type="text" name="phone">
+      <input type="text" name="phone" required>
     </div>
 
     <div>
       <label>Website:</label>
-      <input type="text" name="website">
+      <input type="text" name="website" required>
     </div>
 
     <div>
       <label>Address:</label>
-      <input type="text" name="address">
+      <input type="text" name="address" required>
     </div>
   </div>
 
