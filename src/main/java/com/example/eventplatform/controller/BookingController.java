@@ -22,9 +22,10 @@ public class BookingController {
 
     // GET /booking/plans
     @GetMapping("/booking/plans")
-    public String showPlans(Model model) {
-        List<Plan> plans = bookingService.getAvailablePlans();
+    public String showPlans(@RequestParam Long organizerId, Model model) {
+        List<Plan> plans = bookingService.getAvailablePlans(organizerId);
         model.addAttribute("plans", plans);
+        model.addAttribute("organizerId", organizerId);
         return "plan-list";
     }
 
@@ -37,6 +38,7 @@ public class BookingController {
         disableCaching(response);
         Plan selectedPlan = bookingService.getPlanDetail(planId);
         model.addAttribute("plan", selectedPlan);
+        model.addAttribute("organizerId", selectedPlan.getOrganizer().getId());
         return "plan-detail";
     }
 
@@ -49,6 +51,7 @@ public class BookingController {
         disableCaching(response);
         Plan selectedPlan = bookingService.getPlanDetail(planId);
         model.addAttribute("plan", selectedPlan);
+        model.addAttribute("organizerId", selectedPlan.getOrganizer().getId());
         model.addAttribute("earliestBookingDate", LocalDate.now().plusWeeks(1));
         return "booking-request";
     }

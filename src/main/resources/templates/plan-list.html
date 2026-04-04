@@ -13,7 +13,7 @@
 <div class="container">
     <h1>Available Plans</h1>
 
-    <div class="plans-container">
+    <div class="plans-container" th:if="${plans != null and !#lists.isEmpty(plans)}">
         <div class="plan-card" th:each="plan : ${plans}">
             <h2 th:text="${plan.planName}">Plan Name</h2>
 
@@ -34,14 +34,16 @@
                 $<span th:text="${plan.price}">Price</span>
             </p>
 
-            <a th:href="@{/plan/{planId}(planId=${plan.id})}" class="btn-select">
+            <a th:href="@{/plan/{planId}(planId=${plan.id}, organizerId=${organizerId})}" class="btn-select">
                 View Plan
             </a>
         </div>
     </div>
 
+    <p th:if="${plans == null or #lists.isEmpty(plans)}">No plans are available for this organizer yet.</p>
+
     <br/>
-    <a href="/" th:href="@{/}" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
+    <a th:href="@{/organizers/{organizerId}(organizerId=${organizerId})}" class="btn-back">Back</a>
 </div>
 
  </main>

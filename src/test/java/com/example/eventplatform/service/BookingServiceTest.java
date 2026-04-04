@@ -49,21 +49,22 @@ class BookingServiceTest {
         plan.setOrganizer(organizer);
         plan.setPlanName("planName");
         final List<Plan> plans = List.of(plan);
-        when(mockPlanRepository.findAll()).thenReturn(plans);
+        when(mockPlanRepository.findByOrganizerId(0L)).thenReturn(plans);
 
         // Run the test
-        final List<Plan> result = bookingServiceUnderTest.getAvailablePlans();
+        final List<Plan> result = bookingServiceUnderTest.getAvailablePlans(0L);
 
         // Verify the results
+        assertThat(result).isEqualTo(plans);
     }
 
     @Test
     void testGetAvailablePlans_PlanRepositoryReturnsNoItems() {
         // Setup
-        when(mockPlanRepository.findAll()).thenReturn(Collections.emptyList());
+        when(mockPlanRepository.findByOrganizerId(0L)).thenReturn(Collections.emptyList());
 
         // Run the test
-        final List<Plan> result = bookingServiceUnderTest.getAvailablePlans();
+        final List<Plan> result = bookingServiceUnderTest.getAvailablePlans(0L);
 
         // Verify the results
         assertThat(result).isEqualTo(Collections.emptyList());

@@ -26,9 +26,9 @@ public class BookingService {
     @Autowired
     private PlanRepository planRepository;
 
-    // Get all available plans
-    public List<Plan> getAvailablePlans() {
-        return planRepository.findAll();
+    // Get available plans for a specific organizer
+    public List<Plan> getAvailablePlans(Long organizerId) {
+        return planRepository.findByOrganizerId(organizerId);
     }
 
     // Get a specific plan detail
