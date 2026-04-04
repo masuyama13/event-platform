@@ -12,6 +12,10 @@
 <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
 <form th:action="${formAction}" method="post">
+  <input type="hidden"
+         th:if="${_csrf != null}"
+         th:name="${_csrf.parameterName}"
+         th:value="${_csrf.token}"/>
   <div>
     <label>Email:</label>
     <input type="email" name="email" required>

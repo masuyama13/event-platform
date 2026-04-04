@@ -32,6 +32,10 @@
             </p>
 
             <form action="/booking/confirm" method="post">
+                <input type="hidden"
+                       th:if="${_csrf != null}"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
                 <input type="hidden" name="planName"
                        th:value="${plan.planName}">
                 <button type="submit" class="btn-select">
@@ -42,7 +46,7 @@
     </div>
 
     <br/>
-    <a href="/organizers" class="btn-back">← Back to Organizers</a>
+    <a href="/" th:href="@{/}" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
 </div>
 
 </body>

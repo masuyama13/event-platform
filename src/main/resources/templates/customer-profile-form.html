@@ -13,6 +13,10 @@
 <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
 <form th:action="@{/profile/customer}" method="post">
+    <input type="hidden"
+           th:if="${_csrf != null}"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}"/>
     <div>
         <label for="firstName">First Name:</label>
         <input id="firstName" name="firstName" type="text" th:value="${customer.firstName}" required>

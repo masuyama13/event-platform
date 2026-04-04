@@ -62,6 +62,10 @@
     <!-- Send Message Form -->
     <div class="send-form">
         <form action="/messages/send" method="post">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
             <!-- ALL parameter names must match @RequestParam in controller -->
             <input type="hidden" name="organizerUserId"
                    th:value="${organizerUserId}">
@@ -83,7 +87,7 @@
         </form>
     </div>
 
-    <a href="/organizers" class="btn-back">← Back to Organizers</a>
+    <a href="/" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
 </div>
  </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>

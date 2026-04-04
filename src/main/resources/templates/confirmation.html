@@ -36,6 +36,10 @@
         </table>
 
         <form action="/booking/thankyou" method="post">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
             <input type="hidden" name="planName"
                    th:value="${quote.planName}"/>
             <input type="hidden" name="organizerName"
@@ -48,7 +52,7 @@
                    th:value="${quote.price}"/>
 
             <div class="buttons">
-                <a href="/booking/plans" class="btn-back">Go Back</a>
+                <a href="/booking/plans" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
                 <button type="submit" class="btn-confirm">Confirm</button>
             </div>
         </form>
