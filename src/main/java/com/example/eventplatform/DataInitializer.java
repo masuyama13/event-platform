@@ -27,7 +27,7 @@ public class DataInitializer {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private QuoteRepository quoteRepository;
+    private PlanRepository planRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -83,7 +83,7 @@ public class DataInitializer {
 
             System.out.println(">>> Temporary organizer profile created");
 
-            // Create Plan A to D quotes
+            // Create Plan A to D plans
             String[][] plans = {
                     {"Plan A", "Basic event package with standard decorations and setup."},
                     {"Plan B", "Standard event package with catering and photography."},
@@ -99,17 +99,16 @@ public class DataInitializer {
             };
 
             for (int i = 0; i < plans.length; i++) {
-                Quote quote = new Quote();
-                quote.setOrganizer(organizer);
-                quote.setPlanName(plans[i][0]);
-                quote.setDescription(plans[i][1]);
-                quote.setPrice(prices[i]);
-                quote.setStatus(QuoteStatus.PENDING);
-                quote.setExpiresAt(LocalDateTime.now().plusDays(30));
-                quoteRepository.save(quote);
+                Plan plan = new Plan();
+                plan.setOrganizer(organizer);
+                plan.setPlanName(plans[i][0]);
+                plan.setDescription(plans[i][1]);
+                plan.setPrice(prices[i]);
+                plan.setExpiresAt(LocalDateTime.now().plusDays(30));
+                planRepository.save(plan);
             }
 
-            System.out.println(">>> Temporary quotes (Plan A to D) created");
+            System.out.println(">>> Temporary plans (Plan A to D) created");
         }
     }
 

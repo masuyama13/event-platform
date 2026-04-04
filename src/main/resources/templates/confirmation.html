@@ -16,22 +16,22 @@
         <table class="info-table">
             <tr>
                 <td>Plan Name:</td>
-                <td th:text="${quote.planName}">Plan Name</td>
+                <td th:text="${plan.planName}">Plan Name</td>
             </tr>
             <tr>
                 <td>Organizer:</td>
-                <td th:text="${quote.organizer != null}
-                             ? ${quote.organizer.businessName} : 'N/A'">
+                <td th:text="${plan.organizer != null}
+                             ? ${plan.organizer.businessName} : 'N/A'">
                     Organizer Name
                 </td>
             </tr>
             <tr>
                 <td>Description:</td>
-                <td th:text="${quote.description} ?: 'N/A'">Description</td>
+                <td th:text="${plan.description} ?: 'N/A'">Description</td>
             </tr>
             <tr>
                 <td>Price:</td>
-                <td>$<span th:text="${quote.price}">Price</span></td>
+                <td>$<span th:text="${plan.price}">Price</span></td>
             </tr>
         </table>
 
@@ -40,16 +40,11 @@
                    th:if="${_csrf != null}"
                    th:name="${_csrf.parameterName}"
                    th:value="${_csrf.token}"/>
-            <input type="hidden" name="planName"
-                   th:value="${quote.planName}"/>
-            <input type="hidden" name="organizerName"
-                   th:value="${quote.organizer != null
-                               ? quote.organizer.businessName : ''}"/>
+            <input type="hidden" name="planId"
+                   th:value="${plan.id}"/>
             <input type="hidden" name="eventDate"
                    th:value="${#temporals.format(
                                #temporals.createNow(), 'yyyy-MM-dd')}"/>
-            <input type="hidden" name="price"
-                   th:value="${quote.price}"/>
 
             <div class="buttons">
                 <a href="/booking/plans" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>

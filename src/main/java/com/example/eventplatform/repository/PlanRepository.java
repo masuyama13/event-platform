@@ -1,0 +1,17 @@
+package com.example.eventplatform.repository;
+
+import com.example.eventplatform.entity.Plan;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface PlanRepository extends JpaRepository<Plan, Long> {
+
+    // Get all plans by organizer
+    List<Plan> findByOrganizerId(Long organizerId);
+
+    // Get plan by organizer and plan name
+    List<Plan> findByOrganizerIdAndPlanName(Long organizerId, String planName);
+}

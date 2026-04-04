@@ -3,8 +3,7 @@ package com.example.eventplatform.service;
 import com.example.eventplatform.entity.*;
 import com.example.eventplatform.repository.BookingRepository;
 import com.example.eventplatform.repository.CustomerProfileRepository;
-import com.example.eventplatform.repository.OrganizerProfileRepository;
-import com.example.eventplatform.repository.QuoteRepository;
+import com.example.eventplatform.repository.PlanRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,9 +29,7 @@ class BookingServiceTest {
     @Mock
     private CustomerProfileRepository mockCustomerProfileRepository;
     @Mock
-    private OrganizerProfileRepository mockOrganizerProfileRepository;
-    @Mock
-    private QuoteRepository mockQuoteRepository;
+    private PlanRepository mockPlanRepository;
 
     @InjectMocks
     private BookingService bookingServiceUnderTest;
@@ -39,31 +37,30 @@ class BookingServiceTest {
     @Test
     void testGetAvailablePlans() {
         // Setup
-        // Configure QuoteRepository.findByStatus(...).
-        final Quote quote = new Quote();
-        quote.setId(0L);
+        final Plan plan = new Plan();
+        plan.setId(0L);
         final OrganizerProfile organizer = new OrganizerProfile();
         organizer.setId(0L);
         final User user = new User();
         organizer.setUser(user);
-        quote.setOrganizer(organizer);
-        quote.setPlanName("planName");
-        final List<Quote> quotes = List.of(quote);
-        when(mockQuoteRepository.findByStatus(QuoteStatus.PENDING)).thenReturn(quotes);
+        plan.setOrganizer(organizer);
+        plan.setPlanName("planName");
+        final List<Plan> plans = List.of(plan);
+        when(mockPlanRepository.findAll()).thenReturn(plans);
 
         // Run the test
-        final List<Quote> result = bookingServiceUnderTest.getAvailablePlans();
+        final List<Plan> result = bookingServiceUnderTest.getAvailablePlans();
 
         // Verify the results
     }
 
     @Test
-    void testGetAvailablePlans_QuoteRepositoryReturnsNoItems() {
+    void testGetAvailablePlans_PlanRepositoryReturnsNoItems() {
         // Setup
-        when(mockQuoteRepository.findByStatus(QuoteStatus.PENDING)).thenReturn(Collections.emptyList());
+        when(mockPlanRepository.findAll()).thenReturn(Collections.emptyList());
 
         // Run the test
-        final List<Quote> result = bookingServiceUnderTest.getAvailablePlans();
+        final List<Plan> result = bookingServiceUnderTest.getAvailablePlans();
 
         // Verify the results
         assertThat(result).isEqualTo(Collections.emptyList());
@@ -72,31 +69,30 @@ class BookingServiceTest {
     @Test
     void testGetPlanDetail() {
         // Setup
-        // Configure QuoteRepository.findByStatus(...).
-        final Quote quote = new Quote();
-        quote.setId(0L);
+        final Plan plan = new Plan();
+        plan.setId(0L);
         final OrganizerProfile organizer = new OrganizerProfile();
         organizer.setId(0L);
         final User user = new User();
         organizer.setUser(user);
-        quote.setOrganizer(organizer);
-        quote.setPlanName("planName");
-        final List<Quote> quotes = List.of(quote);
-        when(mockQuoteRepository.findByStatus(QuoteStatus.PENDING)).thenReturn(quotes);
+        plan.setOrganizer(organizer);
+        plan.setPlanName("planName");
+        when(mockPlanRepository.findById(0L)).thenReturn(Optional.of(plan));
 
         // Run the test
-        final Quote result = bookingServiceUnderTest.getPlanDetail("planName");
+        final Plan result = bookingServiceUnderTest.getPlanDetail(0L);
 
         // Verify the results
+        assertThat(result).isSameAs(plan);
     }
 
     @Test
-    void testGetPlanDetail_QuoteRepositoryReturnsNoItems() {
+    void testGetPlanDetail_PlanRepositoryReturnsNoItems() {
         // Setup
-        when(mockQuoteRepository.findByStatus(QuoteStatus.PENDING)).thenReturn(Collections.emptyList());
+        when(mockPlanRepository.findById(0L)).thenReturn(Optional.empty());
 
         // Run the test
-        assertThatThrownBy(() -> bookingServiceUnderTest.getPlanDetail("planName"))
+        assertThatThrownBy(() -> bookingServiceUnderTest.getPlanDetail(0L))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -114,7 +110,6 @@ class BookingServiceTest {
         final List<CustomerProfile> customerProfiles = List.of(customerProfile);
         when(mockCustomerProfileRepository.findAll()).thenReturn(customerProfiles);
 
-        // Configure OrganizerProfileRepository.findAll(...).
         final OrganizerProfile organizerProfile = new OrganizerProfile();
         organizerProfile.setId(0L);
         final User user1 = new User();
@@ -122,8 +117,13 @@ class BookingServiceTest {
         user1.setEmail("email");
         user1.setPasswordHash("passwordHash");
         organizerProfile.setUser(user1);
-        final List<OrganizerProfile> organizerProfiles = List.of(organizerProfile);
-        when(mockOrganizerProfileRepository.findAll()).thenReturn(organizerProfiles);
+
+        final Plan plan = new Plan();
+        plan.setId(10L);
+        plan.setOrganizer(organizerProfile);
+        plan.setPlanName("planName");
+        plan.setPrice(new BigDecimal("123.45"));
+        when(mockPlanRepository.findById(10L)).thenReturn(Optional.of(plan));
 
         // Configure BookingRepository.save(...).
         final Booking booking = new Booking();
@@ -131,18 +131,18 @@ class BookingServiceTest {
         booking.setCustomerProfile(customerProfile1);
         final OrganizerProfile organizerProfile1 = new OrganizerProfile();
         booking.setOrganizerProfile(organizerProfile1);
+        booking.setPlan(plan);
         booking.setEventDate(LocalDate.of(2020, 1, 1));
         booking.setStatus(BookingStatus.REQUESTED);
         booking.setPlannerName("organizerName");
-        booking.setPlanName("planName");
-        booking.setPrice(new BigDecimal("0.00"));
+        booking.setPrice(new BigDecimal("123.45"));
         when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
 
         // Run the test
-        final Booking result = bookingServiceUnderTest.confirmBooking("planName", "organizerName",
-                LocalDate.of(2020, 1, 1), new BigDecimal("0.00"));
+        final Booking result = bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1));
 
         // Verify the results
+        assertThat(result).isSameAs(booking);
     }
 
     @Test
@@ -152,14 +152,13 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking("planName", "organizerName", LocalDate.of(2020, 1, 1),
-                        new BigDecimal("0.00"))).isInstanceOf(RuntimeException.class);
+                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1)))
+                .isInstanceOf(RuntimeException.class);
     }
 
     @Test
-    void testConfirmBooking_OrganizerProfileRepositoryReturnsNoItems() {
+    void testConfirmBooking_PlanHasNoOrganizer() {
         // Setup
-        // Configure CustomerProfileRepository.findAll(...).
         final CustomerProfile customerProfile = new CustomerProfile();
         customerProfile.setId(0L);
         final User user = new User();
@@ -170,11 +169,13 @@ class BookingServiceTest {
         final List<CustomerProfile> customerProfiles = List.of(customerProfile);
         when(mockCustomerProfileRepository.findAll()).thenReturn(customerProfiles);
 
-        when(mockOrganizerProfileRepository.findAll()).thenReturn(Collections.emptyList());
+        final Plan plan = new Plan();
+        plan.setId(10L);
+        when(mockPlanRepository.findById(10L)).thenReturn(Optional.of(plan));
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking("planName", "organizerName", LocalDate.of(2020, 1, 1),
-                        new BigDecimal("0.00"))).isInstanceOf(RuntimeException.class);
+                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1)))
+                .isInstanceOf(RuntimeException.class);
     }
 }

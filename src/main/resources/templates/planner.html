@@ -36,8 +36,8 @@
                        th:if="${_csrf != null}"
                        th:name="${_csrf.parameterName}"
                        th:value="${_csrf.token}"/>
-                <input type="hidden" name="planName"
-                       th:value="${plan.planName}">
+                <input type="hidden" name="planId"
+                       th:value="${plan.id}">
                 <button type="submit" class="btn-select">
                     Select This Plan
                 </button>
