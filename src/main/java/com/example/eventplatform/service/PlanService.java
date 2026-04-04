@@ -21,17 +21,17 @@ public class PlanService {
         this.organizerProfileRepository = organizerProfileRepository;
     }
 
-    public OrganizerProfile getOrganizerByEmail(String email) {
-        return organizerProfileRepository.findByUserEmail(email)
-                .orElseThrow(() -> new RuntimeException("Organizer profile not found for email: " + email));
+    public OrganizerProfile getOrganizerByUserId(Long userId) {
+        return organizerProfileRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Organizer profile not found for user id: " + userId));
     }
 
     // Create a new plan
-    public Plan createPlan(String organizerEmail,
+    public Plan createPlan(Long organizerUserId,
                            String planName,
                            BigDecimal price,
                              String description) {
-        OrganizerProfile organizer = getOrganizerByEmail(organizerEmail);
+        OrganizerProfile organizer = getOrganizerByUserId(organizerUserId);
 
         Plan plan = new Plan();
         plan.setOrganizer(organizer);
@@ -48,18 +48,18 @@ public class PlanService {
         return planRepository.findByOrganizerId(organizerId);
     }
 
-    public Plan getPlanForOrganizer(Long planId, String organizerEmail) {
-        OrganizerProfile organizer = getOrganizerByEmail(organizerEmail);
+    public Plan getPlanForOrganizer(Long planId, Long organizerUserId) {
+        OrganizerProfile organizer = getOrganizerByUserId(organizerUserId);
         return planRepository.findByIdAndOrganizerId(planId, organizer.getId())
                 .orElseThrow(() -> new RuntimeException("Plan not found for organizer: " + planId));
     }
 
     public Plan updatePlan(Long planId,
-                           String organizerEmail,
+                           Long organizerUserId,
                            String planName,
                            BigDecimal price,
                            String description) {
-        Plan plan = getPlanForOrganizer(planId, organizerEmail);
+        Plan plan = getPlanForOrganizer(planId, organizerUserId);
         plan.setPlanName(planName);
         plan.setPrice(price);
         plan.setDescription(description);

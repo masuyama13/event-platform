@@ -4,14 +4,14 @@ import com.example.eventplatform.entity.CustomerProfile;
 import com.example.eventplatform.entity.OrganizerProfile;
 import com.example.eventplatform.entity.User;
 import com.example.eventplatform.entity.UserRole;
+import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.security.Principal;
 
 @Controller
 public class ProfileController {
@@ -29,7 +29,7 @@ public class ProfileController {
     }
 
     @GetMapping("/profile")
-    public String profilePage(Principal principal, Model model) {
+    public String profilePage(@AuthenticationPrincipal UserPrincipal principal, Model model) {
         User user = getCurrentUser(principal);
         model.addAttribute("user", user);
 
@@ -50,12 +50,12 @@ public class ProfileController {
         return "profile";
     }
 
-    private User getCurrentUser(Principal principal) {
+    private User getCurrentUser(UserPrincipal principal) {
         if (principal == null) {
             throw new RuntimeException("User is not authenticated");
         }
 
-        return userRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getName()));
+        return userRepository.findById(principal.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getUserId()));
     }
 }

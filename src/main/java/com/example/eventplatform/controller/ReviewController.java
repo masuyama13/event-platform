@@ -1,6 +1,10 @@
 package com.example.eventplatform.controller;
 
+import com.example.eventplatform.entity.User;
+import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.service.ReviewService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +14,30 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final UserRepository userRepository;
 
-    // TODO: Replace with real user from authentication later
-    private static final Long TEMP_CUSTOMER_USER_ID = 1L;
-
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService, UserRepository userRepository) {
         this.reviewService = reviewService;
+        this.userRepository = userRepository;
+    }
+
+    private Long getCurrentUserId(UserPrincipal principal) {
+        if (principal == null) {
+            throw new RuntimeException("User is not authenticated");
+        }
+
+        User user = userRepository.findById(principal.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getUserId()));
+        return user.getId();
     }
 
     @GetMapping("/organizer/{organizerId}")
-    public String showReviewForm(@PathVariable Long organizerId, Model model) {
-        String existingReview = reviewService.getUserReviewText(TEMP_CUSTOMER_USER_ID, organizerId);
-        Integer existingRating = reviewService.getUserRating(TEMP_CUSTOMER_USER_ID, organizerId);
+    public String showReviewForm(@PathVariable Long organizerId,
+                                 @AuthenticationPrincipal UserPrincipal principal,
+                                 Model model) {
+        Long currentUserId = getCurrentUserId(principal);
+        String existingReview = reviewService.getUserReviewText(currentUserId, organizerId);
+        Integer existingRating = reviewService.getUserRating(currentUserId, organizerId);
 
         model.addAttribute("organizerId", organizerId);
         model.addAttribute("existingReview", existingReview);
@@ -34,9 +50,12 @@ public class ReviewController {
     public String submitReview(@RequestParam Long organizerId,
                                @RequestParam String reviewText,
                                @RequestParam Integer ratingValue,
+                               @AuthenticationPrincipal UserPrincipal principal,
                                Model model) {
+        Long currentUserId = getCurrentUserId(principal);
+
         try {
-            reviewService.submitReview(TEMP_CUSTOMER_USER_ID, organizerId, reviewText, ratingValue);
+            reviewService.submitReview(currentUserId, organizerId, reviewText, ratingValue);
             return "redirect:/organizers/" + organizerId;
         } catch (RuntimeException e) {
             model.addAttribute("organizerId", organizerId);

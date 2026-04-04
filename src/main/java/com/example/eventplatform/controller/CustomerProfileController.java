@@ -3,16 +3,16 @@ package com.example.eventplatform.controller;
 import com.example.eventplatform.entity.CustomerProfile;
 import com.example.eventplatform.entity.User;
 import com.example.eventplatform.entity.UserRole;
+import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.service.CustomerProfileService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.security.Principal;
 
 @Controller
 @RequestMapping("/profile/customer")
@@ -28,7 +28,7 @@ public class CustomerProfileController {
     }
 
     @GetMapping
-    public String customerProfilePage(Principal principal, Model model) {
+    public String customerProfilePage(@AuthenticationPrincipal UserPrincipal principal, Model model) {
         User user = getCurrentUser(principal);
         if (user.getRole() != UserRole.CUSTOMER) {
             return "redirect:/organizers";
@@ -39,7 +39,7 @@ public class CustomerProfileController {
     }
 
     @PostMapping
-    public String updateCustomerProfile(Principal principal,
+    public String updateCustomerProfile(@AuthenticationPrincipal UserPrincipal principal,
                                         @RequestParam String firstName,
                                         @RequestParam String lastName,
                                         @RequestParam(required = false) String phone,
@@ -63,12 +63,12 @@ public class CustomerProfileController {
         }
     }
 
-    private User getCurrentUser(Principal principal) {
+    private User getCurrentUser(UserPrincipal principal) {
         if (principal == null) {
             throw new RuntimeException("User is not authenticated");
         }
 
-        return userRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getName()));
+        return userRepository.findById(principal.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getUserId()));
     }
 }

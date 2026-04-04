@@ -42,7 +42,7 @@ class PlanServiceTest {
         user.setEmail("organizer@example.com");
         user.setPasswordHash("passwordHash");
         organizerProfile.setUser(user);
-        when(mockOrganizerProfileRepository.findByUserEmail("organizer@example.com"))
+        when(mockOrganizerProfileRepository.findByUserId(0L))
                 .thenReturn(Optional.of(organizerProfile));
 
         // Configure PlanRepository.save(...).
@@ -57,7 +57,7 @@ class PlanServiceTest {
 
         // Run the test
         final Plan result = planServiceUnderTest.createPlan(
-                "organizer@example.com",
+                0L,
                 "planName",
                 new BigDecimal("0.00"),
                 "description"
@@ -70,12 +70,12 @@ class PlanServiceTest {
     @Test
     void testCreatePlan_OrganizerProfileRepositoryReturnsNoItems() {
         // Setup
-        when(mockOrganizerProfileRepository.findByUserEmail("organizer@example.com"))
+        when(mockOrganizerProfileRepository.findByUserId(0L))
                 .thenReturn(Optional.empty());
 
         // Run the test
         assertThatThrownBy(() -> planServiceUnderTest.createPlan(
-                "organizer@example.com",
+                0L,
                 "planName",
                 new BigDecimal("0.00"),
                 "description"
@@ -121,6 +121,7 @@ class PlanServiceTest {
         final OrganizerProfile organizer = new OrganizerProfile();
         organizer.setId(3L);
         final User user = new User();
+        user.setId(7L);
         user.setEmail("organizer@example.com");
         organizer.setUser(user);
 
@@ -131,7 +132,7 @@ class PlanServiceTest {
         plan.setDescription("before description");
         plan.setPrice(new BigDecimal("10.00"));
 
-        when(mockOrganizerProfileRepository.findByUserEmail("organizer@example.com"))
+        when(mockOrganizerProfileRepository.findByUserId(7L))
                 .thenReturn(Optional.of(organizer));
         when(mockPlanRepository.findByIdAndOrganizerId(5L, 3L))
                 .thenReturn(Optional.of(plan));
@@ -139,7 +140,7 @@ class PlanServiceTest {
 
         final Plan result = planServiceUnderTest.updatePlan(
                 5L,
-                "organizer@example.com",
+                7L,
                 "after",
                 new BigDecimal("20.00"),
                 "after description"
