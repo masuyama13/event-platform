@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "quotes")
-public class Quote {
+@Table(name = "plans")
+public class Plan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,6 @@ public class Quote {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private QuoteStatus status;
-
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -36,7 +32,7 @@ public class Quote {
 
     private LocalDateTime updatedAt;
 
-    public Quote() {}
+    public Plan() {}
 
     @PrePersist
     protected void onCreate() {
@@ -54,7 +50,6 @@ public class Quote {
     public String getPlanName() { return planName; }
     public String getDescription() { return description; }
     public BigDecimal getPrice() { return price; }
-    public QuoteStatus getStatus() { return status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getExpiresAt() { return expiresAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
@@ -64,7 +59,6 @@ public class Quote {
     public void setPlanName(String planName) { this.planName = planName; }
     public void setDescription(String description) { this.description = description; }
     public void setPrice(BigDecimal price) { this.price = price; }
-    public void setStatus(QuoteStatus status) { this.status = status; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public void setExpiresAt(LocalDateTime expiresAt) { this.expiresAt = expiresAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }

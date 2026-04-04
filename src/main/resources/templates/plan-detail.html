@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan Details</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+</head>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
+
+<div class="container">
+    <h1>Plan Details</h1>
+
+    <div class="confirmation-card">
+        <h2>Plan Overview</h2>
+
+        <table class="info-table">
+            <tr>
+                <td>Plan Name:</td>
+                <td th:text="${plan.planName}">Plan Name</td>
+            </tr>
+            <tr>
+                <td>Organizer:</td>
+                <td th:text="${plan.organizer != null}
+                             ? ${plan.organizer.businessName} : 'N/A'">
+                    Organizer Name
+                </td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td th:text="${plan.description} ?: 'N/A'">Description</td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>$<span th:text="${plan.price}">Price</span></td>
+            </tr>
+        </table>
+
+        <div class="buttons">
+            <a th:href="@{/booking/plans}" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
+            <a th:href="@{/plan/{planId}/book(planId=${plan.id})}" class="btn-confirm">Book Now</a>
+        </div>
+    </div>
+</div>
+
+ </main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+</body>
+</html>

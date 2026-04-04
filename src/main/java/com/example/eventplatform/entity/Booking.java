@@ -21,6 +21,10 @@ public class Booking {
     @JoinColumn(name = "organizer_profile_id", nullable = false)
     private OrganizerProfile organizerProfile;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "plan_id", nullable = false)
+    private Plan plan;
+
     private String eventType;
 
     private LocalDate eventDate;
@@ -40,7 +44,6 @@ public class Booking {
     private LocalDateTime updatedAt;
 
     private String plannerName;
-    private String planName;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
@@ -61,6 +64,7 @@ public class Booking {
     public Long getId() { return id; }
     public CustomerProfile getCustomerProfile() { return customerProfile; }
     public OrganizerProfile getOrganizerProfile() { return organizerProfile; }
+    public Plan getPlan() { return plan; }
     public String getEventType() { return eventType; }
     public LocalDate getEventDate() { return eventDate; }
     public String getLocation() { return location; }
@@ -69,7 +73,7 @@ public class Booking {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public String getPlannerName() { return plannerName; }
-    public String getPlanName() { return planName; }
+    public String getPlanName() { return plan != null ? plan.getPlanName() : null; }
     public BigDecimal getPrice() { return price; }
 
     public void setId(Long id) { this.id = id; }
@@ -79,6 +83,7 @@ public class Booking {
     public void setOrganizerProfile(OrganizerProfile organizerProfile) {
         this.organizerProfile = organizerProfile;
     }
+    public void setPlan(Plan plan) { this.plan = plan; }
     public void setEventType(String eventType) { this.eventType = eventType; }
     public void setEventDate(LocalDate eventDate) { this.eventDate = eventDate; }
     public void setLocation(String location) { this.location = location; }
@@ -89,6 +94,5 @@ public class Booking {
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
     public void setPlannerName(String plannerName) { this.plannerName = plannerName; }
-    public void setPlanName(String planName) { this.planName = planName; }
     public void setPrice(BigDecimal price) { this.price = price; }
 }

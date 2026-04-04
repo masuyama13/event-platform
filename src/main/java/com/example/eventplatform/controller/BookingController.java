@@ -1,57 +1,89 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.Booking;
-import com.example.eventplatform.entity.Quote;
+import com.example.eventplatform.entity.Plan;
 import com.example.eventplatform.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.math.BigDecimal;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/booking")
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
 
     // GET /booking/plans
-    @GetMapping("/plans")
+    @GetMapping("/booking/plans")
     public String showPlans(Model model) {
-        List<Quote> plans = bookingService.getAvailablePlans();
+        List<Plan> plans = bookingService.getAvailablePlans();
         model.addAttribute("plans", plans);
-        return "planner";
+        return "plan-list";
     }
 
-    // POST /booking/confirm
-    @PostMapping("/confirm")
-    public String showConfirmation(
-            @RequestParam String planName,
-            Model model) {
-        Quote selectedPlan = bookingService.getPlanDetail(planName);
-        model.addAttribute("quote", selectedPlan);
-        return "confirmation";
+    // GET /plan/{planId}
+    @GetMapping("/plan/{planId}")
+    public String showPlanDetail(
+            @PathVariable Long planId,
+            Model model,
+            HttpServletResponse response) {
+        disableCaching(response);
+        Plan selectedPlan = bookingService.getPlanDetail(planId);
+        model.addAttribute("plan", selectedPlan);
+        return "plan-detail";
     }
 
-    // POST /booking/thankyou
-    @PostMapping("/thankyou")
-    public String confirmBooking(
-            @RequestParam String planName,
-            @RequestParam String organizerName,
+    // GET /plan/{planId}/book
+    @GetMapping("/plan/{planId}/book")
+    public String showBookingRequestForm(
+            @PathVariable Long planId,
+            Model model,
+            HttpServletResponse response) {
+        disableCaching(response);
+        Plan selectedPlan = bookingService.getPlanDetail(planId);
+        model.addAttribute("plan", selectedPlan);
+        model.addAttribute("earliestBookingDate", LocalDate.now().plusWeeks(1));
+        return "booking-request";
+    }
+
+    // POST /bookings
+    @PostMapping("/bookings")
+    public RedirectView confirmBooking(
+            @RequestParam Long planId,
             @RequestParam String eventDate,
-            @RequestParam BigDecimal price,
-            Model model) {
+            Authentication authentication) {
 
         Booking savedBooking = bookingService.confirmBooking(
-                planName, organizerName,
+                planId,
                 LocalDate.parse(eventDate),
-                price
+                authentication.getName()
         );
-        model.addAttribute("booking", savedBooking);
+        return new RedirectView("/booking/complete/" + savedBooking.getId());
+    }
+
+    // GET /booking/complete/{bookingId}
+    @GetMapping("/booking/complete/{bookingId}")
+    public String showBookingComplete(
+            @PathVariable Long bookingId,
+            Authentication authentication,
+            Model model,
+            HttpServletResponse response) {
+        disableCaching(response);
+        Booking booking = bookingService.getCustomerBooking(bookingId, authentication.getName());
+        model.addAttribute("booking", booking);
         return "thankyou";
+    }
+
+    private void disableCaching(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
     }
 }

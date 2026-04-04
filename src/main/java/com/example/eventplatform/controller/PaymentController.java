@@ -1,5 +1,6 @@
 package com.example.eventplatform.controller;
 
+import com.example.eventplatform.entity.BookingStatus;
 import com.example.eventplatform.entity.Invoice;
 import com.example.eventplatform.entity.InvoiceStatus;
 import com.example.eventplatform.service.InvoiceService;
@@ -39,6 +40,10 @@ public class PaymentController {
     public String createCheckoutSession(@PathVariable Long invoiceId, Authentication authentication) throws StripeException {
         Invoice invoice = invoiceService.getInvoiceById(invoiceId);
         ensureInvoiceOwner(invoice, authentication);
+
+        if (invoice.getBooking().getStatus() != BookingStatus.APPROVED) {
+            throw new IllegalStateException("Payment is available only after organizer approval");
+        }
 
         if (invoice.getStatus() == InvoiceStatus.PAID) {
             return "redirect:/invoices/view/" + invoice.getBooking().getId();

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface OrganizerProfileRepository extends JpaRepository<OrganizerProfile, Long> {
     Optional<OrganizerProfile> findByUserId(Long userId);
+    Optional<OrganizerProfile> findByUserEmail(String email);
     boolean existsByUserId(Long userId);
 
     @Query("""
