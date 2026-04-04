@@ -2,10 +2,8 @@ package com.example.eventplatform.entity;
 
 public enum BookingStatus {
     REQUESTED,
-    QUOTED,
-    ACCEPTED,
+    APPROVED,
     REJECTED,
     COMPLETED,
     CANCELLED
 }
-

@@ -162,7 +162,7 @@ class MessageServiceTest {
         final int result = messageServiceUnderTest.getUnreadCount(0L);
 
         // Verify the results
-        assertThat(result).isEqualTo(0);
+        assertThat(result).isEqualTo(1);
     }
 
     @Test

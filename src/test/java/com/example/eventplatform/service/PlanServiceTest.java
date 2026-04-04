@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -65,20 +66,9 @@ class PlanServiceTest {
         // Setup
         when(mockOrganizerProfileRepository.findAll()).thenReturn(Collections.emptyList());
 
-        // Configure PlanRepository.save(...).
-        final Plan plan = new Plan();
-        final OrganizerProfile organizer = new OrganizerProfile();
-        plan.setOrganizer(organizer);
-        plan.setPlanName("planName");
-        plan.setDescription("description");
-        plan.setPrice(new BigDecimal("0.00"));
-        plan.setExpiresAt(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
-        when(mockPlanRepository.save(any(Plan.class))).thenReturn(plan);
-
         // Run the test
-        final Plan result = planServiceUnderTest.createPlan("planName", new BigDecimal("0.00"), "description");
-
-        // Verify the results
+        assertThatThrownBy(() -> planServiceUnderTest.createPlan("planName", new BigDecimal("0.00"), "description"))
+                .isInstanceOf(RuntimeException.class);
     }
 
     @Test

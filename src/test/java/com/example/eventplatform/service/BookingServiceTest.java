@@ -3,6 +3,7 @@ package com.example.eventplatform.service;
 import com.example.eventplatform.entity.*;
 import com.example.eventplatform.repository.BookingRepository;
 import com.example.eventplatform.repository.CustomerProfileRepository;
+import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.PlanRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,8 @@ class BookingServiceTest {
     private BookingRepository mockBookingRepository;
     @Mock
     private CustomerProfileRepository mockCustomerProfileRepository;
+    @Mock
+    private OrganizerProfileRepository mockOrganizerProfileRepository;
     @Mock
     private PlanRepository mockPlanRepository;
 
@@ -99,7 +102,6 @@ class BookingServiceTest {
     @Test
     void testConfirmBooking() {
         // Setup
-        // Configure CustomerProfileRepository.findAll(...).
         final CustomerProfile customerProfile = new CustomerProfile();
         customerProfile.setId(0L);
         final User user = new User();
@@ -107,8 +109,7 @@ class BookingServiceTest {
         user.setEmail("email");
         user.setPasswordHash("passwordHash");
         customerProfile.setUser(user);
-        final List<CustomerProfile> customerProfiles = List.of(customerProfile);
-        when(mockCustomerProfileRepository.findAll()).thenReturn(customerProfiles);
+        when(mockCustomerProfileRepository.findByUserEmail("email")).thenReturn(Optional.of(customerProfile));
 
         final OrganizerProfile organizerProfile = new OrganizerProfile();
         organizerProfile.setId(0L);
@@ -139,7 +140,7 @@ class BookingServiceTest {
         when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
 
         // Run the test
-        final Booking result = bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1));
+        final Booking result = bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1), "email");
 
         // Verify the results
         assertThat(result).isSameAs(booking);
@@ -148,11 +149,17 @@ class BookingServiceTest {
     @Test
     void testConfirmBooking_CustomerProfileRepositoryReturnsNoItems() {
         // Setup
-        when(mockCustomerProfileRepository.findAll()).thenReturn(Collections.emptyList());
+        final Plan plan = new Plan();
+        plan.setId(10L);
+        final OrganizerProfile organizerProfile = new OrganizerProfile();
+        organizerProfile.setId(1L);
+        plan.setOrganizer(organizerProfile);
+        when(mockPlanRepository.findById(10L)).thenReturn(Optional.of(plan));
+        when(mockCustomerProfileRepository.findByUserEmail("email")).thenReturn(Optional.empty());
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1)))
+                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1), "email"))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -166,8 +173,7 @@ class BookingServiceTest {
         user.setEmail("email");
         user.setPasswordHash("passwordHash");
         customerProfile.setUser(user);
-        final List<CustomerProfile> customerProfiles = List.of(customerProfile);
-        when(mockCustomerProfileRepository.findAll()).thenReturn(customerProfiles);
+        when(mockCustomerProfileRepository.findByUserEmail("email")).thenReturn(Optional.of(customerProfile));
 
         final Plan plan = new Plan();
         plan.setId(10L);
@@ -175,7 +181,7 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1)))
+                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1), "email"))
                 .isInstanceOf(RuntimeException.class);
     }
 }

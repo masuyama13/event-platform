@@ -4,6 +4,7 @@ import com.example.eventplatform.entity.Booking;
 import com.example.eventplatform.entity.Plan;
 import com.example.eventplatform.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +42,13 @@ public class BookingController {
     public String confirmBooking(
             @RequestParam Long planId,
             @RequestParam String eventDate,
+            Authentication authentication,
             Model model) {
 
         Booking savedBooking = bookingService.confirmBooking(
                 planId,
-                LocalDate.parse(eventDate)
+                LocalDate.parse(eventDate),
+                authentication.getName()
         );
         model.addAttribute("booking", savedBooking);
         return "thankyou";

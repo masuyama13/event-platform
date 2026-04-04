@@ -21,7 +21,10 @@ public class PlanService {
 
     // TODO: Replace with actual authenticated organizer
     private OrganizerProfile getTemporaryOrganizer() {
-        return organizerProfileRepository.findAll().get(0);
+        return organizerProfileRepository.findAll()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No organizer profile found"));
     }
 
     // Create a new plan
