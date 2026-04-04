@@ -1,16 +1,19 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.User;
+import com.example.eventplatform.entity.UserRole;
 import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.service.ReviewService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.security.Principal;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doThrow;
@@ -39,15 +42,16 @@ class ReviewControllerTest {
         User user = new User();
         user.setId(1L);
         user.setEmail("customer@test.com");
+        user.setRole(UserRole.CUSTOMER);
 
-        when(userRepository.findByEmail("customer@test.com"))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
         when(reviewService.getUserReviewText(1L, 10L)).thenReturn("Good organizer");
         when(reviewService.getUserRating(1L, 10L)).thenReturn(5);
 
-        Principal principal = () -> "customer@test.com";
+        setAuthentication(user);
 
-        mockMvc.perform(get("/reviews/organizer/10").principal(principal))
+        mockMvc.perform(get("/reviews/organizer/10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("review-form"))
                 .andExpect(model().attribute("organizerId", 10L))
@@ -60,15 +64,15 @@ class ReviewControllerTest {
         User user = new User();
         user.setId(1L);
         user.setEmail("customer@test.com");
+        user.setRole(UserRole.CUSTOMER);
 
-        when(userRepository.findByEmail("customer@test.com"))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
-        Principal principal = () -> "customer@test.com";
+        setAuthentication(user);
 
         mockMvc.perform(post("/reviews/submit")
                         .with(csrf())
-                        .principal(principal)
                         .param("organizerId", "10")
                         .param("reviewText", "Very helpful")
                         .param("ratingValue", "5"))
@@ -83,23 +87,30 @@ class ReviewControllerTest {
         User user = new User();
         user.setId(1L);
         user.setEmail("customer@test.com");
+        user.setRole(UserRole.CUSTOMER);
 
-        when(userRepository.findByEmail("customer@test.com"))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
         doThrow(new RuntimeException("Review text cannot be empty"))
                 .when(reviewService).submitReview(1L, 10L, "   ", 4);
 
-        Principal principal = () -> "customer@test.com";
+        setAuthentication(user);
 
         mockMvc.perform(post("/reviews/submit")
                         .with(csrf())
-                        .principal(principal)
                         .param("organizerId", "10")
                         .param("reviewText", "   ")
                         .param("ratingValue", "4"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("review-form"))
                 .andExpect(model().attributeExists("error"));
+    }
+
+    private void setAuthentication(User user) {
+        UserPrincipal principal = UserPrincipal.from(user);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
