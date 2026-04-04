@@ -20,6 +20,7 @@
         <p>Plan: <span th:text="${booking.planName}"></span></p>
         <p>Status: <span th:text="${booking.status}"></span></p>
         <p>Date: <span th:text="${booking.eventDate}"></span></p>
+        <p><a th:href="@{/customer/bookings/{bookingId}(bookingId=${booking.id})}">View Booking Details</a></p>
 
         <div th:if="${booking.status.name() == 'APPROVED'}">
             <a th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}">Proceed to Payment</a>

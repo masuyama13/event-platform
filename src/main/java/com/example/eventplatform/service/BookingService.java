@@ -40,6 +40,11 @@ public class BookingService {
 
     // Save confirmed booking to database with REQUESTED status
     public Booking confirmBooking(Long planId, LocalDate eventDate, String customerEmail) {
+        LocalDate earliestBookingDate = LocalDate.now().plusWeeks(1);
+        if (eventDate.isBefore(earliestBookingDate)) {
+            throw new RuntimeException("Event date must be at least one week from today");
+        }
+
         Plan selectedPlan = getPlanDetail(planId);
 
         CustomerProfile customerProfile = customerProfileRepository.findByUserEmail(customerEmail)

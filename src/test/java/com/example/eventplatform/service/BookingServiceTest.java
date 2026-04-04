@@ -102,6 +102,8 @@ class BookingServiceTest {
     @Test
     void testConfirmBooking() {
         // Setup
+        final LocalDate requestedDate = LocalDate.now().plusWeeks(2);
+
         final CustomerProfile customerProfile = new CustomerProfile();
         customerProfile.setId(0L);
         final User user = new User();
@@ -133,14 +135,14 @@ class BookingServiceTest {
         final OrganizerProfile organizerProfile1 = new OrganizerProfile();
         booking.setOrganizerProfile(organizerProfile1);
         booking.setPlan(plan);
-        booking.setEventDate(LocalDate.of(2020, 1, 1));
+        booking.setEventDate(requestedDate);
         booking.setStatus(BookingStatus.REQUESTED);
         booking.setPlannerName("organizerName");
         booking.setPrice(new BigDecimal("123.45"));
         when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
 
         // Run the test
-        final Booking result = bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1), "email");
+        final Booking result = bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email");
 
         // Verify the results
         assertThat(result).isSameAs(booking);
@@ -149,6 +151,8 @@ class BookingServiceTest {
     @Test
     void testConfirmBooking_CustomerProfileRepositoryReturnsNoItems() {
         // Setup
+        final LocalDate requestedDate = LocalDate.now().plusWeeks(2);
+
         final Plan plan = new Plan();
         plan.setId(10L);
         final OrganizerProfile organizerProfile = new OrganizerProfile();
@@ -159,13 +163,15 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1), "email"))
+                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
                 .isInstanceOf(RuntimeException.class);
     }
 
     @Test
     void testConfirmBooking_PlanHasNoOrganizer() {
         // Setup
+        final LocalDate requestedDate = LocalDate.now().plusWeeks(2);
+
         final CustomerProfile customerProfile = new CustomerProfile();
         customerProfile.setId(0L);
         final User user = new User();
@@ -181,7 +187,16 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.of(2020, 1, 1), "email"))
+                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
                 .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void testConfirmBooking_EventDateTooSoon() {
+        // Run the test
+        assertThatThrownBy(
+                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.now().plusDays(6), "email"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Event date must be at least one week from today");
     }
 }

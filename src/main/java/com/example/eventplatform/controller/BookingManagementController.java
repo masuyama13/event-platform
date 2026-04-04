@@ -27,6 +27,15 @@ public class BookingManagementController {
         return "customer-bookings";
     }
 
+    @GetMapping("/customer/bookings/{bookingId}")
+    public String customerBookingDetail(@PathVariable Long bookingId,
+                                        Authentication authentication,
+                                        Model model) {
+        Booking booking = bookingService.getCustomerBooking(bookingId, authentication.getName());
+        model.addAttribute("booking", booking);
+        return "booking-detail";
+    }
+
     @GetMapping("/organizer/bookings")
     public String organizerBookings(Authentication authentication, Model model) {
         List<Booking> bookings = bookingService.getOrganizerBookings(authentication.getName());

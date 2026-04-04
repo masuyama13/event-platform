@@ -10,50 +10,50 @@
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
 
-<div class="container">
-    <div class="thankyou-card">
-        <h1>🎉 Thank You!</h1>
-        <p>Your booking request has been submitted. The organizer will approve or reject it.</p>
+    <div class="container">
+        <div class="thankyou-card">
+            <h1>🎉 Thank You!</h1>
+            <p>Your booking has been confirmed!</p>
 
-        <table class="info-table">
-            <tr>
-                <td>Booking ID:</td>
-                <td th:text="${booking.id}">ID</td>
-            </tr>
-            <tr>
-                <td>Organizer:</td>
-                <td th:text="${booking.organizerProfile != null
+            <table class="info-table">
+                <tr>
+                    <td>Booking ID:</td>
+                    <td th:text="${booking.id}">ID</td>
+                </tr>
+                <tr>
+                    <td>Organizer:</td>
+                    <td th:text="${booking.organizerProfile != null
                                ? booking.organizerProfile.businessName : 'N/A'}">
-                    Organizer Name
-                </td>
-            </tr>
-            <tr>
-                <td>Plan Name:</td>
-                <td th:text="${booking.planName}">Plan Name</td>
-            </tr>
-            <tr>
-                <td>Date:</td>
-                <td th:text="${booking.eventDate}">Date</td>
-            </tr>
-            <tr>
-                <td>Price:</td>
-                <td>$<span th:text="${booking.price}">Price</span></td>
-            </tr>
-            <tr>
-                <td>Status:</td>
-                <td th:text="${booking.status}">Status</td>
-            </tr>
-        </table>
+                        Organizer Name
+                    </td>
+                </tr>
+                <tr>
+                    <td>Plan Name:</td>
+                    <td th:text="${booking.planName}">Plan Name</td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td th:text="${booking.eventDate}">Date</td>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td>$<span th:text="${booking.price}">Price</span></td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td th:text="${booking.status}">Status</td>
+                </tr>
+            </table>
 
-        <div class="buttons">
-            <a href="/" class="btn-confirm">Back to Home</a>
-            <a th:href="@{/customer/bookings}">
-                <button>View My Bookings</button>
-            </a>
+            <div class="buttons">
+                <a href="/" class="btn-confirm">Back to Home</a>
+                <a th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}">
+                    <button>View Invoice</button>
+                </a>
+            </div>
         </div>
     </div>
-</div>
- </main>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
