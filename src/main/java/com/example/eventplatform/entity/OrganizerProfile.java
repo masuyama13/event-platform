@@ -20,7 +20,7 @@ public class OrganizerProfile {
     @Column(nullable = false)
     private String businessName;
 
-    @Column(length = 2000)
+    @Column(nullable = false, length = 2000)
     private String description;
 
     @ManyToMany
@@ -31,10 +31,13 @@ public class OrganizerProfile {
     )
     private Set<Category> categories = new LinkedHashSet<>();
 
+    @Column(nullable = false)
     private String phone;
 
+    @Column(nullable = false)
     private String website;
 
+    @Column(nullable = false)
     private String address;
 
     private Double averageRating;

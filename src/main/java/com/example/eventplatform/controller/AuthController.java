@@ -2,6 +2,7 @@ package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.*;
 import com.example.eventplatform.service.CategoryService;
+import com.example.eventplatform.service.OrganizerService;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
@@ -20,17 +21,20 @@ public class AuthController {
     private final OrganizerProfileRepository organizerProfileRepository;
     private final PasswordEncoder passwordEncoder;
     private final CategoryService categoryService;
+    private final OrganizerService organizerService;
 
     public AuthController(UserRepository userRepository,
                           CustomerProfileRepository customerProfileRepository,
                           OrganizerProfileRepository organizerProfileRepository,
                           PasswordEncoder passwordEncoder,
-                          CategoryService categoryService) {
+                          CategoryService categoryService,
+                          OrganizerService organizerService) {
         this.userRepository = userRepository;
         this.customerProfileRepository = customerProfileRepository;
         this.organizerProfileRepository = organizerProfileRepository;
         this.passwordEncoder = passwordEncoder;
         this.categoryService = categoryService;
+        this.organizerService = organizerService;
     }
 
     @GetMapping("/login")
@@ -87,11 +91,11 @@ public class AuthController {
             @RequestParam String email,
             @RequestParam String password,
             @RequestParam String businessName,
-            @RequestParam(required = false) String description,
-            @RequestParam(name = "categoryIds", required = false) List<Long> categoryIds,
-            @RequestParam(required = false) String phone,
-            @RequestParam(required = false) String website,
-            @RequestParam(required = false) String address,
+            @RequestParam String description,
+            @RequestParam(name = "categoryIds") List<Long> categoryIds,
+            @RequestParam String phone,
+            @RequestParam String website,
+            @RequestParam String address,
             Model model
     ) {
         if (userRepository.existsByEmail(email)) {
@@ -101,6 +105,14 @@ public class AuthController {
         }
 
         try {
+            organizerService.validateOrganizerInput(
+                    businessName,
+                    description,
+                    categoryIds,
+                    phone,
+                    website,
+                    address
+            );
             User user = createUser(email, password, UserRole.ORGANIZER);
             OrganizerProfile profile = new OrganizerProfile();
             profile.setUser(user);

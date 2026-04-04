@@ -40,6 +40,20 @@ public class OrganizerService {
                 .orElseThrow(() -> new RuntimeException("Organizer not found for user id: " + userId));
     }
 
+    public void validateOrganizerInput(String businessName,
+                                       String description,
+                                       List<Long> categoryIds,
+                                       String phone,
+                                       String website,
+                                       String address) {
+        requireText(businessName, "Business name is required.");
+        requireText(description, "Description is required.");
+        requireText(phone, "Phone is required.");
+        requireText(website, "Website is required.");
+        requireText(address, "Address is required.");
+        categoryService.getCategoriesByIds(categoryIds);
+    }
+
     public OrganizerProfile createOrganizer(Long userId,
                                             String businessName,
                                             String description,
@@ -59,6 +73,7 @@ public class OrganizerService {
             throw new RuntimeException("Organizer profile already exists for this user");
         }
 
+        validateOrganizerInput(businessName, description, categoryIds, phone, website, address);
         Set<Category> categories = categoryService.getCategoriesByIds(categoryIds);
 
         OrganizerProfile organizerProfile = new OrganizerProfile();
@@ -83,6 +98,7 @@ public class OrganizerService {
                                             String address) {
 
         OrganizerProfile organizerProfile = getOrganizerById(id);
+        validateOrganizerInput(businessName, description, categoryIds, phone, website, address);
         Set<Category> categories = categoryService.getCategoriesByIds(categoryIds);
 
         organizerProfile.setBusinessName(businessName);
@@ -112,5 +128,11 @@ public class OrganizerService {
                 website,
                 address
         );
+    }
+
+    private void requireText(String value, String message) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new RuntimeException(message);
+        }
     }
 }

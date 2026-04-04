@@ -53,6 +53,7 @@
                           name="description"
                           rows="4"
                           cols="40"
+                          required
                           th:text="${organizer.description}"></textarea>
             </div>
 
@@ -78,6 +79,7 @@
                 <input type="text"
                        id="phone"
                        name="phone"
+                       required
                        th:value="${organizer.phone}">
             </div>
 
@@ -88,6 +90,7 @@
                 <input type="text"
                        id="website"
                        name="website"
+                       required
                        th:value="${organizer.website}">
             </div>
 
@@ -98,6 +101,7 @@
                 <input type="text"
                        id="address"
                        name="address"
+                       required
                        th:value="${organizer.address}">
             </div>
 

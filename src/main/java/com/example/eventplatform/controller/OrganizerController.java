@@ -46,11 +46,11 @@ public class OrganizerController {
     @PostMapping
     public String createOrganizer(@RequestParam Long userId,
                                   @RequestParam String businessName,
-                                  @RequestParam(required = false) String description,
-                                  @RequestParam(name = "categoryIds", required = false) List<Long> categoryIds,
-                                  @RequestParam(required = false) String phone,
-                                  @RequestParam(required = false) String website,
-                                  @RequestParam(required = false) String address,
+                                  @RequestParam String description,
+                                  @RequestParam(name = "categoryIds") List<Long> categoryIds,
+                                  @RequestParam String phone,
+                                  @RequestParam String website,
+                                  @RequestParam String address,
                                   Model model) {
         try {
             organizerService.createOrganizer(
