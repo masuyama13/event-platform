@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,7 +32,9 @@ public class BookingController {
     @GetMapping("/plan/{planId}")
     public String showPlanDetail(
             @PathVariable Long planId,
-            Model model) {
+            Model model,
+            HttpServletResponse response) {
+        disableCaching(response);
         Plan selectedPlan = bookingService.getPlanDetail(planId);
         model.addAttribute("plan", selectedPlan);
         return "plan-detail";
@@ -41,7 +44,9 @@ public class BookingController {
     @GetMapping("/plan/{planId}/book")
     public String showBookingRequestForm(
             @PathVariable Long planId,
-            Model model) {
+            Model model,
+            HttpServletResponse response) {
+        disableCaching(response);
         Plan selectedPlan = bookingService.getPlanDetail(planId);
         model.addAttribute("plan", selectedPlan);
         model.addAttribute("earliestBookingDate", LocalDate.now().plusWeeks(1));
@@ -60,6 +65,25 @@ public class BookingController {
                 LocalDate.parse(eventDate),
                 authentication.getName()
         );
-        return new RedirectView("/customer/bookings/" + savedBooking.getId());
+        return new RedirectView("/booking/complete/" + savedBooking.getId());
+    }
+
+    // GET /booking/complete/{bookingId}
+    @GetMapping("/booking/complete/{bookingId}")
+    public String showBookingComplete(
+            @PathVariable Long bookingId,
+            Authentication authentication,
+            Model model,
+            HttpServletResponse response) {
+        disableCaching(response);
+        Booking booking = bookingService.getCustomerBooking(bookingId, authentication.getName());
+        model.addAttribute("booking", booking);
+        return "thankyou";
+    }
+
+    private void disableCaching(HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
     }
 }

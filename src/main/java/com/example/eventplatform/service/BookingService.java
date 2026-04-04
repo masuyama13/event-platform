@@ -45,6 +45,11 @@ public class BookingService {
             throw new RuntimeException("Event date must be at least one week from today");
         }
 
+        if (bookingRepository.existsByCustomerProfileUserEmailAndPlanIdAndEventDate(
+                customerEmail, planId, eventDate)) {
+            throw new RuntimeException("You already have a booking request for this plan and date");
+        }
+
         Plan selectedPlan = getPlanDetail(planId);
 
         CustomerProfile customerProfile = customerProfileRepository.findByUserEmail(customerEmail)

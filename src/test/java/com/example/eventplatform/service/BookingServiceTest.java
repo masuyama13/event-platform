@@ -104,6 +104,9 @@ class BookingServiceTest {
         // Setup
         final LocalDate requestedDate = LocalDate.now().plusWeeks(2);
 
+        when(mockBookingRepository.existsByCustomerProfileUserEmailAndPlanIdAndEventDate(
+                "email", 10L, requestedDate)).thenReturn(false);
+
         final CustomerProfile customerProfile = new CustomerProfile();
         customerProfile.setId(0L);
         final User user = new User();
@@ -153,6 +156,9 @@ class BookingServiceTest {
         // Setup
         final LocalDate requestedDate = LocalDate.now().plusWeeks(2);
 
+        when(mockBookingRepository.existsByCustomerProfileUserEmailAndPlanIdAndEventDate(
+                "email", 10L, requestedDate)).thenReturn(false);
+
         final Plan plan = new Plan();
         plan.setId(10L);
         final OrganizerProfile organizerProfile = new OrganizerProfile();
@@ -171,6 +177,9 @@ class BookingServiceTest {
     void testConfirmBooking_PlanHasNoOrganizer() {
         // Setup
         final LocalDate requestedDate = LocalDate.now().plusWeeks(2);
+
+        when(mockBookingRepository.existsByCustomerProfileUserEmailAndPlanIdAndEventDate(
+                "email", 10L, requestedDate)).thenReturn(false);
 
         final CustomerProfile customerProfile = new CustomerProfile();
         customerProfile.setId(0L);
@@ -198,5 +207,19 @@ class BookingServiceTest {
                 () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.now().plusDays(6), "email"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Event date must be at least one week from today");
+    }
+
+    @Test
+    void testConfirmBooking_DuplicateBookingRequest() {
+        // Setup
+        final LocalDate requestedDate = LocalDate.now().plusWeeks(2);
+        when(mockBookingRepository.existsByCustomerProfileUserEmailAndPlanIdAndEventDate(
+                "email", 10L, requestedDate)).thenReturn(true);
+
+        // Run the test
+        assertThatThrownBy(
+                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("You already have a booking request for this plan and date");
     }
 }
