@@ -69,7 +69,7 @@ public class OrganizerProfileController {
                     website,
                     address
             );
-            return "redirect:/profile/organizer";
+            return "redirect:/profile";
         } catch (RuntimeException e) {
             OrganizerProfile organizer = organizerService.getOrganizerByUserId(user.getId());
             model.addAttribute("organizer", organizer);

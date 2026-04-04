@@ -18,8 +18,6 @@
                 <span></span>
             </summary>
             <nav class="site-menu__panel">
-                <span class="site-menu__user"
-                      th:text="${#authentication.name}">user@example.com</span>
                 <a th:href="@{/profile}" class="site-menu__link">Profile</a>
                 <form th:action="@{/logout}" method="post" class="site-menu__logout">
                     <input type="hidden"
