@@ -7,7 +7,9 @@ import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.service.CategoryService;
 import com.example.eventplatform.service.OrganizerService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +41,7 @@ public class OrganizerProfileController {
             return "redirect:/organizers";
         }
 
+        model.addAttribute("email", user.getEmail());
         model.addAttribute("organizer", organizerService.getOrganizerByUserId(user.getId()));
         model.addAttribute("isEdit", true);
         model.addAttribute("categories", categoryService.getAllCategories());
@@ -47,6 +50,7 @@ public class OrganizerProfileController {
 
     @PostMapping
     public String updateOrganizerProfile(@AuthenticationPrincipal UserPrincipal principal,
+                                         @RequestParam String email,
                                          @RequestParam String businessName,
                                          @RequestParam String description,
                                          @RequestParam(name = "categoryIds") List<Long> categoryIds,
@@ -62,6 +66,7 @@ public class OrganizerProfileController {
         try {
             organizerService.updateProfile(
                     user.getId(),
+                    email,
                     businessName,
                     description,
                     categoryIds,
@@ -69,9 +74,11 @@ public class OrganizerProfileController {
                     website,
                     address
             );
+            refreshAuthentication(user.getId());
             return "redirect:/profile";
         } catch (RuntimeException e) {
             OrganizerProfile organizer = organizerService.getOrganizerByUserId(user.getId());
+            model.addAttribute("email", email);
             model.addAttribute("organizer", organizer);
             model.addAttribute("isEdit", true);
             model.addAttribute("error", e.getMessage());
@@ -87,5 +94,18 @@ public class OrganizerProfileController {
 
         return userRepository.findById(principal.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found: " + principal.getUserId()));
+    }
+
+    private void refreshAuthentication(Long userId) {
+        User updatedUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+        UserPrincipal updatedPrincipal = UserPrincipal.from(updatedUser);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                        updatedPrincipal,
+                        updatedUser.getPasswordHash(),
+                        updatedPrincipal.getAuthorities()
+                );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

@@ -7,6 +7,7 @@ import com.example.eventplatform.entity.UserRole;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -111,13 +112,17 @@ public class OrganizerService {
         return organizerProfileRepository.save(organizerProfile);
     }
 
+    @Transactional
     public OrganizerProfile updateProfile(Long userId,
+                                          String email,
                                           String businessName,
                                           String description,
                                           List<Long> categoryIds,
                                           String phone,
                                           String website,
                                           String address) {
+        updateEmail(userId, email);
+
         OrganizerProfile organizerProfile = getOrganizerByUserId(userId);
         return updateOrganizer(
                 organizerProfile.getId(),
@@ -128,6 +133,23 @@ public class OrganizerService {
                 website,
                 address
         );
+    }
+
+    private void updateEmail(Long userId, String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new RuntimeException("Email is required.");
+        }
+
+        String normalizedEmail = email.trim();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        if (!user.getEmail().equals(normalizedEmail) && userRepository.existsByEmail(normalizedEmail)) {
+            throw new RuntimeException("Email is already in use.");
+        }
+
+        user.setEmail(normalizedEmail);
+        userRepository.save(user);
     }
 
     private void requireText(String value, String message) {

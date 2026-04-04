@@ -6,7 +6,9 @@ import com.example.eventplatform.entity.UserRole;
 import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.service.CustomerProfileService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,12 +36,14 @@ public class CustomerProfileController {
             return "redirect:/organizers";
         }
 
+        model.addAttribute("email", user.getEmail());
         model.addAttribute("customer", customerProfileService.getByUserId(user.getId()));
         return "customer-profile-form";
     }
 
     @PostMapping
     public String updateCustomerProfile(@AuthenticationPrincipal UserPrincipal principal,
+                                        @RequestParam String email,
                                         @RequestParam String firstName,
                                         @RequestParam String lastName,
                                         @RequestParam(required = false) String phone,
@@ -53,10 +57,12 @@ public class CustomerProfileController {
         }
 
         try {
-            customerProfileService.updateProfile(user.getId(), firstName, lastName, phone, address, city, country);
+            customerProfileService.updateProfile(user.getId(), email, firstName, lastName, phone, address, city, country);
+            refreshAuthentication(user.getId());
             return "redirect:/profile";
         } catch (RuntimeException e) {
             CustomerProfile profile = customerProfileService.getByUserId(user.getId());
+            model.addAttribute("email", email);
             model.addAttribute("customer", profile);
             model.addAttribute("error", e.getMessage());
             return "customer-profile-form";
@@ -70,5 +76,18 @@ public class CustomerProfileController {
 
         return userRepository.findById(principal.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found: " + principal.getUserId()));
+    }
+
+    private void refreshAuthentication(Long userId) {
+        User updatedUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+        UserPrincipal updatedPrincipal = UserPrincipal.from(updatedUser);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                        updatedPrincipal,
+                        updatedUser.getPasswordHash(),
+                        updatedPrincipal.getAuthorities()
+                );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
