@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Sign In</title>
+    <title>EventOmakase | Login</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-<h1>Sign In</h1>
+<h1>Login</h1>
 
 <form th:action="@{/login}" method="post">
     <div>
@@ -18,7 +18,7 @@
         <label>Password:</label>
         <input type="password" name="password" required>
     </div>
-    <button type="submit">Sign In</button>
+    <button type="submit">Login</button>
 </form>
 
 <p><a th:href="@{/register}">Create a customer account</a></p>
