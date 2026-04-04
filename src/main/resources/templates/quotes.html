@@ -11,6 +11,10 @@
 <h2>Create Quote</h2>
 
 <form action="/quotes/create" method="post">
+    <input type="hidden"
+           th:if="${_csrf != null}"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}"/>
     <input type="hidden" name="bookingId" th:value="${bookingId}" />
 
     <label>Amount:</label>
@@ -37,6 +41,10 @@
 
     <div th:if="${quote.status.name() == 'PENDING'}">
         <form action="/quotes/update-status" method="post">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
             <input type="hidden" name="quoteId" th:value="${quote.id}">
             <input type="hidden" name="bookingId" th:value="${bookingId}">
 
@@ -45,6 +53,10 @@
         </form>
 
         <form th:action="@{/invoices/create/{id}(id=${quote.id})}" method="post">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
             <button type="submit">Generate Invoice</button>
         </form>
     </div>

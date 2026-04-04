@@ -10,6 +10,10 @@
 <h1>Login</h1>
 
 <form th:action="@{/login}" method="post">
+    <input type="hidden"
+           th:if="${_csrf != null}"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}"/>
     <div>
         <label>Email:</label>
         <input type="email" name="username" required>

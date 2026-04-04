@@ -130,6 +130,10 @@
     <form th:if="${invoice.status.name() != 'PAID'}"
           th:action="@{/payments/checkout/{invoiceId}(invoiceId=${invoice.id})}"
           method="post">
+        <input type="hidden"
+               th:if="${_csrf != null}"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}"/>
         <button class="btn" type="submit">Proceed to Payment</button>
     </form>
 

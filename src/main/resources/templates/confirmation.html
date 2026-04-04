@@ -36,6 +36,10 @@
         </table>
 
         <form action="/booking/thankyou" method="post">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
             <input type="hidden" name="planName"
                    th:value="${quote.planName}"/>
             <input type="hidden" name="organizerName"
