@@ -2,12 +2,12 @@ package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.User;
 import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.service.ReviewService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @Controller
 @RequestMapping("/reviews")
@@ -16,25 +16,26 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final UserRepository userRepository;
 
-    public ReviewController(ReviewService reviewService,
-                            UserRepository userRepository) {
+    public ReviewController(ReviewService reviewService, UserRepository userRepository) {
         this.reviewService = reviewService;
         this.userRepository = userRepository;
     }
 
-    private Long getCurrentUserId(Principal principal) {
-        User user = userRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getName()));
+    private Long getCurrentUserId(UserPrincipal principal) {
+        if (principal == null) {
+            throw new RuntimeException("User is not authenticated");
+        }
+
+        User user = userRepository.findById(principal.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getUserId()));
         return user.getId();
     }
 
     @GetMapping("/organizer/{organizerId}")
     public String showReviewForm(@PathVariable Long organizerId,
-                                 Principal principal,
+                                 @AuthenticationPrincipal UserPrincipal principal,
                                  Model model) {
-
         Long currentUserId = getCurrentUserId(principal);
-
         String existingReview = reviewService.getUserReviewText(currentUserId, organizerId);
         Integer existingRating = reviewService.getUserRating(currentUserId, organizerId);
 
@@ -49,9 +50,8 @@ public class ReviewController {
     public String submitReview(@RequestParam Long organizerId,
                                @RequestParam String reviewText,
                                @RequestParam Integer ratingValue,
-                               Principal principal,
+                               @AuthenticationPrincipal UserPrincipal principal,
                                Model model) {
-
         Long currentUserId = getCurrentUserId(principal);
 
         try {

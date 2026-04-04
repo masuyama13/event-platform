@@ -28,7 +28,8 @@ public class SecurityConfig {
                                 "/register",
                                 "/organizer/register",
                                 "/stripe/webhook",
-                                "/css/**"
+                                "/css/**",
+                                "/h2-console/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

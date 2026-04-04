@@ -1,12 +1,13 @@
 package com.example.eventplatform.controller;
 
 import com.example.eventplatform.entity.Plan;
+import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.service.PlanService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -32,12 +33,12 @@ public class PlanController {
     }
 
     @GetMapping("/manage")
-    public String managePlans(Principal principal, Model model) {
+    public String managePlans(@AuthenticationPrincipal UserPrincipal principal, Model model) {
         if (principal == null) {
             return "redirect:/login";
         }
 
-        Long organizerId = planService.getOrganizerByEmail(principal.getName()).getId();
+        Long organizerId = planService.getOrganizerByUserId(principal.getUserId()).getId();
         List<Plan> plans = planService.getPlansByOrganizer(organizerId);
         model.addAttribute("plans", plans);
         model.addAttribute("organizerId", organizerId);
@@ -45,7 +46,7 @@ public class PlanController {
     }
 
     @GetMapping("/new")
-    public String showCreatePlanForm(Principal principal, Model model) {
+    public String showCreatePlanForm(@AuthenticationPrincipal UserPrincipal principal, Model model) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -56,20 +57,20 @@ public class PlanController {
 
     @GetMapping("/{planId}/edit")
     public String showEditPlanForm(@PathVariable Long planId,
-                                   Principal principal,
+                                   @AuthenticationPrincipal UserPrincipal principal,
                                    Model model) {
         if (principal == null) {
             return "redirect:/login";
         }
 
-        model.addAttribute("editingPlan", planService.getPlanForOrganizer(planId, principal.getName()));
+        model.addAttribute("editingPlan", planService.getPlanForOrganizer(planId, principal.getUserId()));
         return "plan-form";
     }
 
     // Create a new plan
     @PostMapping("/create")
     public String createPlan(
-            Principal principal,
+            @AuthenticationPrincipal UserPrincipal principal,
             @RequestParam String planName,
             @RequestParam BigDecimal price,
             @RequestParam String description
@@ -78,13 +79,13 @@ public class PlanController {
             return "redirect:/login";
         }
 
-        planService.createPlan(principal.getName(), planName, price, description);
+        planService.createPlan(principal.getUserId(), planName, price, description);
         return "redirect:/plans/manage";
     }
 
     @PostMapping("/{planId}/edit")
     public String updatePlan(@PathVariable Long planId,
-                             Principal principal,
+                             @AuthenticationPrincipal UserPrincipal principal,
                              @RequestParam String planName,
                              @RequestParam BigDecimal price,
                              @RequestParam String description) {
@@ -92,7 +93,7 @@ public class PlanController {
             return "redirect:/login";
         }
 
-        planService.updatePlan(planId, principal.getName(), planName, price, description);
+        planService.updatePlan(planId, principal.getUserId(), planName, price, description);
         return "redirect:/plans/manage";
     }
 }
