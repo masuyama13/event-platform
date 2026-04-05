@@ -9,6 +9,7 @@ import com.example.eventplatform.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +30,14 @@ public class OrganizerService {
 
     public List<OrganizerProfile> getAllOrganizers(Long categoryId) {
         return organizerProfileRepository.findAllByCategoryIdOrderByRatingDesc(categoryId);
+    }
+
+    public List<OrganizerProfile> getSponsoredOrganizers(Long categoryId) {
+        return organizerProfileRepository.findSponsoredByCategoryId(categoryId, LocalDateTime.now());
+    }
+
+    public List<OrganizerProfile> getAllOrganizersForAdmin() {
+        return organizerProfileRepository.findAll(org.springframework.data.domain.Sort.by("businessName"));
     }
 
     public OrganizerProfile getOrganizerById(Long id) {
@@ -109,6 +118,24 @@ public class OrganizerService {
         organizerProfile.setWebsite(website);
         organizerProfile.setAddress(address);
 
+        return organizerProfileRepository.save(organizerProfile);
+    }
+
+    public OrganizerProfile updateSponsorship(Long organizerId,
+                                              LocalDateTime sponsoredFrom,
+                                              LocalDateTime sponsoredUntil) {
+        OrganizerProfile organizerProfile = getOrganizerById(organizerId);
+
+        if ((sponsoredFrom == null) != (sponsoredUntil == null)) {
+            throw new RuntimeException("Both sponsorship start and end are required.");
+        }
+
+        if (sponsoredFrom != null && sponsoredUntil.isBefore(sponsoredFrom)) {
+            throw new RuntimeException("Sponsorship end must be after start.");
+        }
+
+        organizerProfile.setSponsoredFrom(sponsoredFrom);
+        organizerProfile.setSponsoredUntil(sponsoredUntil);
         return organizerProfileRepository.save(organizerProfile);
     }
 

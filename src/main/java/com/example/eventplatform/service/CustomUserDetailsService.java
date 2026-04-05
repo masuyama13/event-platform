@@ -1,6 +1,7 @@
 package com.example.eventplatform.service;
 
 import com.example.eventplatform.entity.User;
+import com.example.eventplatform.entity.UserRole;
 import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,18 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
+        return UserPrincipal.from(user);
+    }
+
+    public UserDetails loadAdminByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmailAndRole(username, UserRole.ADMIN)
+                .orElseThrow(() -> new UsernameNotFoundException("Admin user not found: " + username));
+        return UserPrincipal.from(user);
+    }
+
+    public UserDetails loadNonAdminByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmailAndRoleNot(username, UserRole.ADMIN)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         return UserPrincipal.from(user);
     }
 }

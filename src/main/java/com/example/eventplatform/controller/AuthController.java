@@ -42,6 +42,11 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/admin/login")
+    public String adminLoginPage() {
+        return "admin-login";
+    }
+
     @GetMapping("/register")
     public String customerRegisterPage(Model model) {
         populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");

@@ -1,3 +1,6 @@
+body {
+    font-size: 15px;
+}
 .app-shell {
     margin: 0;
     min-height: 100vh;
@@ -49,7 +52,7 @@
 
 .site-brand {
     color: inherit;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-decoration: none;
@@ -65,8 +68,8 @@
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     padding: 0 10px;
     border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 10px;
@@ -197,7 +200,6 @@
         padding: 14px 16px;
     }
 
-    .site-header__inner,
     .profile-actions {
         flex-direction: column;
         align-items: stretch;

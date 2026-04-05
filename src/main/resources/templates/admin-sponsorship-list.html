@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sponsorship Management</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-sponsorship.css}">
+</head>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
+    <div class="admin-page">
+        <div class="admin-page__header">
+            <div>
+                <p class="admin-page__eyebrow">Admin</p>
+                <h1>Sponsorship Management</h1>
+                <p class="admin-page__intro">Set the sponsored start and end time for any organizer.</p>
+            </div>
+            <a th:href="@{/}" class="admin-page__back">Back to Home</a>
+        </div>
+
+        <p class="admin-page__message" th:if="${message != null}" th:text="${message}">Updated.</p>
+
+        <div class="admin-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>Organizer</th>
+                    <th>Status</th>
+                    <th>Sponsored From</th>
+                    <th>Sponsored Until</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="organizer : ${organizers}">
+                    <td th:text="${organizer.businessName}">Business Name</td>
+                    <td>
+                        <span class="admin-status"
+                              th:classappend="${organizer.sponsoredFrom != null and organizer.sponsoredUntil != null and !now.isBefore(organizer.sponsoredFrom) and !now.isAfter(organizer.sponsoredUntil)} ? ' admin-status--active' : ''"
+                              th:text="${organizer.sponsoredFrom != null and organizer.sponsoredUntil != null and !now.isBefore(organizer.sponsoredFrom) and !now.isAfter(organizer.sponsoredUntil)} ? 'Active' : 'Not Active'">
+                            Not Active
+                        </span>
+                    </td>
+                    <td th:text="${organizer.sponsoredFrom != null ? #temporals.format(organizer.sponsoredFrom, 'yyyy-MM-dd HH:mm') : '-'}">-</td>
+                    <td th:text="${organizer.sponsoredUntil != null ? #temporals.format(organizer.sponsoredUntil, 'yyyy-MM-dd HH:mm') : '-'}">-</td>
+                    <td>
+                        <a th:href="@{/admin/sponsorships/{organizerId}(organizerId=${organizer.id})}"
+                           class="admin-table__action">
+                            Manage
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+</body>
+</html>

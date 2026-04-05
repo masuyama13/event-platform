@@ -69,6 +69,12 @@ public class DataInitializer {
             organizerUser.setRole(UserRole.ORGANIZER);
             userRepository.save(organizerUser);
 
+            User adminUser = new User();
+            adminUser.setEmail("admin@test.com");
+            adminUser.setPasswordHash(passwordEncoder.encode("temp123"));
+            adminUser.setRole(UserRole.ADMIN);
+            userRepository.save(adminUser);
+
             // Create temporary organizer profile
             OrganizerProfile organizer = new OrganizerProfile();
             organizer.setBusinessName("Test Events Co");
@@ -82,6 +88,7 @@ public class DataInitializer {
             organizerProfileRepository.save(organizer);
 
             System.out.println(">>> Temporary organizer profile created");
+            System.out.println(">>> Temporary admin user created");
 
             // Create Plan A to D plans
             String[][] plans = {
