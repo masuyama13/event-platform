@@ -42,6 +42,10 @@ public class OrganizerProfile {
 
     private Double averageRating;
 
+    private LocalDateTime sponsoredFrom;
+
+    private LocalDateTime sponsoredUntil;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -101,6 +105,14 @@ public class OrganizerProfile {
         return createdAt;
     }
 
+    public LocalDateTime getSponsoredFrom() {
+        return sponsoredFrom;
+    }
+
+    public LocalDateTime getSponsoredUntil() {
+        return sponsoredUntil;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -143,6 +155,14 @@ public class OrganizerProfile {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setSponsoredFrom(LocalDateTime sponsoredFrom) {
+        this.sponsoredFrom = sponsoredFrom;
+    }
+
+    public void setSponsoredUntil(LocalDateTime sponsoredUntil) {
+        this.sponsoredUntil = sponsoredUntil;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {

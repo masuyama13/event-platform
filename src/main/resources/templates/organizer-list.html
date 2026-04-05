@@ -26,6 +26,54 @@
         <button type="submit" class="organizer-directory__filter-button">Apply</button>
     </form>
 
+    <section class="organizer-directory__section"
+             th:if="${sponsoredOrganizers != null and !#lists.isEmpty(sponsoredOrganizers)}">
+        <div class="organizer-list organizer-list--sponsored">
+            <article class="organizer-list__item organizer-list__item--sponsored"
+                     th:each="organizer : ${sponsoredOrganizers}">
+                <div class="organizer-list__content">
+                    <div class="organizer-list__header">
+                        <div>
+                            <span class="organizer-list__badge">Sponsored</span>
+                            <h2 th:text="${organizer.businessName}">Business Name</h2>
+                        </div>
+                    </div>
+                    <p class="organizer-list__rating">
+                        Rating:
+                        <strong th:text="${organizer.averageRating != null}
+                                      ? (${organizer.averageRating} + ' / 5')
+                                      : '0.0 / 5'">
+                            0.0 / 5
+                        </strong>
+                    </p>
+
+                    <div class="organizer-list__categories"
+                         th:if="${organizer.categories != null and !#sets.isEmpty(organizer.categories)}">
+                        <span class="organizer-list__tag"
+                              th:each="category : ${organizer.categories}"
+                              th:text="${category.name}">
+                            Category
+                        </span>
+                    </div>
+                    <p class="organizer-list__categories organizer-list__categories--empty"
+                       th:if="${organizer.categories == null or #sets.isEmpty(organizer.categories)}">
+                        No categories
+                    </p>
+
+                    <p class="organizer-list__description" th:text="${organizer.description} ?: 'N/A'">Description</p>
+                </div>
+
+                <div class="organizer-list__actions">
+                    <a th:href="@{/organizers/{id}(id=${organizer.id})}"
+                       class="organizer-list__button">
+                        View Details
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="organizer-directory__section">
     <div class="organizer-list"
          th:if="${organizers != null and !#lists.isEmpty(organizers)}">
 
@@ -71,6 +119,7 @@
     <div class="organizer-directory__empty" th:if="${organizers == null or #lists.isEmpty(organizers)}">
         <p>No organizers found.</p>
     </div>
+    </section>
 </div>
  </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>

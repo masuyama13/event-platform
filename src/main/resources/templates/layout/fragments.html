@@ -19,7 +19,14 @@
             </summary>
             <nav class="site-menu__panel">
                 <a th:href="@{/profile}" class="site-menu__link">Profile</a>
-                <form th:action="@{/logout}" method="post" class="site-menu__logout">
+                <form th:action="@{/admin/logout}" method="post" class="site-menu__logout" sec:authorize="hasRole('ADMIN')">
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+                    <button type="submit" class="site-menu__button">Logout</button>
+                </form>
+                <form th:action="@{/logout}" method="post" class="site-menu__logout" sec:authorize="!hasRole('ADMIN')">
                     <input type="hidden"
                            th:if="${_csrf != null}"
                            th:name="${_csrf.parameterName}"
