@@ -4,49 +4,67 @@
     <meta charset="UTF-8">
     <title>Browse Plans</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/plan-list.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="plan-directory">
+        <div class="plan-directory__header">
+            <p class="plan-directory__eyebrow">Plans</p>
+            <h1>Available Plans</h1>
+            <p class="plan-directory__intro">Browse this organizer's offerings and choose a plan that fits your event needs.</p>
+        </div>
 
-<div class="container">
-    <h1>Available Plans</h1>
+        <div class="plan-list" th:if="${plans != null and !#lists.isEmpty(plans)}">
+            <article class="plan-list__card" th:each="plan : ${plans}">
+                <div class="plan-list__content">
+                    <h2 th:text="${plan.planName}">Plan Name</h2>
 
-    <div class="plans-container" th:if="${plans != null and !#lists.isEmpty(plans)}">
-        <div class="plan-card" th:each="plan : ${plans}">
-            <h2 th:text="${plan.planName}">Plan Name</h2>
+                    <div class="plan-list__meta">
+                        <div class="plan-list__meta-item">
+                            <p class="plan-list__label">Organizer</p>
+                            <p class="plan-list__value"
+                               th:text="${plan.organizer != null ? plan.organizer.businessName : 'N/A'}">
+                                Organizer Name
+                            </p>
+                        </div>
+                        <div class="plan-list__meta-item plan-list__meta-item--price">
+                            <p class="plan-list__label">Price</p>
+                            <p class="plan-list__price">
+                                $<span th:text="${plan.price}">Price</span>
+                            </p>
+                        </div>
+                    </div>
 
-            <p>Organizer:
-                <span th:text="${plan.organizer != null}
-                               ? ${plan.organizer.businessName} : 'N/A'">
-                    Organizer Name
-                </span>
-            </p>
+                    <div class="plan-list__section">
+                        <p class="plan-list__label">Description</p>
+                        <p class="plan-list__description"
+                           th:text="${plan.description} ?: 'No description provided yet.'">
+                            Description
+                        </p>
+                    </div>
+                </div>
 
-            <p>Description:
-                <span th:text="${plan.description} ?: 'N/A'">
-                    Description
-                </span>
-            </p>
+                <div class="plan-list__actions">
+                    <a th:href="@{/plan/{planId}(planId=${plan.id}, organizerId=${organizerId})}" class="plan-list__button">
+                        View Plan
+                    </a>
+                </div>
+            </article>
+        </div>
 
-            <p>Price:
-                $<span th:text="${plan.price}">Price</span>
-            </p>
+        <div class="plan-directory__empty" th:if="${plans == null or #lists.isEmpty(plans)}">
+            <p>No plans are available for this organizer yet.</p>
+        </div>
 
-            <a th:href="@{/plan/{planId}(planId=${plan.id}, organizerId=${organizerId})}" class="btn-select">
-                View Plan
+        <div class="plan-directory__footer">
+            <a th:href="@{/organizers/{organizerId}(organizerId=${organizerId})}" class="plan-directory__back">
+                Back to Organizer
             </a>
         </div>
-    </div>
-
-    <p th:if="${plans == null or #lists.isEmpty(plans)}">No plans are available for this organizer yet.</p>
-
-    <br/>
-    <a th:href="@{/organizers/{organizerId}(organizerId=${organizerId})}" class="btn-back">Back</a>
-</div>
-
- </main>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
