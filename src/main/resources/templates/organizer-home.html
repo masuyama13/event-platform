@@ -4,14 +4,39 @@
     <meta charset="UTF-8">
     <title>EventOmakase | Home</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/organizer-home.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <h1>Organizer Home</h1>
-    <h2>Manage Plans</h2>
-    <a th:href="@{/plans/manage}">Create or Edit Plans</a>
-    <a th:href="@{/organizer/bookings}">Review Booking Requests</a>
+    <section class="organizer-home">
+        <div class="organizer-home__hero">
+            <p class="organizer-home__eyebrow">Organizer</p>
+            <h1>Organizer Home</h1>
+            <p class="organizer-home__intro">Manage your plans, review bookings, and contact the admin team about sponsored placement.</p>
+        </div>
+
+        <div class="organizer-home__grid">
+            <a th:href="@{/plans/manage}" class="organizer-home__card">
+                <h2>Manage Plans</h2>
+                <p>Create new plans or update your current offerings.</p>
+            </a>
+            <a th:href="@{/organizer/bookings}" class="organizer-home__card">
+                <h2>Booking Requests</h2>
+                <p>Review and respond to incoming booking requests.</p>
+            </a>
+            <a th:href="@{/contact/organizer}" class="organizer-home__card organizer-home__card--accent">
+                <h2>Sponsorship Inquiry</h2>
+                <p>Contact the admin team about sponsorship slots or other support.</p>
+            </a>
+
+            <!-- NEW: Added from UpdateMessaging branch -->
+            <a th:href="@{/messages/inbox}" class="organizer-home__card">
+                <h2>Messages</h2>
+                <p>View and reply to messages from customers.</p>
+            </a>
+        </div>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
