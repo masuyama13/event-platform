@@ -45,7 +45,7 @@ public class MessageController {
 
         model.addAttribute("conversations", conversations);
 
-        return "message-inbox";
+        return "message-organizer-inbox";
     }
 
     // ─────────────────────────────────────────────
