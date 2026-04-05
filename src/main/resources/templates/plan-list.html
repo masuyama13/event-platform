@@ -57,12 +57,6 @@
         <div class="plan-directory__empty" th:if="${plans == null or #lists.isEmpty(plans)}">
             <p>No plans are available for this organizer yet.</p>
         </div>
-
-        <div class="plan-directory__footer">
-            <a th:href="@{/organizers/{organizerId}(organizerId=${organizerId})}" class="plan-directory__back button button--secondary">
-                Back to Organizer
-            </a>
-        </div>
     </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>

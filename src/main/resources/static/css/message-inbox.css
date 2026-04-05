@@ -67,13 +67,8 @@
     line-height: 1.6;
 }
 
-.message-inbox__button,
-.message-inbox__back {
+.message-inbox__button {
     text-align: center;
-}
-
-.message-inbox__footer {
-    margin-top: 22px;
 }
 
 .message-inbox__empty {
@@ -99,8 +94,7 @@
         width: 100%;
     }
 
-    .message-inbox__button,
-    .message-inbox__back {
+    .message-inbox__button {
         display: block;
         text-align: center;
     }

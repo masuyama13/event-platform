@@ -165,10 +165,12 @@
 }
 
 .organizer-list__button {
+    background: #111827;
+    color: #ffffff;
 }
 
 .organizer-list__button:hover {
-    background: #fbbf24;
+    background: #1f2937;
 }
 
 .organizer-list__item--sponsored {

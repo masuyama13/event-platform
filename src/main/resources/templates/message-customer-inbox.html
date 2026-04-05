@@ -39,10 +39,6 @@
         <div class="message-inbox__empty" th:if="${conversations == null or #lists.isEmpty(conversations)}">
             <p>No messages yet. Find an organizer to start a conversation!</p>
         </div>
-
-        <div class="message-inbox__footer">
-            <a th:href="@{/}" class="message-inbox__back">Back to Home</a>
-        </div>
     </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>

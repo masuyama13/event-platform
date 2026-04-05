@@ -87,13 +87,8 @@
     align-self: center;
 }
 
-.plan-list__button,
-.plan-directory__back {
+.plan-list__button {
     text-align: center;
-}
-
-.plan-directory__footer {
-    margin-top: 22px;
 }
 
 .plan-directory__empty {
@@ -122,8 +117,7 @@
         width: 100%;
     }
 
-    .plan-list__button,
-    .plan-directory__back {
+    .plan-list__button {
         display: block;
         text-align: center;
     }

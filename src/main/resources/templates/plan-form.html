@@ -43,12 +43,12 @@
             </label>
 
             <div class="admin-form__actions">
+                <a th:href="@{/plans/manage}" class="admin-form__button admin-form__button--secondary">Cancel</a>
                 <button type="submit"
                         class="admin-form__button"
                         th:text="${editingPlan != null} ? 'Save Changes' : 'Create Plan'">
                     Create Plan
                 </button>
-                <a th:href="@{/plans/manage}" class="admin-form__button admin-form__button--secondary">Back to Plans</a>
             </div>
         </form>
     </section>

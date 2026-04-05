@@ -94,21 +94,6 @@
             </dl>
 
             <div class="organizer-booking-detail-card__actions">
-                <a th:href="@{/organizer/bookings}"
-                   class="organizer-booking-detail-card__button organizer-booking-detail-card__button--secondary button button--secondary">
-                    Back to Requests
-                </a>
-
-                <form th:if="${booking.status.name() == 'REQUESTED'}"
-                      th:action="@{/organizer/bookings/{bookingId}/approve(bookingId=${booking.id})}"
-                      method="post">
-                    <input type="hidden"
-                           th:if="${_csrf != null}"
-                           th:name="${_csrf.parameterName}"
-                           th:value="${_csrf.token}"/>
-                    <button type="submit" class="organizer-booking-detail-card__button button button--primary">Approve</button>
-                </form>
-
                 <form th:if="${booking.status.name() == 'REQUESTED'}"
                       th:action="@{/organizer/bookings/{bookingId}/reject(bookingId=${booking.id})}"
                       method="post">
@@ -120,6 +105,16 @@
                             class="organizer-booking-detail-card__button organizer-booking-detail-card__button--danger button button--danger">
                         Reject
                     </button>
+                </form>
+
+                <form th:if="${booking.status.name() == 'REQUESTED'}"
+                      th:action="@{/organizer/bookings/{bookingId}/approve(bookingId=${booking.id})}"
+                      method="post">
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+                    <button type="submit" class="organizer-booking-detail-card__button button button--primary">Approve</button>
                 </form>
             </div>
         </div>

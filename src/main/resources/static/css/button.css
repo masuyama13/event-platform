@@ -7,12 +7,10 @@
 .inquiry-form__button,
 .invoice-card__button,
 .message-inbox__button,
-.message-inbox__back,
 .organizer-booking-detail-card__button,
 .organizer-bookings__button,
 .organizer-list__button,
 .plan-list__button,
-.plan-directory__back,
 .plans-manage-page__create,
 .plans-manage-card__button,
 .review-form-card__button,
@@ -38,6 +36,7 @@
 .message-inbox__button,
 .organizer-booking-detail-card__button,
 .organizer-bookings__button,
+.organizer-list__button,
 .plan-list__button,
 .plans-manage-page__create,
 .plans-manage-card__button,
@@ -49,8 +48,6 @@
 
 .button--secondary,
 .btn-back,
-.plan-directory__back,
-.message-inbox__back,
 .customer-bookings__button--back,
 .booking-request-card__button--secondary,
 .organizer-booking-detail-card__button--secondary,
@@ -60,8 +57,7 @@
     color: #111827;
 }
 
-.button--accent,
-.organizer-list__button {
+.button--accent {
     background: #f59e0b;
     color: #111827;
 }
