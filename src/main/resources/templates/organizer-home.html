@@ -26,15 +26,13 @@
                 <h2>Booking Requests</h2>
                 <p>Review and respond to incoming booking requests.</p>
             </a>
+            <a th:href="@{/messages/inbox}" class="dashboard-card">
+                <h2>Messages</h2>
+                <p>View and reply to messages from customers.</p>
+            </a>
             <a th:href="@{/contact/organizer}" class="dashboard-card organizer-home__card--accent">
                 <h2>Sponsorship Inquiry</h2>
                 <p>Contact the admin team about sponsorship slots or other support.</p>
-            </a>
-
-            <!-- NEW: Added from UpdateMessaging branch -->
-            <a th:href="@{/messages/inbox}" class="organizer-home__card">
-                <h2>Messages</h2>
-                <p>View and reply to messages from customers.</p>
             </a>
         </div>
     </section>
