@@ -3,43 +3,32 @@
 <head>
     <title>Payment Submitted</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            width: 600px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .status {
-            color: green;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/payment-status.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-<div class="container">
-    <h2>Payment Submitted</h2>
-    <p>Your payment was submitted through Stripe. The invoice will be finalized after the webhook is received.</p>
-    <p th:if="${invoice != null}">
-        Current invoice status:
-        <span class="status" th:text="${invoice.status}"></span>
-    </p>
-    <a th:if="${invoice != null}"
-       th:href="@{/invoices/view/{bookingId}(bookingId=${invoice.booking.id})}">
-        Back to Invoice
-    </a>
-</div>
- </main>
+    <section class="payment-status-page">
+        <div class="payment-status-card">
+            <p class="payment-status-card__eyebrow">Payment</p>
+            <h1>Payment Submitted</h1>
+            <p class="payment-status-card__intro">
+                Your payment was submitted through Stripe. The invoice will be finalized after the webhook is received.
+            </p>
+            <div class="payment-status-card__summary" th:if="${invoice != null}">
+                <p class="payment-status-card__label">Current Invoice Status</p>
+                <p class="payment-status-card__status payment-status-card__status--success" th:text="${invoice.status}">
+                    Status
+                </p>
+            </div>
+            <div class="payment-status-card__actions" th:if="${invoice != null}">
+                <a th:href="@{/invoices/view/{bookingId}(bookingId=${invoice.booking.id})}" class="button button--primary">
+                    Back to Invoice
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
