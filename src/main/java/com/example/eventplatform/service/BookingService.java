@@ -39,7 +39,11 @@ public class BookingService {
     }
 
     // Save confirmed booking to database with REQUESTED status
-    public Booking confirmBooking(Long planId, LocalDate eventDate, String customerEmail) {
+    public Booking confirmBooking(Long planId,
+                                  LocalDate eventDate,
+                                  String eventType,
+                                  String requestDetails,
+                                  String customerEmail) {
         LocalDate earliestBookingDate = LocalDate.now().plusWeeks(1);
         if (eventDate.isBefore(earliestBookingDate)) {
             throw new RuntimeException("Event date must be at least one week from today");
@@ -65,6 +69,8 @@ public class BookingService {
         booking.setPlan(selectedPlan);
         booking.setPlannerName(organizerProfile.getBusinessName());
         booking.setEventDate(eventDate);
+        booking.setEventType(eventType);
+        booking.setRequestDetails(requestDetails);
         booking.setPrice(selectedPlan.getPrice());
         booking.setStatus(BookingStatus.REQUESTED);
         booking.setCustomerProfile(customerProfile);

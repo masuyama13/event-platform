@@ -28,21 +28,26 @@
                         <p class="organizer-bookings__value" th:text="${booking.id}">1</p>
                     </div>
 
-                    <p class="organizer-bookings__status" th:if="${booking.status.name() == 'REQUESTED'}">REQUESTED</p>
-                    <p class="organizer-bookings__status organizer-bookings__status--approved"
-                       th:if="${booking.status.name() == 'APPROVED'}">
-                        APPROVED
-                    </p>
-                    <p class="organizer-bookings__status organizer-bookings__status--rejected"
-                       th:if="${booking.status.name() == 'REJECTED'}">
-                        REJECTED
-                    </p>
+                    <div>
+                        <p class="organizer-bookings__label">Status</p>
+                        <p class="organizer-bookings__status" th:if="${booking.status.name() == 'REQUESTED'}">REQUESTED</p>
+                        <p class="organizer-bookings__status organizer-bookings__status--approved"
+                           th:if="${booking.status.name() == 'APPROVED'}">
+                            APPROVED
+                        </p>
+                        <p class="organizer-bookings__status organizer-bookings__status--rejected"
+                           th:if="${booking.status.name() == 'REJECTED'}">
+                            REJECTED
+                        </p>
+                    </div>
                 </div>
 
                 <dl class="organizer-bookings__details">
                     <div class="organizer-bookings__row">
-                        <dt>Customer</dt>
-                        <dd th:text="${booking.customerProfile.user.email}">customer@example.com</dd>
+                        <dt>Customer Name</dt>
+                        <dd th:text="${booking.customerProfile != null ? booking.customerProfile.firstName + ' ' + booking.customerProfile.lastName : 'N/A'}">
+                            Customer Name
+                        </dd>
                     </div>
                     <div class="organizer-bookings__row">
                         <dt>Plan</dt>

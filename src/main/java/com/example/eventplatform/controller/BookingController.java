@@ -48,11 +48,15 @@ public class BookingController {
     public RedirectView confirmBooking(
             @RequestParam Long planId,
             @RequestParam String eventDate,
+            @RequestParam String eventType,
+            @RequestParam String requestDetails,
             Authentication authentication) {
 
         Booking savedBooking = bookingService.confirmBooking(
                 planId,
                 LocalDate.parse(eventDate),
+                eventType,
+                requestDetails,
                 authentication.getName()
         );
         return new RedirectView("/booking/complete/" + savedBooking.getId());

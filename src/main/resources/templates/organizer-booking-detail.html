@@ -56,8 +56,16 @@
                     <dd th:text="${booking.id}">1</dd>
                 </div>
                 <div class="organizer-booking-detail-card__row">
-                    <dt>Customer</dt>
-                    <dd th:text="${booking.customerProfile != null ? booking.customerProfile.user.email : 'N/A'}">customer@example.com</dd>
+                    <dt>Customer Name</dt>
+                    <dd th:text="${booking.customerProfile != null ? booking.customerProfile.firstName + ' ' + booking.customerProfile.lastName : 'N/A'}">
+                        Customer Name
+                    </dd>
+                </div>
+                <div class="organizer-booking-detail-card__row">
+                    <dt>Email</dt>
+                    <dd th:text="${booking.customerProfile != null and booking.customerProfile.user != null ? booking.customerProfile.user.email : 'N/A'}">
+                        customer@example.com
+                    </dd>
                 </div>
                 <div class="organizer-booking-detail-card__row">
                     <dt>Plan Name</dt>
@@ -68,20 +76,20 @@
                     <dd th:text="${booking.eventDate}">2026-04-20</dd>
                 </div>
                 <div class="organizer-booking-detail-card__row">
+                    <dt>Event Category</dt>
+                    <dd th:text="${booking.eventType} ?: 'N/A'">Wedding</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row">
                     <dt>Requested Date</dt>
                     <dd th:text="${#temporals.format(booking.createdAt, 'yyyy-MM-dd HH:mm')}">2026-04-05 14:30</dd>
-                </div>
-                <div class="organizer-booking-detail-card__row" th:if="${booking.eventType != null and !#strings.isEmpty(booking.eventType)}">
-                    <dt>Event Type</dt>
-                    <dd th:text="${booking.eventType}">Wedding</dd>
                 </div>
                 <div class="organizer-booking-detail-card__row" th:if="${booking.location != null and !#strings.isEmpty(booking.location)}">
                     <dt>Location</dt>
                     <dd th:text="${booking.location}">Vancouver</dd>
                 </div>
-                <div class="organizer-booking-detail-card__row" th:if="${booking.requestDetails != null and !#strings.isEmpty(booking.requestDetails)}">
-                    <dt>Request Details</dt>
-                    <dd th:text="${booking.requestDetails}">Details</dd>
+                <div class="organizer-booking-detail-card__row">
+                    <dt>Description</dt>
+                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Details</dd>
                 </div>
             </dl>
 

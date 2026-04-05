@@ -69,6 +69,14 @@
                     <dd th:text="${booking.eventDate}">Date</dd>
                 </div>
                 <div class="booking-detail-card__row">
+                    <dt>Event Category</dt>
+                    <dd th:text="${booking.eventType} ?: 'N/A'">Event Category</dd>
+                </div>
+                <div class="booking-detail-card__row">
+                    <dt>Description</dt>
+                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Description</dd>
+                </div>
+                <div class="booking-detail-card__row">
                     <dt>Requested Date</dt>
                     <dd th:text="${#temporals.format(booking.createdAt, 'yyyy-MM-dd HH:mm')}">Requested Date</dd>
                 </div>

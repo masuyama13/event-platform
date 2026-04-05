@@ -45,6 +45,14 @@
                     <dt>Date</dt>
                     <dd th:text="${booking.eventDate}">Date</dd>
                 </div>
+                <div class="thankyou-card__row">
+                    <dt>Event Category</dt>
+                    <dd th:text="${booking.eventType} ?: 'N/A'">Event Category</dd>
+                </div>
+                <div class="thankyou-card__row">
+                    <dt>Description</dt>
+                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Description</dd>
+                </div>
             </dl>
 
             <div class="thankyou-card__actions">

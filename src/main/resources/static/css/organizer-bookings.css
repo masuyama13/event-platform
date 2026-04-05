@@ -87,10 +87,10 @@
     display: inline-flex;
     align-items: center;
     padding: 6px 10px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #fcd34d;
     border-radius: 999px;
-    background: #f9fafb;
-    color: #374151;
+    background: #fffbeb;
+    color: #b45309;
     font-size: 0.82rem;
     font-weight: 800;
 }

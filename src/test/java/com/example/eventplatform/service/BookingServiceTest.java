@@ -146,7 +146,12 @@ class BookingServiceTest {
         when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
 
         // Run the test
-        final Booking result = bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email");
+        final Booking result = bookingServiceUnderTest.confirmBooking(
+                10L,
+                requestedDate,
+                "Wedding",
+                "Outdoor ceremony for 80 guests",
+                "email");
 
         // Verify the results
         assertThat(result).isSameAs(booking);
@@ -170,7 +175,12 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
+                () -> bookingServiceUnderTest.confirmBooking(
+                        10L,
+                        requestedDate,
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -197,7 +207,12 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
+                () -> bookingServiceUnderTest.confirmBooking(
+                        10L,
+                        requestedDate,
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -205,7 +220,12 @@ class BookingServiceTest {
     void testConfirmBooking_EventDateTooSoon() {
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.now().plusDays(6), "email"))
+                () -> bookingServiceUnderTest.confirmBooking(
+                        10L,
+                        LocalDate.now().plusDays(6),
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Event date must be at least one week from today");
     }
@@ -219,7 +239,12 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
+                () -> bookingServiceUnderTest.confirmBooking(
+                        10L,
+                        requestedDate,
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("You already have a booking request for this plan and date");
     }

@@ -93,6 +93,7 @@
     margin: 0;
     color: #111827;
     word-break: break-word;
+    line-height: 1.7;
 }
 
 .thankyou-card__actions {
