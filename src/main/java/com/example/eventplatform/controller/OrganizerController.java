@@ -28,7 +28,9 @@ public class OrganizerController {
 
     @GetMapping
     public String showOrganizerList(@RequestParam(required = false) Long categoryId, Model model) {
+        List<OrganizerProfile> sponsoredOrganizers = organizerService.getSponsoredOrganizers(categoryId);
         List<OrganizerProfile> organizers = organizerService.getAllOrganizers(categoryId);
+        model.addAttribute("sponsoredOrganizers", sponsoredOrganizers);
         model.addAttribute("organizers", organizers);
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("selectedCategoryId", categoryId);

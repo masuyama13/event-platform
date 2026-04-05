@@ -9,6 +9,9 @@
 <main class="app-main">
 <h1>Login</h1>
 
+<p th:if="${param.error != null}">Invalid email or password.</p>
+<p th:if="${param.logout != null}">You have been logged out.</p>
+
 <form th:action="@{/login}" method="post">
     <input type="hidden"
            th:if="${_csrf != null}"

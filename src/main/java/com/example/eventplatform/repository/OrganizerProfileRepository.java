@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,4 +22,17 @@ public interface OrganizerProfileRepository extends JpaRepository<OrganizerProfi
             order by o.averageRating desc, o.businessName asc
             """)
     List<OrganizerProfile> findAllByCategoryIdOrderByRatingDesc(@Param("categoryId") Long categoryId);
+
+    @Query("""
+            select distinct o
+            from OrganizerProfile o
+            left join o.categories c
+            where (:categoryId is null or c.id = :categoryId)
+              and o.sponsoredFrom is not null
+              and o.sponsoredUntil is not null
+              and :now between o.sponsoredFrom and o.sponsoredUntil
+            order by o.sponsoredUntil desc, o.businessName asc
+            """)
+    List<OrganizerProfile> findSponsoredByCategoryId(@Param("categoryId") Long categoryId,
+                                                     @Param("now") LocalDateTime now);
 }
