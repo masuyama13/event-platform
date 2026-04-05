@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>Find Your Perfect Event Partner</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/organizer-list.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
 
-<div class="container">
-    <h1>Find Your Perfect Event Partner</h1>
+<div class="organizer-directory">
+    <h1 class="organizer-directory__title">Find Your Perfect Event Partner</h1>
 
-    <form method="get" th:action="@{/organizers}" style="margin-bottom: 16px;">
+    <form method="get" th:action="@{/organizers}" class="organizer-directory__filter">
         <label for="categoryId">Filter by category:</label>
         <select id="categoryId" name="categoryId">
             <option value="">All categories</option>
@@ -23,57 +23,52 @@
                     th:selected="${selectedCategoryId != null and selectedCategoryId == category.id}">
             </option>
         </select>
-        <button type="submit">Apply</button>
+        <button type="submit" class="organizer-directory__filter-button">Apply</button>
     </form>
 
-    <div class="plans-container"
+    <div class="organizer-list"
          th:if="${organizers != null and !#lists.isEmpty(organizers)}">
 
-        <div class="plan-card" th:each="organizer : ${organizers}">
-            <h2 th:text="${organizer.businessName}">Business Name</h2>
+        <article class="organizer-list__item" th:each="organizer : ${organizers}">
+            <div class="organizer-list__content">
+                <div class="organizer-list__header">
+                    <h2 th:text="${organizer.businessName}">Business Name</h2>
+                </div>
+                <p class="organizer-list__rating">
+                    Rating:
+                    <strong th:text="${organizer.averageRating != null}
+                                      ? (${organizer.averageRating} + ' / 5')
+                                      : '0.0 / 5'">
+                        0.0 / 5
+                    </strong>
+                </p>
 
-            <p>Email:
-                <span th:text="${organizer.user.email}">
-                    organizer@email.com
-                </span>
-            </p>
-            <p>Categories:
-                <span th:text="${organizer.categories != null and !#sets.isEmpty(organizer.categories) ? #strings.listJoin(organizer.categories.![name], ', ') : 'N/A'}">
-                    Category
-                </span>
-            </p>
-            <p>Phone:
-                <span th:text="${organizer.phone} ?: 'N/A'">
-                    Phone
-                </span>
-            </p>
-            <p>Website:
-                <span th:text="${organizer.website} ?: 'N/A'">
-                    Website
-                </span>
-            </p>
-              <!-- Average Rating Display -->
-            <p>Rating:
-                <strong style="color: #f5a623;"
-                        th:text="${organizer.averageRating != null}
-                                  ? (${organizer.averageRating} + ' / 5')
-                                  : '0.0 / 5'">
-                    0.0 / 5
-                </strong>
-            </p>
+                <div class="organizer-list__categories"
+                     th:if="${organizer.categories != null and !#sets.isEmpty(organizer.categories)}">
+                    <span class="organizer-list__tag"
+                          th:each="category : ${organizer.categories}"
+                          th:text="${category.name}">
+                        Category
+                    </span>
+                </div>
+                <p class="organizer-list__categories organizer-list__categories--empty"
+                   th:if="${organizer.categories == null or #sets.isEmpty(organizer.categories)}">
+                    No categories
+                </p>
 
-            <!-- Action Buttons -->
-            <div class="buttons">
+                <p class="organizer-list__description" th:text="${organizer.description} ?: 'N/A'">Description</p>
+            </div>
+
+            <div class="organizer-list__actions">
                 <a th:href="@{/organizers/{id}(id=${organizer.id})}"
-                   class="btn-back">
+                   class="organizer-list__button">
                     View Details
                 </a>
             </div>
-
-        </div>
+        </article>
     </div>
 
-    <div th:if="${organizers == null or #lists.isEmpty(organizers)}">
+    <div class="organizer-directory__empty" th:if="${organizers == null or #lists.isEmpty(organizers)}">
         <p>No organizers found.</p>
     </div>
 </div>
