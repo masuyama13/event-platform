@@ -4,62 +4,87 @@
     <meta charset="UTF-8">
     <title>Booking Details</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/booking-detail.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="booking-detail-page">
+        <div class="booking-detail-card">
+            <p class="booking-detail-card__eyebrow">Booking</p>
+            <h1>Booking Details</h1>
 
-<div class="container">
-    <div class="thankyou-card">
-        <h1>Booking Details</h1>
-        <p th:if="${booking.status.name() == 'REQUESTED'}">Your booking request has been submitted. The organizer will review it and approve or reject it.</p>
-        <p th:if="${booking.status.name() == 'APPROVED'}">Your booking was approved. You can proceed to payment.</p>
-        <p th:if="${booking.status.name() == 'REJECTED'}">This booking request was rejected.</p>
+            <p class="booking-detail-card__intro" th:if="${booking.status.name() == 'REQUESTED'}">
+                Your booking request has been submitted. The organizer will review it and approve or reject it.
+            </p>
+            <p class="booking-detail-card__intro" th:if="${booking.status.name() == 'APPROVED'}">
+                Your booking was approved. You can proceed to payment from the bookings list.
+            </p>
+            <p class="booking-detail-card__intro booking-detail-card__intro--rejected" th:if="${booking.status.name() == 'REJECTED'}">
+                This booking request was rejected.
+            </p>
 
-        <table class="info-table">
-            <tr>
-                <td>Booking ID:</td>
-                <td th:text="${booking.id}">ID</td>
-            </tr>
-            <tr>
-                <td>Organizer:</td>
-                <td th:text="${booking.organizerProfile != null
-                               ? booking.organizerProfile.businessName : 'N/A'}">
-                    Organizer Name
-                </td>
-            </tr>
-            <tr>
-                <td>Plan Name:</td>
-                <td th:text="${booking.planName}">Plan Name</td>
-            </tr>
-            <tr>
-                <td>Date:</td>
-                <td th:text="${booking.eventDate}">Date</td>
-            </tr>
-            <tr>
-                <td>Price:</td>
-                <td>$<span th:text="${booking.price}">Price</span></td>
-            </tr>
-            <tr>
-                <td>Status:</td>
-                <td th:text="${booking.status}">Status</td>
-            </tr>
-        </table>
+            <div class="booking-detail-card__summary">
+                <div>
+                    <p class="booking-detail-card__label">Status</p>
+                    <p class="booking-detail-card__status"
+                       th:if="${booking.status.name() == 'REQUESTED'}"
+                       th:text="${booking.status}">
+                        Status
+                    </p>
+                    <p class="booking-detail-card__status booking-detail-card__status--approved"
+                       th:if="${booking.status.name() == 'APPROVED'}"
+                       th:text="${booking.status}">
+                        Status
+                    </p>
+                    <p class="booking-detail-card__status booking-detail-card__status--rejected"
+                       th:if="${booking.status.name() == 'REJECTED'}"
+                       th:text="${booking.status}">
+                        Status
+                    </p>
+                </div>
+                <div>
+                    <p class="booking-detail-card__label">Price</p>
+                    <p class="booking-detail-card__price">$<span th:text="${booking.price}">Price</span></p>
+                </div>
+            </div>
 
-        <div class="buttons">
-            <a href="/" class="btn-confirm">Back to Home</a>
-            <a th:href="@{/customer/bookings}">
-                <button>Back to My Bookings</button>
-            </a>
-            <a th:if="${booking.status.name() == 'APPROVED'}"
-               th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}">
-                <button>Proceed to Payment</button>
-            </a>
+            <dl class="booking-detail-card__details">
+                <div class="booking-detail-card__row">
+                    <dt>Booking ID</dt>
+                    <dd th:text="${booking.id}">ID</dd>
+                </div>
+                <div class="booking-detail-card__row">
+                    <dt>Organizer</dt>
+                    <dd th:text="${booking.organizerProfile != null ? booking.organizerProfile.businessName : 'N/A'}">
+                        Organizer Name
+                    </dd>
+                </div>
+                <div class="booking-detail-card__row">
+                    <dt>Plan Name</dt>
+                    <dd th:text="${booking.planName}">Plan Name</dd>
+                </div>
+                <div class="booking-detail-card__row">
+                    <dt>Event Date</dt>
+                    <dd th:text="${booking.eventDate}">Date</dd>
+                </div>
+                <div class="booking-detail-card__row">
+                    <dt>Requested Date</dt>
+                    <dd th:text="${#temporals.format(booking.createdAt, 'yyyy-MM-dd HH:mm')}">Requested Date</dd>
+                </div>
+            </dl>
+
+            <div class="booking-detail-card__actions">
+                <a th:href="@{/customer/bookings}" class="booking-detail-card__button booking-detail-card__button--back">Back to My Bookings</a>
+                <a th:if="${booking.status.name() == 'APPROVED'}"
+                   th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
+                   class="booking-detail-card__button">
+                    Proceed to Payment
+                </a>
+            </div>
         </div>
-    </div>
-</div>
- </main>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
