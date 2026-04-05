@@ -3,28 +3,69 @@
 <head>
     <title>Plans</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/plans-manage.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="plans-manage-page">
+        <div class="plans-manage-page__header">
+            <div>
+                <p class="plans-manage-page__eyebrow">Organizer Tools</p>
+                <h1>Plans</h1>
+            </div>
+            <a th:href="@{/plans/new}" class="plans-manage-page__create">Create Plan</a>
+        </div>
 
-<h1>Plans List</h1>
-<a th:href="@{/plans/new}">Create Plan</a>
+        <div class="plans-manage-list" th:if="${plans != null and !#lists.isEmpty(plans)}">
+            <article class="plans-manage-card" th:each="plan : ${plans}">
+                <div class="plans-manage-card__content">
+                    <div class="plans-manage-card__top">
+                        <div>
+                            <p class="plans-manage-card__label">Plan</p>
+                            <h2 th:text="${plan.planName}">Plan Name</h2>
+                        </div>
+                        <div class="plans-manage-card__price-block">
+                            <p class="plans-manage-card__label">Price</p>
+                            <p class="plans-manage-card__price">$<span th:text="${plan.price}">0.00</span></p>
+                        </div>
+                    </div>
 
-<hr>
+                    <div class="plans-manage-card__meta">
+                        <div class="plans-manage-card__meta-item">
+                            <p class="plans-manage-card__label">Plan ID</p>
+                            <p class="plans-manage-card__value" th:text="${plan.id}">1</p>
+                        </div>
+                        <div class="plans-manage-card__meta-item">
+                            <p class="plans-manage-card__label">Organizer</p>
+                            <p class="plans-manage-card__value"
+                               th:text="${plan.organizer != null ? plan.organizer.businessName : 'N/A'}">
+                                Organizer Name
+                            </p>
+                        </div>
+                    </div>
 
-<div th:each="plan : ${plans}">
-    <p>ID: <span th:text="${plan.id}"></span></p>
+                    <div class="plans-manage-card__section">
+                        <p class="plans-manage-card__label">Description</p>
+                        <p class="plans-manage-card__description"
+                           th:text="${plan.description} ?: 'No description provided yet.'">
+                            Description
+                        </p>
+                    </div>
+                </div>
 
-    <p>Plan Name: <span th:text="${plan.planName}"></span></p>
-    <p>Price: <span th:text="${plan.price}"></span></p>
-    <p>Description: <span th:text="${plan.description}"></span></p>
-    <p>Organizer: <span th:text="${plan.organizer != null ? plan.organizer.businessName : 'N/A'}"></span></p>
-    <a th:href="@{/plans/{planId}/edit(planId=${plan.id})}">Edit</a>
+                <div class="plans-manage-card__actions">
+                    <a th:href="@{/plans/{planId}/edit(planId=${plan.id})}" class="plans-manage-card__button">Edit Plan</a>
+                </div>
+            </article>
+        </div>
 
-    <hr>
-</div>
- </main>
+        <div class="plans-manage-page__empty" th:if="${plans == null or #lists.isEmpty(plans)}">
+            <p>No plans yet. Create your first plan to start receiving bookings.</p>
+            <a th:href="@{/plans/new}" class="plans-manage-page__create">Create Plan</a>
+        </div>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
