@@ -131,6 +131,37 @@
     word-break: break-word;
 }
 
+.booking-detail-card__invoice-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.booking-detail-card__invoice-status--paid {
+    background: #111827;
+    border-color: #111827;
+    color: #ffffff;
+}
+
+.booking-detail-card__invoice-status--pending {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #374151;
+}
+
+.booking-detail-card__invoice-status--cancelled {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #9a3412;
+}
+
 .booking-detail-card__actions {
     margin-top: 28px;
     display: flex;

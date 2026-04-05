@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class InvoiceService {
@@ -52,6 +56,22 @@ public class InvoiceService {
     public Invoice getInvoiceBySessionId(String stripeSessionId) {
         return invoiceRepository.findByStripeSessionId(stripeSessionId)
                 .orElseThrow(() -> new RuntimeException("Invoice not found"));
+    }
+
+    public Optional<Invoice> findByBookingId(Long bookingId) {
+        return Optional.ofNullable(invoiceRepository.findByBookingId(bookingId));
+    }
+
+    public Map<Long, Invoice> findByBookingIds(Collection<Long> bookingIds) {
+        Map<Long, Invoice> invoicesByBookingId = new HashMap<>();
+        if (bookingIds == null || bookingIds.isEmpty()) {
+            return invoicesByBookingId;
+        }
+
+        for (Invoice invoice : invoiceRepository.findByBookingIdIn(bookingIds)) {
+            invoicesByBookingId.put(invoice.getBooking().getId(), invoice);
+        }
+        return invoicesByBookingId;
     }
 
     public Invoice saveCheckoutSession(Long invoiceId, String stripeSessionId) {

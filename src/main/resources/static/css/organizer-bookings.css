@@ -107,6 +107,12 @@
     color: #991b1b;
 }
 
+.organizer-bookings__status--cancelled {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #9a3412;
+}
+
 .organizer-bookings__details {
     margin: 0;
 }

@@ -9,7 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DataInitializer {
@@ -28,6 +32,12 @@ public class DataInitializer {
 
     @Autowired
     private PlanRepository planRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -103,6 +113,7 @@ public class DataInitializer {
                     new BigDecimal("249.99")
             };
 
+            List<Plan> savedPlans = new ArrayList<>();
             for (int i = 0; i < plans.length; i++) {
                 Plan plan = new Plan();
                 plan.setOrganizer(organizer);
@@ -110,15 +121,62 @@ public class DataInitializer {
                 plan.setDescription(plans[i][1]);
                 plan.setPrice(prices[i]);
                 plan.setExpiresAt(LocalDateTime.now().plusDays(30));
-                planRepository.save(plan);
+                savedPlans.add(planRepository.save(plan));
             }
 
             System.out.println(">>> Temporary plans (Plan A to D) created");
+
+            createBooking(customer, organizer, savedPlans.get(0), BookingStatus.REQUESTED, LocalDate.now().plusDays(10));
+            createBooking(customer, organizer, savedPlans.get(1), BookingStatus.APPROVED, LocalDate.now().plusDays(14));
+            createBooking(customer, organizer, savedPlans.get(2), BookingStatus.REJECTED, LocalDate.now().plusDays(18));
+            createBooking(customer, organizer, savedPlans.get(3), BookingStatus.CANCELLED, LocalDate.now().plusDays(22));
+            Booking completedBooking = createBooking(customer, organizer, savedPlans.get(0), BookingStatus.COMPLETED, LocalDate.now().plusDays(26));
+
+            System.out.println(">>> Temporary bookings for each status created");
+
+            createPaidInvoice(completedBooking);
+            System.out.println(">>> Temporary paid invoice created");
         }
     }
 
     private Category ensureCategory(String name) {
         return categoryRepository.findByName(name)
                 .orElseGet(() -> categoryRepository.save(new Category(name)));
+    }
+
+    private Booking createBooking(CustomerProfile customer,
+                                  OrganizerProfile organizer,
+                                  Plan plan,
+                                  BookingStatus status,
+                                  LocalDate eventDate) {
+        Booking booking = new Booking();
+        booking.setCustomerProfile(customer);
+        booking.setOrganizerProfile(organizer);
+        booking.setPlan(plan);
+        booking.setPlannerName(organizer.getBusinessName());
+        booking.setPlanName(plan.getPlanName());
+        booking.setPlanDescription(plan.getDescription());
+        booking.setPrice(plan.getPrice());
+        booking.setEventType("Wedding");
+        booking.setEventDate(eventDate);
+        booking.setRequestDetails("Sample booking for status " + status.name().toLowerCase() + ".");
+        booking.setStatus(status);
+        return bookingRepository.save(booking);
+    }
+
+    private void createPaidInvoice(Booking booking) {
+        BigDecimal tax = booking.getPrice()
+                .multiply(new BigDecimal("0.05"))
+                .setScale(2, RoundingMode.HALF_UP);
+
+        Invoice invoice = new Invoice();
+        invoice.setBooking(booking);
+        invoice.setTotalAmount(booking.getPrice().add(tax).setScale(2, RoundingMode.HALF_UP));
+        invoice.setCurrency("cad");
+        invoice.setStatus(InvoiceStatus.PAID);
+        invoice.setStripeSessionId("sess_demo_paid_" + booking.getId());
+        invoice.setStripePaymentIntentId("pi_demo_paid_" + booking.getId());
+        invoice.setPaidAt(LocalDateTime.now().minusDays(1));
+        invoiceRepository.save(invoice);
     }
 }

@@ -31,7 +31,8 @@ public class InvoiceController {
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         ensureBookingOwner(booking, authentication);
-        if (booking.getStatus() != BookingStatus.APPROVED) {
+        if (booking.getStatus() != BookingStatus.APPROVED
+                && booking.getStatus() != BookingStatus.COMPLETED) {
             throw new IllegalStateException("Payment is available only after organizer approval");
         }
 
