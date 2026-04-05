@@ -4,61 +4,71 @@
     <meta charset="UTF-8">
     <title>Booking Request</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/booking-request.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="booking-request-page">
+        <div class="booking-request-page__header">
+            <p class="booking-request-page__eyebrow">Booking</p>
+            <h1>Booking Request</h1>
+            <p class="booking-request-page__intro">Choose an event date and send your booking request to the organizer.</p>
+        </div>
 
-<div class="container">
-    <h1>Booking Request</h1>
+        <section class="booking-request-card booking-request-card--form">
+            <div class="booking-request-card__summary">
+                <div>
+                    <p class="booking-request-card__label">Plan</p>
+                    <p class="booking-request-card__value" th:text="${plan.planName}">Plan Name</p>
+                </div>
+                <div>
+                    <p class="booking-request-card__label">Price</p>
+                    <p class="booking-request-card__price">$<span th:text="${plan.price}">Price</span></p>
+                </div>
+            </div>
 
-    <div class="confirmation-card">
-        <h2>Choose Your Date</h2>
-
-        <table class="info-table">
-            <tr>
-                <td>Plan Name:</td>
-                <td th:text="${plan.planName}">Plan Name</td>
-            </tr>
-            <tr>
-                <td>Organizer:</td>
-                <td th:text="${plan.organizer != null}
-                             ? ${plan.organizer.businessName} : 'N/A'">
+            <section class="booking-request-card__section">
+                <p class="booking-request-card__label">Organizer</p>
+                <p class="booking-request-card__value"
+                   th:text="${plan.organizer != null ? plan.organizer.businessName : 'N/A'}">
                     Organizer Name
-                </td>
-            </tr>
-            <tr>
-                <td>Price:</td>
-                <td>$<span th:text="${plan.price}">Price</span></td>
-            </tr>
-        </table>
+                </p>
+            </section>
 
-        <form action="/bookings" method="post">
-            <input type="hidden"
-                   th:if="${_csrf != null}"
-                   th:name="${_csrf.parameterName}"
-                   th:value="${_csrf.token}"/>
-            <input type="hidden" name="planId" th:value="${plan.id}"/>
+            <section class="booking-request-card__section booking-request-card__section--form">
+                <p class="booking-request-card__section-label">Choose Your Date</p>
 
-            <div class="row">
-                <label for="eventDate">Event Date:</label>
-                <input id="eventDate"
-                       type="date"
-                       name="eventDate"
-                       th:min="${#temporals.format(earliestBookingDate, 'yyyy-MM-dd')}"
-                       required/>
-            </div>
+                <form action="/bookings" method="post">
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+                    <input type="hidden" name="planId" th:value="${plan.id}"/>
 
-            <div class="buttons">
-                <a th:href="@{/booking/plans(organizerId=${organizerId})}" class="btn-back">Back to Plans</a>
-                <button type="submit" class="btn-confirm">Request Booking</button>
-            </div>
-        </form>
-    </div>
-</div>
+                    <label class="booking-request-card__field" for="eventDate">
+                        <span>Event Date</span>
+                        <input id="eventDate"
+                               type="date"
+                               name="eventDate"
+                               th:min="${#temporals.format(earliestBookingDate, 'yyyy-MM-dd')}"
+                               required/>
+                    </label>
 
- </main>
+                    <p class="booking-request-card__note">
+                        Earliest available booking date:
+                        <strong th:text="${#temporals.format(earliestBookingDate, 'yyyy-MM-dd')}">Date</strong>
+                    </p>
+
+                    <div class="booking-request-card__actions">
+                        <a th:href="@{/booking/plans(organizerId=${organizerId})}" class="booking-request-card__button booking-request-card__button--secondary">Back to Plans</a>
+                        <button type="submit" class="booking-request-card__button">Request Booking</button>
+                    </div>
+                </form>
+            </section>
+        </section>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
