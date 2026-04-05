@@ -23,6 +23,9 @@
             <p class="booking-detail-card__intro booking-detail-card__intro--rejected" th:if="${booking.status.name() == 'REJECTED'}">
                 This booking request was rejected.
             </p>
+            <p class="booking-detail-card__intro booking-detail-card__intro--cancelled" th:if="${booking.status.name() == 'CANCELLED'}">
+                This booking request was cancelled.
+            </p>
 
             <div class="booking-detail-card__summary">
                 <div>
@@ -39,6 +42,11 @@
                     </p>
                     <p class="booking-detail-card__status booking-detail-card__status--rejected"
                        th:if="${booking.status.name() == 'REJECTED'}"
+                       th:text="${booking.status}">
+                        Status
+                    </p>
+                    <p class="booking-detail-card__status booking-detail-card__status--cancelled"
+                       th:if="${booking.status.name() == 'CANCELLED'}"
                        th:text="${booking.status}">
                         Status
                     </p>
@@ -83,6 +91,18 @@
             </dl>
 
             <div class="booking-detail-card__actions">
+                <form th:if="${booking.status.name() == 'REQUESTED'}"
+                      th:action="@{/customer/bookings/{bookingId}/cancel(bookingId=${booking.id})}"
+                      method="post"
+                      class="booking-detail-card__action-form">
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+                    <button type="submit" class="booking-detail-card__button button button--danger">
+                        Cancel Booking
+                    </button>
+                </form>
                 <a th:href="@{/messages(organizerUserId=${booking.organizerProfile.user.id})}"
                    class="booking-detail-card__button button button--primary">
                     Message Organizer

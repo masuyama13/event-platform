@@ -82,7 +82,7 @@ public class BookingService {
     }
 
     public List<Booking> getCustomerBookings(String customerEmail) {
-        return bookingRepository.findByCustomerProfileUserEmailOrderByCreatedAtDesc(customerEmail);
+        return bookingRepository.findByCustomerProfileUserEmailOrderByUpdatedAtDesc(customerEmail);
     }
 
     public List<Booking> getOrganizerBookings(String organizerEmail) {
@@ -98,6 +98,16 @@ public class BookingService {
     public Booking rejectBooking(Long bookingId, String organizerEmail) {
         Booking booking = getOwnedOrganizerBooking(bookingId, organizerEmail);
         booking.setStatus(BookingStatus.REJECTED);
+        return bookingRepository.save(booking);
+    }
+
+    public Booking cancelCustomerBooking(Long bookingId, String customerEmail) {
+        Booking booking = getCustomerBooking(bookingId, customerEmail);
+        if (booking.getStatus() != BookingStatus.REQUESTED) {
+            throw new RuntimeException("Only requested bookings can be cancelled");
+        }
+
+        booking.setStatus(BookingStatus.CANCELLED);
         return bookingRepository.save(booking);
     }
 

@@ -257,4 +257,44 @@ class BookingServiceTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("You already have a booking request for this plan and date");
     }
+
+    @Test
+    void testCancelCustomerBooking() {
+        final User user = new User();
+        user.setEmail("customer@example.com");
+        final CustomerProfile customerProfile = new CustomerProfile();
+        customerProfile.setUser(user);
+
+        final Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setCustomerProfile(customerProfile);
+        booking.setStatus(BookingStatus.REQUESTED);
+
+        when(mockBookingRepository.findById(1L)).thenReturn(Optional.of(booking));
+        when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
+
+        final Booking result = bookingServiceUnderTest.cancelCustomerBooking(1L, "customer@example.com");
+
+        assertThat(result.getStatus()).isEqualTo(BookingStatus.CANCELLED);
+        verify(mockBookingRepository).save(booking);
+    }
+
+    @Test
+    void testCancelCustomerBooking_WhenStatusIsNotRequested() {
+        final User user = new User();
+        user.setEmail("customer@example.com");
+        final CustomerProfile customerProfile = new CustomerProfile();
+        customerProfile.setUser(user);
+
+        final Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setCustomerProfile(customerProfile);
+        booking.setStatus(BookingStatus.APPROVED);
+
+        when(mockBookingRepository.findById(1L)).thenReturn(Optional.of(booking));
+
+        assertThatThrownBy(() -> bookingServiceUnderTest.cancelCustomerBooking(1L, "customer@example.com"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Only requested bookings can be cancelled");
+    }
 }

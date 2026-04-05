@@ -36,6 +36,12 @@ public class BookingManagementController {
         return "booking-detail";
     }
 
+    @PostMapping("/customer/bookings/{bookingId}/cancel")
+    public String cancelCustomerBooking(@PathVariable Long bookingId, Authentication authentication) {
+        bookingService.cancelCustomerBooking(bookingId, authentication.getName());
+        return "redirect:/customer/bookings";
+    }
+
     @GetMapping("/organizer/bookings")
     public String organizerBookings(Authentication authentication, Model model) {
         List<Booking> bookings = bookingService.getOrganizerBookings(authentication.getName());

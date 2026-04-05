@@ -107,6 +107,12 @@
     color: #991b1b;
 }
 
+.customer-bookings__status--cancelled {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #9a3412;
+}
+
 .customer-bookings__details {
     margin: 0;
 }
@@ -152,6 +158,10 @@
 
 .customer-bookings__note--rejected {
     color: #991b1b;
+}
+
+.customer-bookings__note--cancelled {
+    color: #9a3412;
 }
 
 .customer-bookings__actions {
