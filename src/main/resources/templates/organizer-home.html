@@ -10,27 +10,27 @@
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <section class="dashboard-page organizer-home">
-        <div class="dashboard-page__header">
-            <p class="dashboard-page__eyebrow">Organizer</p>
+    <section class="home-page organizer-home">
+        <div class="home-page__header">
+            <p class="home-page__eyebrow">Organizer</p>
             <h1>Overview</h1>
-            <p class="dashboard-page__intro">Manage your plans, review bookings, and contact the admin team about sponsored placement.</p>
+            <p class="home-page__intro">Manage your plans, review bookings, and contact the admin team about sponsored placement.</p>
         </div>
 
-        <div class="dashboard-grid">
-            <a th:href="@{/plans/manage}" class="dashboard-card">
+        <div class="home-grid">
+            <a th:href="@{/plans/manage}" class="home-card">
                 <h2>Manage Plans</h2>
                 <p>Create new plans or update your current offerings.</p>
             </a>
-            <a th:href="@{/organizer/bookings}" class="dashboard-card">
+            <a th:href="@{/organizer/bookings}" class="home-card">
                 <h2>Booking Requests</h2>
                 <p>Review and respond to incoming booking requests.</p>
             </a>
-            <a th:href="@{/messages/inbox}" class="dashboard-card">
+            <a th:href="@{/messages/inbox}" class="home-card">
                 <h2>Messages</h2>
                 <p>View and reply to messages from customers.</p>
             </a>
-            <a th:href="@{/contact/organizer}" class="dashboard-card organizer-home__card--accent">
+            <a th:href="@{/contact/organizer}" class="home-card organizer-home__card--accent">
                 <h2>Sponsorship Inquiry</h2>
                 <p>Contact the admin team about sponsorship slots or other support.</p>
             </a>
