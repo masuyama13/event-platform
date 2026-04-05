@@ -9,87 +9,74 @@
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-<div class="container">
+    <div class="container">
 
-    <!-- Show who is viewing -->
-    <h1 th:text="${role == 'organizer' ? 'Organizer View' : 'Customer View'}">
-        Messages
-    </h1>
+        <h1 th:text="${role == 'organizer'} ? 'Organizer View' : 'Customer View'">
+            Messages
+        </h1>
 
-    <!-- Role Switch Buttons for Testing -->
-    <!-- TODO: Remove when real authentication is ready -->
-    <div class="role-switch">
-        <p>Switch View (Temporary for Testing):</p>
-        <a th:href="@{/messages(organizerUserId=${organizerUserId}, role='customer')}"
-           class="btn-back">
-            Customer View
-        </a>
-        <a th:href="@{/messages(organizerUserId=${organizerUserId}, role='organizer')}"
-           class="btn-confirm">
-            Organizer View
-        </a>
-    </div>
+        <h2>
+            Conversation with
+            <span th:text="${otherUserName}">Other User</span>
+        </h2>
 
-    <!-- Conversation Box -->
-    <!-- Customer message → left (message-received) -->
-    <!-- Organizer message → right (message-sent) -->
-    <div class="message-box">
-        <div th:each="message : ${messages}"
-             th:classappend="${message.sender.id == 1} ?
-                              'message-received' : 'message-sent'">
+        <!-- Conversation Board -->
+        <div class="message-box">
+            <div th:each="message : ${messages}"
+                 th:class="${message.sender.id == currentUserId} ? 'message-sent' : 'message-received'">
 
-            <p class="message-sender"
-               th:text="${message.sender.id == 1 ? 'Customer' : 'Organizer'}">
-                Sender
-            </p>
-            <p class="message-content"
-               th:text="${message.content}">
-                Content
-            </p>
-            <p class="message-time"
-               th:text="${message.sentAt}">
-                Time
+                <!-- Sender name: firstName for customer, businessName for organizer -->
+                <p class="message-sender"
+                   th:text="${message.sender.id == currentUserId} ? ${currentUserName} : ${otherUserName}">
+                    Sender
+                </p>
+
+                <p class="message-content"
+                   th:text="${message.content}">
+                    Content
+                </p>
+
+                <p class="message-time"
+                   th:text="${#temporals.format(message.sentAt, 'yyyy-MM-dd HH:mm')}">
+                    Time
+                </p>
+            </div>
+
+            <p th:if="${#lists.isEmpty(messages)}" class="no-messages">
+                No messages yet. Start the conversation!
             </p>
         </div>
 
-        <!-- Show if no messages yet -->
-        <p th:if="${#lists.isEmpty(messages)}"
-           class="no-messages">
-            No messages yet. Start the conversation!
-        </p>
+        <!-- Send Message Form -->
+        <div class="send-form">
+            <form th:action="@{/messages/send}" method="post">
+                <input type="hidden"
+                       th:if="${_csrf != null}"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
+
+                <input type="hidden" name="otherUserId" th:value="${otherUserId}"/>
+                <input type="hidden" name="role" th:value="${role}"/>
+
+                <textarea name="content"
+                          placeholder="Type your message here..."
+                          rows="3"
+                          required></textarea>
+
+                <div class="buttons">
+                    <button type="submit" class="btn-confirm">Send</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Back link differs by role -->
+        <a th:href="${role == 'organizer'} ? '/messages/inbox' : '/organizers'"
+           class="btn-back">
+            Back
+        </a>
+
     </div>
-
-    <!-- Send Message Form -->
-    <div class="send-form">
-        <form action="/messages/send" method="post">
-            <input type="hidden"
-                   th:if="${_csrf != null}"
-                   th:name="${_csrf.parameterName}"
-                   th:value="${_csrf.token}"/>
-            <!-- ALL parameter names must match @RequestParam in controller -->
-            <input type="hidden" name="organizerUserId"
-                   th:value="${organizerUserId}">
-            <input type="hidden" name="senderId"
-                   th:value="${senderId}">
-            <input type="hidden" name="receiverId"
-                   th:value="${receiverId}">
-            <input type="hidden" name="role"
-                   th:value="${role}">
-
-            <textarea name="content"
-                      placeholder="Type your message here..."
-                      rows="3"
-                      required></textarea>
-
-            <div class="buttons">
-                <button type="submit" class="btn-confirm">Send</button>
-            </div>
-        </form>
-    </div>
-
-    <a href="/" onclick="if (history.length > 1) { history.back(); return false; }" class="btn-back">Back</a>
-</div>
- </main>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

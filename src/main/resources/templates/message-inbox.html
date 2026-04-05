@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Message Inbox</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+</head>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
+    <div class="container">
+
+        <h1>Messages</h1>
+
+        <div th:if="${conversations != null and !#lists.isEmpty(conversations)}">
+            <table class="info-table">
+                <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Last Message</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="conv : ${conversations}">
+                    <td th:text="${conv['customerFirstName']}">Customer Name</td>
+                    <td th:text="${#temporals.format(conv['lastMessageTime'], 'yyyy-MM-dd HH:mm')}">
+                        Date Time
+                    </td>
+                    <td>
+                        <a th:href="@{/messages/conversation/{id}(id=${conv['customerUserId']})}">
+                            View Message
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${conversations == null or #lists.isEmpty(conversations)}">
+            <p>No messages yet.</p>
+        </div>
+
+        <a th:href="@{/}" class="btn-back">Back to Home</a>
+
+    </div>
+</main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+</body>
+</html>
