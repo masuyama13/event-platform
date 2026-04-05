@@ -47,7 +47,7 @@ public class ProfileController {
             model.addAttribute("editPath", "/profile/organizer");
         }
 
-        return "profile";
+        return "shared/profile";
     }
 
     private User getCurrentUser(UserPrincipal principal) {

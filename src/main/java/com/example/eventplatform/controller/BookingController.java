@@ -26,7 +26,7 @@ public class BookingController {
         List<Plan> plans = bookingService.getAvailablePlans(organizerId);
         model.addAttribute("plans", plans);
         model.addAttribute("organizerId", organizerId);
-        return "plan-list";
+        return "customer/plan-list";
     }
 
     // GET /plan/{planId}/book
@@ -40,7 +40,7 @@ public class BookingController {
         model.addAttribute("plan", selectedPlan);
         model.addAttribute("organizerId", selectedPlan.getOrganizer().getId());
         model.addAttribute("earliestBookingDate", LocalDate.now().plusWeeks(1));
-        return "booking-request";
+        return "customer/booking-request";
     }
 
     // POST /bookings
@@ -72,7 +72,7 @@ public class BookingController {
         disableCaching(response);
         Booking booking = bookingService.getCustomerBooking(bookingId, authentication.getName());
         model.addAttribute("booking", booking);
-        return "thankyou";
+        return "customer/thankyou";
     }
 
     private void disableCaching(HttpServletResponse response) {

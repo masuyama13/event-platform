@@ -53,7 +53,7 @@ class ReviewControllerTest {
 
         mockMvc.perform(get("/reviews/organizer/10"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("review-form"))
+                .andExpect(view().name("customer/review-form"))
                 .andExpect(model().attribute("organizerId", 10L))
                 .andExpect(model().attribute("existingReview", "Good organizer"))
                 .andExpect(model().attribute("existingRating", 5));
@@ -103,7 +103,7 @@ class ReviewControllerTest {
                         .param("reviewText", "   ")
                         .param("ratingValue", "4"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("review-form"))
+                .andExpect(view().name("customer/review-form"))
                 .andExpect(model().attributeExists("error"));
     }
 

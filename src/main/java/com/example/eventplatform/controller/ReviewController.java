@@ -43,7 +43,7 @@ public class ReviewController {
         model.addAttribute("existingReview", existingReview);
         model.addAttribute("existingRating", existingRating);
 
-        return "review-form";
+        return "customer/review-form";
     }
 
     @PostMapping("/submit")
@@ -62,7 +62,7 @@ public class ReviewController {
             model.addAttribute("existingReview", reviewText);
             model.addAttribute("existingRating", ratingValue);
             model.addAttribute("error", e.getMessage());
-            return "review-form";
+            return "customer/review-form";
         }
     }
 }

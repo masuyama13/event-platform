@@ -40,7 +40,7 @@ public class InvoiceController {
         model.addAttribute("invoice", invoice);
         model.addAttribute("booking", booking);
 
-        return "invoice";
+        return "customer/invoice";
     }
 
     private void ensureBookingOwner(Booking booking, Authentication authentication) {

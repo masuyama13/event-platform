@@ -38,7 +38,7 @@ public class CustomerProfileController {
 
         model.addAttribute("email", user.getEmail());
         model.addAttribute("customer", customerProfileService.getByUserId(user.getId()));
-        return "customer-profile-form";
+        return "customer/profile-form";
     }
 
     @PostMapping
@@ -63,7 +63,7 @@ public class CustomerProfileController {
             model.addAttribute("email", email);
             model.addAttribute("customer", profile);
             model.addAttribute("error", e.getMessage());
-            return "customer-profile-form";
+            return "customer/profile-form";
         }
     }
 

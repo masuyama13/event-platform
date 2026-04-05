@@ -44,7 +44,7 @@ public class AuthController {
         if (isAuthenticated(authentication)) {
             return "redirect:/";
         }
-        return "login";
+        return "shared/login";
     }
 
     @GetMapping("/admin/login")
@@ -52,13 +52,13 @@ public class AuthController {
         if (isAuthenticated(authentication)) {
             return "redirect:/";
         }
-        return "admin-login";
+        return "admin/login";
     }
 
     @GetMapping("/register")
     public String customerRegisterPage(Model model) {
         populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
-        return "register";
+        return "shared/register";
     }
 
     @PostMapping("/register")
@@ -74,7 +74,7 @@ public class AuthController {
         if (userRepository.existsByEmail(email)) {
             model.addAttribute("error", "Email is already in use.");
             populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
-            return "register";
+            return "shared/register";
         }
 
         User user = createUser(email, password, UserRole.CUSTOMER);
@@ -92,7 +92,7 @@ public class AuthController {
     @GetMapping("/organizer/register")
     public String organizerRegisterPage(Model model) {
         populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
-        return "register";
+        return "shared/register";
     }
 
     @PostMapping("/organizer/register")
@@ -110,7 +110,7 @@ public class AuthController {
         if (userRepository.existsByEmail(email)) {
             model.addAttribute("error", "Email is already in use.");
             populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
-            return "register";
+            return "shared/register";
         }
 
         try {
@@ -138,7 +138,7 @@ public class AuthController {
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
-            return "register";
+            return "shared/register";
         }
     }
 

@@ -28,13 +28,13 @@ public class AdminSponsorshipController {
     public String sponsorshipList(Model model) {
         model.addAttribute("now", LocalDateTime.now());
         model.addAttribute("organizers", organizerService.getAllOrganizersForAdmin());
-        return "admin-sponsorship-list";
+        return "admin/sponsorship-list";
     }
 
     @GetMapping("/{organizerId}")
     public String sponsorshipForm(@PathVariable Long organizerId, Model model) {
         model.addAttribute("organizer", organizerService.getOrganizerById(organizerId));
-        return "admin-sponsorship-form";
+        return "admin/sponsorship-form";
     }
 
     @PostMapping("/{organizerId}")
@@ -57,7 +57,7 @@ public class AdminSponsorshipController {
             organizer.setSponsoredUntil(sponsoredUntil);
             model.addAttribute("organizer", organizer);
             model.addAttribute("error", exception.getMessage());
-            return "admin-sponsorship-form";
+            return "admin/sponsorship-form";
         }
     }
 

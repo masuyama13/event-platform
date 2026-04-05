@@ -46,7 +46,7 @@ class InvoiceControllerTest {
 
         String view = controller.viewInvoice(1L, authentication, model);
 
-        assertEquals("invoice", view);
+        assertEquals("customer/invoice", view);
         verify(model).addAttribute("invoice", invoice);
         verify(model).addAttribute("booking", booking);
     }

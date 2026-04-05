@@ -29,7 +29,7 @@ public class PlanController {
         List<Plan> plans = planService.getPlansByOrganizer(organizerId);
         model.addAttribute("plans", plans);
         model.addAttribute("organizerId", organizerId);
-        return "plans";
+        return "organizer/plans";
     }
 
     @GetMapping("/manage")
@@ -42,7 +42,7 @@ public class PlanController {
         List<Plan> plans = planService.getPlansByOrganizer(organizerId);
         model.addAttribute("plans", plans);
         model.addAttribute("organizerId", organizerId);
-        return "plans";
+        return "organizer/plans";
     }
 
     @GetMapping("/new")
@@ -52,7 +52,7 @@ public class PlanController {
         }
 
         model.addAttribute("editingPlan", null);
-        return "plan-form";
+        return "organizer/plan-form";
     }
 
     @GetMapping("/{planId}/edit")
@@ -64,7 +64,7 @@ public class PlanController {
         }
 
         model.addAttribute("editingPlan", planService.getPlanForOrganizer(planId, principal.getUserId()));
-        return "plan-form";
+        return "organizer/plan-form";
     }
 
     // Create a new plan

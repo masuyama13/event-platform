@@ -24,7 +24,7 @@ public class BookingManagementController {
     public String customerBookings(Authentication authentication, Model model) {
         List<Booking> bookings = bookingService.getCustomerBookings(authentication.getName());
         model.addAttribute("bookings", bookings);
-        return "customer-bookings";
+        return "customer/bookings";
     }
 
     @GetMapping("/customer/bookings/{bookingId}")
@@ -33,7 +33,7 @@ public class BookingManagementController {
                                         Model model) {
         Booking booking = bookingService.getCustomerBooking(bookingId, authentication.getName());
         model.addAttribute("booking", booking);
-        return "customer-booking-detail";
+        return "customer/booking-detail";
     }
 
     @PostMapping("/customer/bookings/{bookingId}/cancel")
@@ -46,7 +46,7 @@ public class BookingManagementController {
     public String organizerBookings(Authentication authentication, Model model) {
         List<Booking> bookings = bookingService.getOrganizerBookings(authentication.getName());
         model.addAttribute("bookings", bookings);
-        return "organizer-bookings";
+        return "organizer/bookings";
     }
 
     @GetMapping("/organizer/bookings/{bookingId}")
@@ -55,7 +55,7 @@ public class BookingManagementController {
                                          Model model) {
         Booking booking = bookingService.getOrganizerBooking(bookingId, authentication.getName());
         model.addAttribute("booking", booking);
-        return "organizer-booking-detail";
+        return "organizer/booking-detail";
     }
 
     @PostMapping("/organizer/bookings/{bookingId}/approve")
