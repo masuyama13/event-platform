@@ -29,14 +29,6 @@
                         <dt>Address</dt>
                         <dd th:text="${customerProfile.address} ?: '-'">-</dd>
                     </div>
-                    <div class="profile-details__row">
-                        <dt>City</dt>
-                        <dd th:text="${customerProfile.city} ?: '-'">-</dd>
-                    </div>
-                    <div class="profile-details__row">
-                        <dt>Country</dt>
-                        <dd th:text="${customerProfile.country} ?: '-'">-</dd>
-                    </div>
                 </div>
 
                 <div th:if="${organizerProfile != null}">

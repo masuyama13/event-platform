@@ -55,8 +55,6 @@ public class DataInitializer {
             customer.setLastName("Doe");
             customer.setPhone("123-456-7890");
             customer.setAddress("123 Main St");
-            customer.setCity("New York");
-            customer.setCountry("USA");
             customer.setUser(customerUser);
             customerProfileRepository.save(customer);
 

@@ -25,10 +25,6 @@ public class CustomerProfile {
 
     private String address;
 
-    private String city;
-
-    private String country;
-
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -72,14 +68,6 @@ public class CustomerProfile {
         return address;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -110,14 +98,6 @@ public class CustomerProfile {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

@@ -30,9 +30,7 @@ public class CustomerProfileService {
                                          String firstName,
                                          String lastName,
                                          String phone,
-                                         String address,
-                                         String city,
-                                         String country) {
+                                         String address) {
         updateEmail(userId, email);
 
         CustomerProfile profile = getByUserId(userId);
@@ -40,8 +38,6 @@ public class CustomerProfileService {
         profile.setLastName(lastName);
         profile.setPhone(phone);
         profile.setAddress(address);
-        profile.setCity(city);
-        profile.setCountry(country);
         return customerProfileRepository.save(profile);
     }
 
