@@ -50,6 +50,8 @@
                     <p class="organizer-detail__description">
                         <a th:if="${organizer.website != null and !#strings.isEmpty(organizer.website)}"
                            th:href="${organizer.website}"
+                           target="_blank"
+                           rel="noopener noreferrer"
                            th:text="${organizer.website}">
                             Website
                         </a>
