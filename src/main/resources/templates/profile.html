@@ -13,7 +13,8 @@
         <div class="profile-card">
             <div class="profile-heading">
                 <p class="profile-eyebrow">User Profile</p>
-                <span class="profile-role" th:text="${user.role == T(com.example.eventplatform.entity.UserRole).CUSTOMER ? 'Customer' : 'Organizer'}">Customer</span>
+                <span class="profile-role" th:if="${customerProfile != null}">Customer</span>
+                <span class="profile-role" th:if="${organizerProfile != null}">Organizer</span>
             </div>
             <h1 th:text="${profileTitle}">Profile Name</h1>
             <p class="profile-subtitle" th:text="${user.email}">user@example.com</p>
@@ -41,7 +42,9 @@
                 <div th:if="${organizerProfile != null}">
                     <div class="profile-details__row">
                         <dt>Category</dt>
-                        <dd th:text="${organizerProfile.sortedCategories != null and !#lists.isEmpty(organizerProfile.sortedCategories) ? #strings.listJoin(organizerProfile.sortedCategories.![name], ', ') : '-'}">-</dd>
+                        <dd th:if="${organizerProfile.sortedCategoryNames != null and !#lists.isEmpty(organizerProfile.sortedCategoryNames)}"
+                            th:text="${#strings.listJoin(organizerProfile.sortedCategoryNames, ', ')}">-</dd>
+                        <dd th:if="${organizerProfile.sortedCategoryNames == null or #lists.isEmpty(organizerProfile.sortedCategoryNames)}">-</dd>
                     </div>
                     <div class="profile-details__row">
                         <dt>Phone</dt>

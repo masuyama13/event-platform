@@ -95,6 +95,12 @@ public class OrganizerProfile {
                 .toList();
     }
 
+    public List<String> getSortedCategoryNames() {
+        return getSortedCategories().stream()
+                .map(Category::getName)
+                .toList();
+    }
+
     public String getPhone() {
         return phone;
     }
