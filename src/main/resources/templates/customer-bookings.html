@@ -4,35 +4,87 @@
     <meta charset="UTF-8">
     <title>My Bookings</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/customer-bookings.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <h1>My Bookings</h1>
-
-    <div th:if="${#lists.isEmpty(bookings)}">
-        <p>No bookings yet.</p>
-    </div>
-
-    <div th:each="booking : ${bookings}">
-        <p>Booking ID: <span th:text="${booking.id}"></span></p>
-        <p>Organizer: <span th:text="${booking.organizerProfile.businessName}"></span></p>
-        <p>Plan: <span th:text="${booking.planName}"></span></p>
-        <p>Status: <span th:text="${booking.status}"></span></p>
-        <p>Date: <span th:text="${booking.eventDate}"></span></p>
-        <p><a th:href="@{/customer/bookings/{bookingId}(bookingId=${booking.id})}">View Booking Details</a></p>
-
-        <div th:if="${booking.status.name() == 'APPROVED'}">
-            <a th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}">Proceed to Payment</a>
+    <section class="customer-bookings">
+        <div class="customer-bookings__header">
+            <p class="customer-bookings__eyebrow">Bookings</p>
+            <h1>My Bookings</h1>
+            <p class="customer-bookings__intro">Review the status of each booking request and continue to payment when a booking is approved.</p>
         </div>
-        <div th:if="${booking.status.name() == 'REQUESTED'}">
-            <p>Waiting for organizer review.</p>
+
+        <div class="customer-bookings__empty" th:if="${#lists.isEmpty(bookings)}">
+            <p>No bookings yet.</p>
         </div>
-        <div th:if="${booking.status.name() == 'REJECTED'}">
-            <p>This request was rejected.</p>
+
+        <div class="customer-bookings__list" th:if="${!#lists.isEmpty(bookings)}">
+            <article class="customer-bookings__card" th:each="booking : ${bookings}">
+                <div class="customer-bookings__summary">
+                    <div>
+                        <p class="customer-bookings__label">Booking ID</p>
+                        <p class="customer-bookings__value" th:text="${booking.id}">ID</p>
+                    </div>
+                    <div>
+                        <p class="customer-bookings__label">Status</p>
+                        <p class="customer-bookings__status"
+                           th:if="${booking.status.name() == 'REQUESTED'}"
+                           th:text="${booking.status}">
+                            Status
+                        </p>
+                        <p class="customer-bookings__status customer-bookings__status--approved"
+                           th:if="${booking.status.name() == 'APPROVED'}"
+                           th:text="${booking.status}">
+                            Status
+                        </p>
+                        <p class="customer-bookings__status customer-bookings__status--rejected"
+                           th:if="${booking.status.name() == 'REJECTED'}"
+                           th:text="${booking.status}">
+                            Status
+                        </p>
+                    </div>
+                </div>
+
+                <dl class="customer-bookings__details">
+                    <div class="customer-bookings__row">
+                        <dt>Organizer</dt>
+                        <dd th:text="${booking.organizerProfile.businessName}">Organizer</dd>
+                    </div>
+                    <div class="customer-bookings__row">
+                        <dt>Event Date</dt>
+                        <dd th:text="${booking.eventDate}">Date</dd>
+                    </div>
+                </dl>
+
+                <p class="customer-bookings__note" th:if="${booking.status.name() == 'REQUESTED'}">
+                    Waiting for organizer review.
+                </p>
+                <p class="customer-bookings__note customer-bookings__note--rejected" th:if="${booking.status.name() == 'REJECTED'}">
+                    This request was rejected.
+                </p>
+                <p class="customer-bookings__note customer-bookings__note--approved" th:if="${booking.status.name() == 'APPROVED'}">
+                    This booking was approved and is ready for payment.
+                </p>
+
+                <div class="customer-bookings__actions">
+                    <a th:href="@{/customer/bookings/{bookingId}(bookingId=${booking.id})}" class="customer-bookings__button customer-bookings__button--secondary">
+                        View Details
+                    </a>
+                    <a th:if="${booking.status.name() == 'APPROVED'}"
+                       th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
+                       class="customer-bookings__button">
+                        Proceed to Payment
+                    </a>
+                </div>
+            </article>
         </div>
-        <hr>
-    </div>
+
+        <div class="customer-bookings__footer">
+            <a th:href="@{/}" class="customer-bookings__button customer-bookings__button--back">Back to Home</a>
+        </div>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
