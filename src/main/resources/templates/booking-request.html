@@ -51,7 +51,7 @@
             </div>
 
             <div class="buttons">
-                <a th:href="@{/plan/{planId}(planId=${plan.id}, organizerId=${organizerId})}" class="btn-back">Back to Plan</a>
+                <a th:href="@{/booking/plans(organizerId=${organizerId})}" class="btn-back">Back to Plans</a>
                 <button type="submit" class="btn-confirm">Request Booking</button>
             </div>
         </form>
