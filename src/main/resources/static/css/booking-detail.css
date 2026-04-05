@@ -131,8 +131,7 @@
 .booking-detail-card__button {
     order: 2;
 }
-
-.booking-detail-card__button--payment {
+.booking-detail-card__button:first-child {
     order: 1;
 }
 

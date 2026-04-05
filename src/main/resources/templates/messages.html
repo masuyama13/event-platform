@@ -66,14 +66,14 @@
                           required></textarea>
 
                 <div class="buttons">
-                    <button type="submit" class="btn-confirm">Send</button>
+                    <button type="submit" class="btn-confirm button button--primary">Send</button>
                 </div>
             </form>
         </div>
 
         <!-- Return to inbox -->
         <a th:href="${role == 'organizer'} ? '/messages/inbox' : '/messages/customer-inbox'"
-           class="btn-back">
+           class="btn-back button button--secondary">
             Go to Inbox
         </a>
 

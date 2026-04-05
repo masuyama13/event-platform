@@ -69,12 +69,12 @@
                 </p>
 
                 <div class="customer-bookings__actions">
-                    <a th:href="@{/customer/bookings/{bookingId}(bookingId=${booking.id})}" class="customer-bookings__button customer-bookings__button--secondary">
+                    <a th:href="@{/customer/bookings/{bookingId}(bookingId=${booking.id})}" class="customer-bookings__button button button--primary">
                         View Details
                     </a>
                     <a th:if="${booking.status.name() == 'APPROVED'}"
                        th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
-                       class="customer-bookings__button">
+                       class="customer-bookings__button button button--accent">
                         Proceed to Payment
                     </a>
                 </div>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="customer-bookings__footer">
-            <a th:href="@{/}" class="customer-bookings__button customer-bookings__button--back">Back to Home</a>
+            <a th:href="@{/}" class="customer-bookings__button customer-bookings__button--back button button--secondary">Back to Home</a>
         </div>
     </section>
 </main>

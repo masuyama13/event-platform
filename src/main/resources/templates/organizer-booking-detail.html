@@ -95,7 +95,7 @@
 
             <div class="organizer-booking-detail-card__actions">
                 <a th:href="@{/organizer/bookings}"
-                   class="organizer-booking-detail-card__button organizer-booking-detail-card__button--secondary">
+                   class="organizer-booking-detail-card__button organizer-booking-detail-card__button--secondary button button--secondary">
                     Back to Requests
                 </a>
 
@@ -106,7 +106,7 @@
                            th:if="${_csrf != null}"
                            th:name="${_csrf.parameterName}"
                            th:value="${_csrf.token}"/>
-                    <button type="submit" class="organizer-booking-detail-card__button">Approve</button>
+                    <button type="submit" class="organizer-booking-detail-card__button button button--primary">Approve</button>
                 </form>
 
                 <form th:if="${booking.status.name() == 'REQUESTED'}"
@@ -117,7 +117,7 @@
                            th:name="${_csrf.parameterName}"
                            th:value="${_csrf.token}"/>
                     <button type="submit"
-                            class="organizer-booking-detail-card__button organizer-booking-detail-card__button--danger">
+                            class="organizer-booking-detail-card__button organizer-booking-detail-card__button--danger button button--danger">
                         Reject
                     </button>
                 </form>

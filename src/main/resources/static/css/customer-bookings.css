@@ -168,11 +168,6 @@
     padding: 10px 16px;
 }
 
-.customer-bookings__button--secondary {
-    background: #111827;
-    color: #ffffff;
-}
-
 @media (max-width: 640px) {
     .customer-bookings__card,
     .customer-bookings__empty {

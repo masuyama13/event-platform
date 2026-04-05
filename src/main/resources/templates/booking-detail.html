@@ -83,14 +83,14 @@
             </dl>
 
             <div class="booking-detail-card__actions">
+                <a th:href="@{/messages(organizerUserId=${booking.organizerProfile.user.id})}"
+                   class="booking-detail-card__button button button--primary">
+                    Message Organizer
+                </a>
                 <a th:if="${booking.status.name() == 'APPROVED'}"
                    th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
-                   class="booking-detail-card__button booking-detail-card__button--payment">
+                   class="booking-detail-card__button button button--accent">
                     Proceed to Payment
-                </a>
-                <a th:href="@{/messages(organizerUserId=${booking.organizerProfile.user.id})}"
-                   class="booking-detail-card__button">
-                    Message Organizer
                 </a>
             </div>
         </div>

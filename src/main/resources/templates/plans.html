@@ -14,7 +14,7 @@
                 <p class="plans-manage-page__eyebrow">Organizer Tools</p>
                 <h1>Plans</h1>
             </div>
-            <a th:href="@{/plans/new}" class="plans-manage-page__create">Create Plan</a>
+            <a th:href="@{/plans/new}" class="plans-manage-page__create button button--primary">Create Plan</a>
         </div>
 
         <div class="plans-manage-list" th:if="${plans != null and !#lists.isEmpty(plans)}">
@@ -55,14 +55,14 @@
                 </div>
 
                 <div class="plans-manage-card__actions">
-                    <a th:href="@{/plans/{planId}/edit(planId=${plan.id})}" class="plans-manage-card__button">Edit Plan</a>
+                    <a th:href="@{/plans/{planId}/edit(planId=${plan.id})}" class="plans-manage-card__button button button--primary">Edit Plan</a>
                 </div>
             </article>
         </div>
 
         <div class="plans-manage-page__empty" th:if="${plans == null or #lists.isEmpty(plans)}">
             <p>No plans yet. Create your first plan to start receiving bookings.</p>
-            <a th:href="@{/plans/new}" class="plans-manage-page__create">Create Plan</a>
+            <a th:href="@{/plans/new}" class="plans-manage-page__create button button--primary">Create Plan</a>
         </div>
     </section>
 </main>

@@ -1,3 +1,4 @@
+.button,
 .btn-confirm,
 .btn-back,
 .booking-detail-card__button,
@@ -27,6 +28,7 @@
     cursor: pointer;
 }
 
+.button--primary,
 .btn-confirm,
 .booking-detail-card__button,
 .booking-request-card__button,
@@ -45,6 +47,7 @@
     color: #ffffff;
 }
 
+.button--secondary,
 .btn-back,
 .plan-directory__back,
 .message-inbox__back,
@@ -57,17 +60,14 @@
     color: #111827;
 }
 
+.button--accent,
 .organizer-list__button {
     background: #f59e0b;
     color: #111827;
 }
 
+.button--danger,
 .organizer-booking-detail-card__button--danger {
     background: #b91c1c;
     color: #ffffff;
-}
-
-.booking-detail-card__button--payment {
-    background: #f59e0b;
-    color: #111827;
 }

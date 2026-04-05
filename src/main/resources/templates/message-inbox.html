@@ -29,7 +29,7 @@
                     </p>
                 </div>
                 <div class="message-inbox__actions">
-                    <a th:href="@{/messages/conversation/{id}(id=${conv['customerUserId']})}" class="message-inbox__button">
+                    <a th:href="@{/messages/conversation/{id}(id=${conv['customerUserId']})}" class="message-inbox__button button button--primary">
                         Open Conversation
                     </a>
                 </div>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="message-inbox__footer">
-            <a th:href="@{/}" class="message-inbox__back">Back to Home</a>
+            <a th:href="@{/}" class="message-inbox__back button button--secondary">Back to Home</a>
         </div>
     </section>
 </main>

@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="plan-list__actions">
-                    <a th:href="@{/plan/{planId}/book(planId=${plan.id})}" class="plan-list__button">
+                    <a th:href="@{/plan/{planId}/book(planId=${plan.id})}" class="plan-list__button button button--primary">
                         Book Now
                     </a>
                 </div>
@@ -59,7 +59,7 @@
         </div>
 
         <div class="plan-directory__footer">
-            <a th:href="@{/organizers/{organizerId}(organizerId=${organizerId})}" class="plan-directory__back">
+            <a th:href="@{/organizers/{organizerId}(organizerId=${organizerId})}" class="plan-directory__back button button--secondary">
                 Back to Organizer
             </a>
         </div>
