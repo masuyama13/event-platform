@@ -13,6 +13,8 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     // Get all plans by organizer
     List<Plan> findByOrganizerId(Long organizerId);
 
+    List<Plan> findByOrganizerIdOrderByUpdatedAtDesc(Long organizerId);
+
     // Get plan by organizer and plan name
     List<Plan> findByOrganizerIdAndPlanName(Long organizerId, String planName);
 

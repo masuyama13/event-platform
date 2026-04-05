@@ -28,7 +28,7 @@ public class BookingService {
 
     // Get available plans for a specific organizer
     public List<Plan> getAvailablePlans(Long organizerId) {
-        return planRepository.findByOrganizerId(organizerId);
+        return planRepository.findByOrganizerIdOrderByUpdatedAtDesc(organizerId);
     }
 
     // Get a specific plan detail

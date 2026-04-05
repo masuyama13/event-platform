@@ -45,7 +45,7 @@ public class PlanService {
 
     // Get all plans by organizer
     public List<Plan> getPlansByOrganizer(Long organizerId) {
-        return planRepository.findByOrganizerId(organizerId);
+        return planRepository.findByOrganizerIdOrderByUpdatedAtDesc(organizerId);
     }
 
     public Plan getPlanForOrganizer(Long planId, Long organizerUserId) {
