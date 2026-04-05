@@ -4,14 +4,29 @@
     <meta charset="UTF-8">
     <title>EventOmakase | Home</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <h1>Customer Home</h1>
-    <a th:href="@{/organizers}">Find Your Perfect Event Partner</a><br>
-    <a th:href="@{/customer/bookings}">View My Booking Requests</a>
-    <a th:href="@{/messages/customer-inbox}">View Messages</a>
+    <section class="dashboard-page customer-home">
+        <div class="dashboard-page__header">
+            <p class="dashboard-page__eyebrow">Customer</p>
+            <h1>Overview</h1>
+            <p class="dashboard-page__intro">Plan your event, browse organizers, and keep track of every booking request from one place.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <a th:href="@{/organizers}" class="dashboard-card">
+                <h2>Browse Organizers</h2>
+                <p>Explore providers and find the right match for your event style, budget, and needs.</p>
+            </a>
+            <a th:href="@{/customer/bookings}" class="dashboard-card">
+                <h2>Track Requests</h2>
+                <p>Review the booking requests you have already sent and stay on top of responses.</p>
+            </a>
+        </div>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>

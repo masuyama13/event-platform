@@ -4,19 +4,24 @@
     <meta charset="UTF-8">
     <title>Admin Home</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/admin-sponsorship.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <div class="admin-page">
-        <p class="admin-page__eyebrow">Admin</p>
-        <h1>Admin Home</h1>
-        <p class="admin-page__intro">Manage organizer sponsorships and featured placement.</p>
-        <p>
-            <a th:href="@{/admin/sponsorships}" class="admin-page__back">Manage Sponsorships</a>
-        </p>
-    </div>
+    <section class="dashboard-page">
+        <div class="dashboard-page__header">
+            <p class="dashboard-page__eyebrow">Admin</p>
+            <h1>Overview</h1>
+            <p class="dashboard-page__intro">Manage organizer sponsorships and featured placement across the marketplace.</p>
+        </div>
+        <div class="dashboard-grid">
+            <a th:href="@{/admin/sponsorships}" class="dashboard-card">
+                <h2>Manage Sponsorships</h2>
+                <p>Review sponsored organizer windows and keep featured placement up to date.</p>
+            </a>
+        </div>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>

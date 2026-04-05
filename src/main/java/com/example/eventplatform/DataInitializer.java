@@ -82,7 +82,7 @@ public class DataInitializer {
             organizer.setAddress("456 Event St");
             organizer.setDescription("Test organizer");
             organizer.setCategories(java.util.Set.of(wedding, meeting));
-            organizer.setWebsite("www.test.com");
+            organizer.setWebsite("https://example.com");
             organizer.setAverageRating(0.0);
             organizer.setUser(organizerUser);
             organizerProfileRepository.save(organizer);

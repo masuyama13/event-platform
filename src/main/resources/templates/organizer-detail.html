@@ -4,70 +4,106 @@
     <meta charset="UTF-8">
     <title>Organizer Detail</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/organizer-detail.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="organizer-detail">
+        <div class="organizer-detail__header">
+            <p class="organizer-detail__eyebrow">Organizer</p>
+            <h1 th:text="${organizer.businessName}">Business Name</h1>
+        </div>
 
-<div class="container">
-    <h1>Organizer Detail</h1>
+        <div class="organizer-detail__layout">
+            <article class="organizer-detail__card organizer-detail__card--profile">
+                <div class="organizer-detail__summary">
+                    <div>
+                        <p class="organizer-detail__label">Average Rating</p>
+                        <p class="organizer-detail__rating" th:text="${organizer.averageRating != null ? organizer.averageRating + ' / 5' : '0.0 / 5'}">0.0 / 5</p>
+                    </div>
+                </div>
 
-    <div class="plan-card">
-        <h2 th:text="${organizer.businessName}">Business Name</h2>
+                <section class="organizer-detail__section">
+                    <p class="organizer-detail__section-label">About</p>
+                    <p class="organizer-detail__description" th:text="${organizer.description} ?: 'No description provided yet.'">Description</p>
+                </section>
 
-        <p>Email: <span th:text="${organizer.user.email}">organizer@email.com</span></p>
-        <p>Description: <span th:text="${organizer.description} ?: 'N/A'">Description</span></p>
-        <p>Categories: <span th:text="${organizer.categories != null and !#sets.isEmpty(organizer.categories) ? #strings.listJoin(organizer.categories.![name], ', ') : 'N/A'}">Category</span></p>
-        <p>Phone: <span th:text="${organizer.phone} ?: 'N/A'">Phone</span></p>
-        <p>Website: <span th:text="${organizer.website} ?: 'N/A'">Website</span></p>
-        <p>Address: <span th:text="${organizer.address} ?: 'N/A'">Address</span></p>
-        <p>Rating: <span th:text="${organizer.averageRating} ?: 0.0">0.0</span></p>
-        <p>Created At: <span th:text="${organizer.createdAt}">Created Time</span></p>
-        <p>Updated At: <span th:text="${organizer.updatedAt}">Updated Time</span></p>
+                <section class="organizer-detail__section">
+                    <p class="organizer-detail__section-label">Service Categories</p>
+                    <div class="organizer-detail__tags"
+                         th:if="${organizer.sortedCategories != null and !#lists.isEmpty(organizer.sortedCategories)}">
+                        <span class="organizer-detail__tag"
+                              th:each="category : ${organizer.sortedCategories}"
+                              th:text="${category.name}">
+                            Category
+                        </span>
+                    </div>
+                    <p class="organizer-detail__empty"
+                       th:if="${organizer.sortedCategories == null or #lists.isEmpty(organizer.sortedCategories)}">
+                        No categories listed.
+                    </p>
+                </section>
 
-        <p>
-            <a th:href="@{/booking/plans(organizerId=${organizer.id})}">View Plans</a>
-            |
-            <a th:href="@{/messages(organizerUserId=${organizer.user.id})}">Message</a>
-        </p>
+                <section class="organizer-detail__section">
+                    <p class="organizer-detail__section-label">Website</p>
+                    <p class="organizer-detail__description">
+                        <a th:if="${organizer.website != null and !#strings.isEmpty(organizer.website)}"
+                           th:href="${organizer.website}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           th:text="${organizer.website}">
+                            Website
+                        </a>
+                        <span th:if="${organizer.website == null or #strings.isEmpty(organizer.website)}">N/A</span>
+                    </p>
+                </section>
 
-        <p>
-            <a th:href="@{/organizers}">Back</a>
-            |
-            <a th:href="@{/reviews/organizer/{id}(id=${organizer.id})}">Write Review</a>
-        </p>
-    </div>
+                <section class="organizer-detail__section">
+                    <p class="organizer-detail__section-label">Address</p>
+                    <p class="organizer-detail__description" th:text="${organizer.address} ?: 'N/A'">Address</p>
+                </section>
+            </article>
 
-    <div class="plan-card" style="margin-top: 20px;">
-        <h2>Reviews</h2>
+            <aside class="organizer-detail__card organizer-detail__card--actions">
+                <p class="organizer-detail__section-label">Next Actions</p>
+                <div class="organizer-detail__actions">
+                    <a th:href="@{/booking/plans(organizerId=${organizer.id})}" class="organizer-detail__action organizer-detail__action--primary">View Plans</a>
+                    <a th:href="@{/messages(organizerUserId=${organizer.user.id})}" class="organizer-detail__action">Message Organizer</a>
+                    <a th:href="@{/reviews/organizer/{id}(id=${organizer.id})}" class="organizer-detail__action">Write Review</a>
+                    <a th:href="@{/organizers}" class="organizer-detail__action organizer-detail__action--ghost">Back to Organizers</a>
+                </div>
+            </aside>
+        </div>
 
-        <div th:if="${reviews != null and !#lists.isEmpty(reviews)}">
-            <div th:each="review : ${reviews}" style="margin-bottom: 16px; border-bottom: 1px solid #ddd; padding-bottom: 12px;">
-                <p>
-                    <strong>User:</strong>
-                    <span th:text="${review.user.email}">user@email.com</span>
-                </p>
-                <p>
-                    <strong>Rating:</strong>
-                    <span th:text="${review.ratingValue}">0</span>
-                </p>
-                <p>
-                    <strong>Review:</strong>
-                    <span th:text="${review.reviewText}">Review text</span>
-                </p>
-                <p>
-                    <strong>Created At:</strong>
-                    <span th:text="${review.createdAt}">Created time</span>
-                </p>
+        <section class="organizer-detail__card organizer-detail__card--reviews">
+            <div class="organizer-detail__section-header">
+                <p class="organizer-detail__section-label">Reviews</p>
+                <p>Recent feedback from customers who booked or interacted with this organizer.</p>
             </div>
-        </div>
 
-        <div th:if="${reviews == null or #lists.isEmpty(reviews)}">
-            <p>No reviews yet.</p>
-        </div>
-    </div>
-</div>
- </main>
+            <div class="organizer-detail__reviews" th:if="${reviews != null and !#lists.isEmpty(reviews)}">
+                <article class="organizer-detail__review" th:each="review : ${reviews}">
+                    <div class="organizer-detail__review-header">
+                        <div>
+                            <p class="organizer-detail__review-label">Customer</p>
+                            <h3 th:text="${review.user.email}">user@email.com</h3>
+                        </div>
+                        <p class="organizer-detail__review-rating" th:text="${review.ratingValue + ' / 5'}">0 / 5</p>
+                    </div>
+                    <p class="organizer-detail__review-text" th:text="${review.reviewText}">Review text</p>
+                    <p class="organizer-detail__review-date">
+                        Posted <span th:text="${review.createdAt}">Created time</span>
+                    </p>
+                </article>
+            </div>
+
+            <div class="organizer-detail__empty-state" th:if="${reviews == null or #lists.isEmpty(reviews)}">
+                <p>No reviews yet.</p>
+            </div>
+        </section>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

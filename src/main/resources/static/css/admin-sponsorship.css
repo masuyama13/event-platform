@@ -42,23 +42,6 @@
     text-decoration: none;
 }
 
-.admin-page__message,
-.admin-page__error {
-    margin: 0 0 16px;
-    padding: 14px 16px;
-    border-radius: 12px;
-}
-
-.admin-page__message {
-    background: #f3f4f6;
-    color: #111827;
-}
-
-.admin-page__error {
-    background: #fef2f2;
-    color: #991b1b;
-}
-
 .admin-table {
     overflow-x: auto;
     background: #ffffff;
@@ -117,70 +100,12 @@
     max-width: 720px;
 }
 
-.admin-form {
-    margin-top: 24px;
-    padding: 24px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 18px;
-    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-}
-
-.admin-form__field {
-    display: block;
-    margin-bottom: 18px;
-}
-
-.admin-form__field span {
-    display: block;
-    margin-bottom: 8px;
-    color: #374151;
-    font-weight: 600;
-}
-
-.admin-form__field input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
-    box-sizing: border-box;
-    font: inherit;
-}
-
-.admin-form__actions {
-    display: flex;
-    gap: 12px;
-}
-
-.admin-form__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border: 0;
-    border-radius: 999px;
-    background: #111827;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.admin-form__button--secondary {
-    background: #e5e7eb;
-    color: #111827;
-}
-
 .admin-form--clear {
     margin-top: 16px;
 }
 
-.admin-form__button--danger {
-    background: #b91c1c;
-}
-
 @media (max-width: 640px) {
-    .admin-page__header,
-    .admin-form__actions {
+    .admin-page__header {
         flex-direction: column;
         align-items: stretch;
     }
