@@ -4,57 +4,71 @@
     <meta charset="UTF-8">
     <title>Customer Profile</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+    <link rel="stylesheet" th:href="@{/css/profile-form.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-<h1>Edit Customer Profile</h1>
+    <section class="profile-form-page">
+        <div class="profile-form-page__header">
+            <p class="profile-form-page__eyebrow">Profile</p>
+            <h1>Edit Customer Profile</h1>
+            <p class="profile-form-page__intro">Update your contact details so organizers and bookings stay aligned with your current information.</p>
+        </div>
 
-<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+        <p class="profile-form-error" th:if="${error}" th:text="${error}"></p>
 
-<form th:action="@{/profile/customer}" method="post">
-    <input type="hidden"
-           th:if="${_csrf != null}"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}"/>
-    <div>
-        <label for="email">Email:</label>
-        <input id="email" name="email" type="email" th:value="${email}" required>
-    </div>
+        <form th:action="@{/profile/customer}" method="post" class="admin-form profile-form">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
 
-    <div>
-        <label for="firstName">First Name:</label>
-        <input id="firstName" name="firstName" type="text" th:value="${customer.firstName}" required>
-    </div>
+            <div class="profile-form-grid">
+                <label class="admin-form__field">
+                    <span>First Name</span>
+                    <input id="firstName" name="firstName" type="text" th:value="${customer.firstName}" required>
+                </label>
 
-    <div>
-        <label for="lastName">Last Name:</label>
-        <input id="lastName" name="lastName" type="text" th:value="${customer.lastName}" required>
-    </div>
+                <label class="admin-form__field">
+                    <span>Last Name</span>
+                    <input id="lastName" name="lastName" type="text" th:value="${customer.lastName}" required>
+                </label>
 
-    <div>
-        <label for="phone">Phone:</label>
-        <input id="phone" name="phone" type="text" th:value="${customer.phone}">
-    </div>
+                <label class="admin-form__field">
+                    <span>Email</span>
+                    <input id="email" name="email" type="email" th:value="${email}" required>
+                </label>
 
-    <div>
-        <label for="address">Address:</label>
-        <input id="address" name="address" type="text" th:value="${customer.address}">
-    </div>
+                <label class="admin-form__field">
+                    <span>Phone</span>
+                    <input id="phone" name="phone" type="text" th:value="${customer.phone}">
+                </label>
 
-    <div>
-        <label for="city">City:</label>
-        <input id="city" name="city" type="text" th:value="${customer.city}">
-    </div>
+                <label class="admin-form__field">
+                    <span>Address</span>
+                    <input id="address" name="address" type="text" th:value="${customer.address}">
+                </label>
 
-    <div>
-        <label for="country">Country:</label>
-        <input id="country" name="country" type="text" th:value="${customer.country}">
-    </div>
+                <label class="admin-form__field">
+                    <span>City</span>
+                    <input id="city" name="city" type="text" th:value="${customer.city}">
+                </label>
 
-<button type="submit">Save Profile</button>
-</form>
- </main>
+                <label class="admin-form__field">
+                    <span>Country</span>
+                    <input id="country" name="country" type="text" th:value="${customer.country}">
+                </label>
+            </div>
+
+            <div class="profile-form__actions">
+                <a th:href="@{/profile}" class="profile-form__button profile-form__button--secondary">Cancel</a>
+                <button type="submit" class="profile-form__button">Save Profile</button>
+            </div>
+        </form>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
