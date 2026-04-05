@@ -1,0 +1,17 @@
+.plan-form-page__intro {
+    margin: 12px 0 0;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.plan-form textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.plan-form input:focus,
+.plan-form textarea:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.16);
+}

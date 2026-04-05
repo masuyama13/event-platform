@@ -3,31 +3,55 @@
 <head>
     <title>Plan Form</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+    <link rel="stylesheet" th:href="@{/css/plan-form.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="plan-form-page admin-form-page">
+        <p class="admin-page__eyebrow">Organizer Tools</p>
+        <h1 th:text="${editingPlan != null} ? 'Edit Plan' : 'Create Plan'">Create Plan</h1>
+        <p class="plan-form-page__intro"
+           th:text="${editingPlan != null} ?
+           'Update pricing and details so customers always see your current offer.' :
+           'Add a clear, bookable plan with pricing and a concise description.'">
+            Add a clear, bookable plan with pricing and a concise description.
+        </p>
 
-<h2 th:text="${editingPlan != null} ? 'Edit Plan' : 'Create Plan'">Create Plan</h2>
+        <form th:action="${editingPlan != null} ? @{/plans/{planId}/edit(planId=${editingPlan.id})} : @{/plans/create}"
+              method="post"
+              class="admin-form plan-form">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
 
-<form th:action="${editingPlan != null} ? @{/plans/{planId}/edit(planId=${editingPlan.id})} : @{/plans/create}" method="post">
-    <input type="hidden"
-           th:if="${_csrf != null}"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}"/>
-    <label>Plan Name:</label>
-    <input type="text" name="planName" th:value="${editingPlan != null ? editingPlan.planName : ''}" required />
+            <label class="admin-form__field">
+                <span>Plan Name</span>
+                <input type="text" name="planName" th:value="${editingPlan != null ? editingPlan.planName : ''}" required>
+            </label>
 
-    <label>Price:</label>
-    <input type="number" name="price" step="0.01" th:value="${editingPlan != null ? editingPlan.price : ''}" required />
+            <label class="admin-form__field">
+                <span>Price</span>
+                <input type="number" name="price" step="0.01" min="0" th:value="${editingPlan != null ? editingPlan.price : ''}" required>
+            </label>
 
-    <label>Description:</label>
-    <input type="text" name="description" th:value="${editingPlan != null ? editingPlan.description : ''}" required />
+            <label class="admin-form__field">
+                <span>Description</span>
+                <textarea name="description" rows="5" required th:text="${editingPlan != null ? editingPlan.description : ''}"></textarea>
+            </label>
 
-    <button type="submit" th:text="${editingPlan != null} ? 'Update Plan' : 'Create Plan'">Create Plan</button>
-    <a th:href="@{/plans/manage}">Back to Plans</a>
-</form>
-
+            <div class="admin-form__actions">
+                <button type="submit"
+                        class="admin-form__button"
+                        th:text="${editingPlan != null} ? 'Save Changes' : 'Create Plan'">
+                    Create Plan
+                </button>
+                <a th:href="@{/plans/manage}" class="admin-form__button admin-form__button--secondary">Back to Plans</a>
+            </div>
+        </form>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
