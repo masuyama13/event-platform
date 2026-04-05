@@ -38,12 +38,12 @@ public class BookingService {
                         "Plan not found: " + planId));
     }
 
-    // Save confirmed booking to database with REQUESTED status
-    public Booking confirmBooking(Long planId,
-                                  LocalDate eventDate,
-                                  String eventType,
-                                  String requestDetails,
-                                  String customerEmail) {
+    // Submit a booking request with REQUESTED status
+    public Booking submitBookingRequest(Long planId,
+                                        LocalDate eventDate,
+                                        String eventType,
+                                        String requestDetails,
+                                        String customerEmail) {
         LocalDate earliestBookingDate = LocalDate.now().plusWeeks(1);
         if (eventDate.isBefore(earliestBookingDate)) {
             throw new RuntimeException("Event date must be at least one week from today");

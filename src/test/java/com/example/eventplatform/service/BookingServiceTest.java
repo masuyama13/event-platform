@@ -146,7 +146,7 @@ class BookingServiceTest {
         when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
 
         // Run the test
-        final Booking result = bookingServiceUnderTest.confirmBooking(
+        final Booking result = bookingServiceUnderTest.submitBookingRequest(
                 10L,
                 requestedDate,
                 "Wedding",
@@ -175,7 +175,7 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(
+                () -> bookingServiceUnderTest.submitBookingRequest(
                         10L,
                         requestedDate,
                         "Wedding",
@@ -207,7 +207,7 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(
+                () -> bookingServiceUnderTest.submitBookingRequest(
                         10L,
                         requestedDate,
                         "Wedding",
@@ -220,7 +220,7 @@ class BookingServiceTest {
     void testConfirmBooking_EventDateTooSoon() {
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(
+                () -> bookingServiceUnderTest.submitBookingRequest(
                         10L,
                         LocalDate.now().plusDays(6),
                         "Wedding",
@@ -239,7 +239,7 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(
+                () -> bookingServiceUnderTest.submitBookingRequest(
                         10L,
                         requestedDate,
                         "Wedding",
