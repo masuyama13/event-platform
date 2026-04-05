@@ -1,0 +1,130 @@
+.thankyou-page {
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.thankyou-card {
+    padding: 32px;
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.thankyou-card__eyebrow {
+    margin: 0 0 10px;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.thankyou-card h1 {
+    margin: 0;
+    color: #111827;
+    font-size: clamp(1.75rem, 4vw, 2rem);
+}
+
+.thankyou-card__intro {
+    margin: 14px 0 0;
+    color: #4b5563;
+    line-height: 1.75;
+}
+
+.thankyou-card__summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #f9fafb;
+}
+
+.thankyou-card__label {
+    margin: 0 0 6px;
+    color: #6b7280;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.thankyou-card__status,
+.thankyou-card__price {
+    margin: 0;
+    color: #111827;
+    font-weight: 800;
+}
+
+.thankyou-card__price {
+    font-size: 1.35rem;
+}
+
+.thankyou-card__details {
+    margin: 24px 0 0;
+}
+
+.thankyou-card__row {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.thankyou-card__row:first-child {
+    padding-top: 0;
+}
+
+.thankyou-card__row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.thankyou-card__row dt {
+    color: #6b7280;
+    font-weight: 700;
+}
+
+.thankyou-card__row dd {
+    margin: 0;
+    color: #111827;
+    word-break: break-word;
+}
+
+.thankyou-card__actions {
+    margin-top: 28px;
+}
+
+.thankyou-card__button {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #111827;
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media (max-width: 640px) {
+    .thankyou-card {
+        padding: 24px 20px;
+    }
+
+    .thankyou-card__summary {
+        grid-template-columns: 1fr;
+    }
+
+    .thankyou-card__row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .thankyou-card__button {
+        display: block;
+        text-align: center;
+    }
+}
