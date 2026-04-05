@@ -69,25 +69,11 @@
 
 .message-inbox__button,
 .message-inbox__back {
-    display: inline-block;
-    padding: 12px 18px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-weight: 700;
-}
-
-.message-inbox__button {
-    background: #111827;
-    color: #ffffff;
+    text-align: center;
 }
 
 .message-inbox__footer {
     margin-top: 22px;
-}
-
-.message-inbox__back {
-    background: #e5e7eb;
-    color: #111827;
 }
 
 .message-inbox__empty {

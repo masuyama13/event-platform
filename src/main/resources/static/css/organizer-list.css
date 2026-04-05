@@ -165,13 +165,6 @@
 }
 
 .organizer-list__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border-radius: 999px;
-    background: #f59e0b;
-    color: #111827;
-    font-weight: 700;
-    text-decoration: none;
 }
 
 .organizer-list__button:hover {

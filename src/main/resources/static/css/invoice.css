@@ -116,16 +116,7 @@
 }
 
 .invoice-card__button {
-    display: inline-block;
     width: 100%;
-    padding: 12px 18px;
-    border: 0;
-    border-radius: 999px;
-    background: #111827;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
 }
 
 .invoice-card__message {

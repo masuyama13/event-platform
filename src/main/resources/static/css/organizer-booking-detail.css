@@ -134,25 +134,7 @@
 }
 
 .organizer-booking-detail-card__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border: 0;
-    border-radius: 999px;
-    background: #111827;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.organizer-booking-detail-card__button--secondary {
-    background: #e5e7eb;
-    color: #111827;
-}
-
-.organizer-booking-detail-card__button--danger {
-    background: #b91c1c;
+    text-align: center;
 }
 
 @media (max-width: 640px) {

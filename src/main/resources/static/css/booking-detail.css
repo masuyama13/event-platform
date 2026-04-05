@@ -129,18 +129,11 @@
 }
 
 .booking-detail-card__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border-radius: 999px;
-    background: #111827;
-    color: #ffffff;
-    font-weight: 700;
-    text-decoration: none;
+    order: 2;
 }
 
 .booking-detail-card__button--payment {
-    background: #f59e0b;
-    color: #111827;
+    order: 1;
 }
 
 @media (max-width: 640px) {
@@ -158,8 +151,8 @@
     }
 
     .booking-detail-card__button {
-        display: block;
         text-align: center;
+        width: 100%;
     }
 
     .booking-detail-card__actions {
