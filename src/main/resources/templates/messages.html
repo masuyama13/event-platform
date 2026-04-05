@@ -5,18 +5,21 @@
     <title>Messages</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/message-thread.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <div class="container">
+    <div class="container message-thread-page">
 
-        <h1 th:text="${role == 'organizer'} ? 'Organizer View' : 'Customer View'">
+        <p class="message-thread-page__eyebrow">
             Messages
-        </h1>
+        </p>
 
-        <h2>
-            Conversation with
+        <h1 class="message-thread-page__title">Conversation</h1>
+
+        <h2 class="message-thread-page__subtitle">
+            with
             <span th:text="${otherUserName}">Other User</span>
         </h2>
 
@@ -69,10 +72,10 @@
             </form>
         </div>
 
-        <!-- Back link differs by role -->
-        <a th:href="${role == 'organizer'} ? '/messages/inbox' : '/organizers'"
+        <!-- Return to inbox -->
+        <a th:href="${role == 'organizer'} ? '/messages/inbox' : '/messages/customer-inbox'"
            class="btn-back">
-            Back
+            Go to Inbox
         </a>
 
     </div>
