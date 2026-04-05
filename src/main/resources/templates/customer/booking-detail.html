@@ -64,8 +64,14 @@
                 </div>
                 <div class="booking-detail-card__row">
                     <dt>Organizer</dt>
-                    <dd th:text="${booking.organizerProfile != null ? booking.organizerProfile.businessName : 'N/A'}">
-                        Organizer Name
+                    <dd>
+                        <a th:if="${booking.organizerProfile != null}"
+                           th:href="@{/organizers/{organizerId}(organizerId=${booking.organizerProfile.id})}"
+                           class="booking-detail-card__link"
+                           th:text="${booking.organizerProfile.businessName}">
+                            Organizer Name
+                        </a>
+                        <span th:if="${booking.organizerProfile == null}">N/A</span>
                     </dd>
                 </div>
                 <div class="booking-detail-card__row">

@@ -70,7 +70,21 @@
                 <dl class="customer-bookings__details">
                     <div class="customer-bookings__row">
                         <dt>Organizer</dt>
-                        <dd th:text="${booking.organizerProfile.businessName}">Organizer</dd>
+                        <dd>
+                            <a th:href="@{/organizers/{organizerId}(organizerId=${booking.organizerProfile.id})}"
+                               class="customer-bookings__link"
+                               th:text="${booking.organizerProfile.businessName}">
+                                Organizer
+                            </a>
+                        </dd>
+                    </div>
+                    <div class="customer-bookings__row">
+                        <dt>Plan</dt>
+                        <dd th:text="${booking.planName}">Plan Name</dd>
+                    </div>
+                    <div class="customer-bookings__row">
+                        <dt>Price</dt>
+                        <dd>$<span th:text="${booking.price}">0.00</span></dd>
                     </div>
                     <div class="customer-bookings__row">
                         <dt>Event Date</dt>

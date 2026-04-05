@@ -144,6 +144,11 @@
     word-break: break-word;
 }
 
+.customer-bookings__link {
+    color: inherit;
+    text-decoration: none;
+}
+
 .customer-bookings__note {
     margin: 14px 0 0;
     color: #6b7280;

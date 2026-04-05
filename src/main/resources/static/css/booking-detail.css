@@ -131,6 +131,11 @@
     word-break: break-word;
 }
 
+.booking-detail-card__link {
+    color: inherit;
+    text-decoration: none;
+}
+
 .booking-detail-card__invoice-status {
     display: inline-flex;
     align-items: center;
