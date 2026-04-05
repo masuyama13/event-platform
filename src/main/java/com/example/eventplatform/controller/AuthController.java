@@ -6,6 +6,8 @@ import com.example.eventplatform.service.OrganizerService;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,12 +40,18 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(Authentication authentication) {
+        if (isAuthenticated(authentication)) {
+            return "redirect:/";
+        }
         return "login";
     }
 
     @GetMapping("/admin/login")
-    public String adminLoginPage() {
+    public String adminLoginPage(Authentication authentication) {
+        if (isAuthenticated(authentication)) {
+            return "redirect:/";
+        }
         return "admin-login";
     }
 
@@ -152,5 +160,11 @@ public class AuthController {
         model.addAttribute("alternateRegisterPath", alternateRegisterPath);
         model.addAttribute("alternateRegisterLabel", alternateRegisterLabel);
         model.addAttribute("categories", categoryService.getAllCategories());
+    }
+
+    private boolean isAuthenticated(Authentication authentication) {
+        return authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken);
     }
 }
