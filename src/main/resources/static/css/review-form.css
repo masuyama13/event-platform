@@ -1,0 +1,139 @@
+.review-form-page {
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.review-form-card {
+    padding: 32px;
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.review-form-card__eyebrow {
+    margin: 0 0 10px;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.review-form-card h1 {
+    margin: 0;
+    color: #111827;
+    font-size: clamp(1.75rem, 4vw, 2rem);
+}
+
+.review-form-card__error {
+    margin: 18px 0 0;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.review-form-card__current {
+    margin-top: 18px;
+    padding: 18px 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #f9fafb;
+}
+
+.review-form-card__label {
+    margin: 0 0 8px;
+    color: #6b7280;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.review-form-card__rating,
+.review-form-card__current-text {
+    margin: 0;
+    color: #111827;
+    line-height: 1.7;
+}
+
+.review-form-card__rating strong {
+    color: #d97706;
+}
+
+.review-form-card__form {
+    margin-top: 24px;
+}
+
+.review-form-card__field {
+    display: block;
+    margin-bottom: 18px;
+}
+
+.review-form-card__field span {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 600;
+}
+
+.review-form-card__field select,
+.review-form-card__field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+.review-form-card__field textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.review-form-card__field select:focus,
+.review-form-card__field textarea:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.16);
+}
+
+.review-form-card__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.review-form-card__button {
+    display: inline-block;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #111827;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.review-form-card__button--secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+@media (max-width: 640px) {
+    .review-form-card {
+        padding: 24px 20px;
+    }
+
+    .review-form-card__actions {
+        flex-direction: column;
+    }
+
+    .review-form-card__button {
+        text-align: center;
+    }
+}

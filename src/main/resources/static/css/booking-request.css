@@ -1,0 +1,158 @@
+.booking-request-page {
+    width: min(100%, 960px);
+    margin: 0 auto;
+}
+
+.booking-request-page__header {
+    margin-bottom: 24px;
+}
+
+.booking-request-page__eyebrow {
+    margin: 0 0 8px;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.booking-request-page h1 {
+    margin: 0;
+    color: #111827;
+    font-size: clamp(1.75rem, 4vw, 2rem);
+}
+
+.booking-request-page__intro {
+    margin: 12px 0 0;
+    max-width: 42rem;
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+.booking-request-card {
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.booking-request-card__summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.booking-request-card__label {
+    margin: 0 0 6px;
+    color: #6b7280;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.booking-request-card__value {
+    margin: 0;
+    color: #111827;
+    font-weight: 600;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.booking-request-card__price {
+    margin: 0;
+    color: #111827;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.booking-request-card__section-label {
+    margin: 0 0 12px;
+    color: #111827;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.booking-request-card__section--form {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.booking-request-card__field {
+    display: block;
+}
+
+.booking-request-card__field span {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 600;
+}
+
+.booking-request-card__field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+.booking-request-card__field input:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.16);
+}
+
+.booking-request-card__note {
+    margin: 14px 0 0;
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+.booking-request-card__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.booking-request-card__button {
+    display: inline-block;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #111827;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.booking-request-card__button--secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+@media (max-width: 640px) {
+    .booking-request-card {
+        padding: 20px;
+    }
+
+    .booking-request-card__summary {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-request-card__actions {
+        flex-direction: column;
+    }
+
+    .booking-request-card__button {
+        text-align: center;
+    }
+}

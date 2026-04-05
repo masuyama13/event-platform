@@ -29,19 +29,6 @@ public class BookingController {
         return "plan-list";
     }
 
-    // GET /plan/{planId}
-    @GetMapping("/plan/{planId}")
-    public String showPlanDetail(
-            @PathVariable Long planId,
-            Model model,
-            HttpServletResponse response) {
-        disableCaching(response);
-        Plan selectedPlan = bookingService.getPlanDetail(planId);
-        model.addAttribute("plan", selectedPlan);
-        model.addAttribute("organizerId", selectedPlan.getOrganizer().getId());
-        return "plan-detail";
-    }
-
     // GET /plan/{planId}/book
     @GetMapping("/plan/{planId}/book")
     public String showBookingRequestForm(

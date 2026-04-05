@@ -4,67 +4,66 @@
     <meta charset="UTF-8">
     <title>Write Review</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/review-form.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="review-form-page">
+        <div class="review-form-card">
+            <p class="review-form-card__eyebrow">Review</p>
+            <h1>Write a Review</h1>
 
-<div class="container">
-    <div class="plan-card">
-        <h1>Write a Review</h1>
+            <p class="review-form-card__error" th:if="${error}" th:text="${error}">Error</p>
 
-        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
-
-        <p th:if="${existingRating != null and existingRating > 0}">
-            Your current rating:
-            <strong th:text="${existingRating} + ' / 5'">0 / 5</strong>
-        </p>
-
-        <p th:if="${existingReview != null and !existingReview.isEmpty()}">
-            Your current review:
-        </p>
-
-        <form th:action="@{/reviews/submit}" method="post">
-            <input type="hidden"
-                   th:if="${_csrf != null}"
-                   th:name="${_csrf.parameterName}"
-                   th:value="${_csrf.token}"/>
-
-            <input type="hidden" name="organizerId" th:value="${organizerId}"/>
-
-            <div>
-                <label for="ratingValue">Rating</label>
-                <select id="ratingValue" name="ratingValue" required>
-                    <option value="">Select a rating</option>
-                    <option value="5" th:selected="${existingRating == 5}">5</option>
-                    <option value="4" th:selected="${existingRating == 4}">4</option>
-                    <option value="3" th:selected="${existingRating == 3}">3</option>
-                    <option value="2" th:selected="${existingRating == 2}">2</option>
-                    <option value="1" th:selected="${existingRating == 1}">1</option>
-                </select>
+            <div class="review-form-card__current" th:if="${existingRating != null and existingRating > 0}">
+                <p class="review-form-card__label">Your current rating</p>
+                <p class="review-form-card__rating">
+                    <strong th:text="${existingRating} + ' / 5'">0 / 5</strong>
+                </p>
             </div>
 
-            <br>
-
-            <div>
-                <textarea name="reviewText"
-                          rows="6"
-                          cols="50"
-                          placeholder="Write your review here..."
-                          th:text="${existingReview}"></textarea>
+            <div class="review-form-card__current" th:if="${existingReview != null and !existingReview.isEmpty()}">
+                <p class="review-form-card__label">Your current review</p>
+                <p class="review-form-card__current-text" th:text="${existingReview}">Review</p>
             </div>
 
-            <br>
+            <form th:action="@{/reviews/submit}" method="post" class="review-form-card__form">
+                <input type="hidden"
+                       th:if="${_csrf != null}"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
 
-            <div class="buttons">
-                <a th:href="@{/organizers/{id}(id=${organizerId})}" class="btn-back">Cancel</a>
-                <button type="submit" class="btn-confirm">Submit Review</button>
-            </div>
-        </form>
-    </div>
-</div>
- </main>
+                <input type="hidden" name="organizerId" th:value="${organizerId}"/>
+
+                <label class="review-form-card__field" for="ratingValue">
+                    <span>Rating</span>
+                    <select id="ratingValue" name="ratingValue" required>
+                        <option value="">Select a rating</option>
+                        <option value="5" th:selected="${existingRating == 5}">5 Excellent</option>
+                        <option value="4" th:selected="${existingRating == 4}">4 Good</option>
+                        <option value="3" th:selected="${existingRating == 3}">3 Average</option>
+                        <option value="2" th:selected="${existingRating == 2}">2 Below Average</option>
+                        <option value="1" th:selected="${existingRating == 1}">1 Poor</option>
+                    </select>
+                </label>
+
+                <label class="review-form-card__field">
+                    <span>Review</span>
+                    <textarea name="reviewText"
+                              rows="6"
+                              placeholder="Write your review here..."
+                              th:text="${existingReview}"></textarea>
+                </label>
+
+                <div class="review-form-card__actions">
+                    <a th:href="@{/organizers/{id}(id=${organizerId})}" class="review-form-card__button review-form-card__button--secondary">Cancel</a>
+                    <button type="submit" class="review-form-card__button">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

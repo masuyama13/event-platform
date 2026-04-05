@@ -85,15 +85,11 @@
             <div class="organizer-detail__reviews" th:if="${reviews != null and !#lists.isEmpty(reviews)}">
                 <article class="organizer-detail__review" th:each="review : ${reviews}">
                     <div class="organizer-detail__review-header">
-                        <div>
-                            <p class="organizer-detail__review-label">Customer</p>
-                            <h3 th:text="${review.user.email}">user@email.com</h3>
-                        </div>
                         <p class="organizer-detail__review-rating" th:text="${review.ratingValue + ' / 5'}">0 / 5</p>
                     </div>
                     <p class="organizer-detail__review-text" th:text="${review.reviewText}">Review text</p>
                     <p class="organizer-detail__review-date">
-                        Posted <span th:text="${review.createdAt}">Created time</span>
+                        Posted <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">Created date</span>
                     </p>
                 </article>
             </div>

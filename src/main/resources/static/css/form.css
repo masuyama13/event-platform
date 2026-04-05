@@ -3,6 +3,24 @@
     margin: 0 auto;
 }
 
+.auth-page,
+.profile-form-page {
+    width: min(100%, 820px);
+    margin: 0 auto;
+}
+
+.auth-page__intro,
+.profile-form-page__intro {
+    margin: 12px 0 0;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.profile-form-page__header {
+    margin-bottom: 24px;
+}
+
+.profile-form-page__eyebrow,
 .admin-page__eyebrow {
     margin: 0 0 8px;
     color: #6b7280;
@@ -12,15 +30,18 @@
     text-transform: uppercase;
 }
 
+.profile-form-page h1,
 .admin-form-page h1 {
     margin: 0;
     color: #111827;
+    font-size: clamp(1.75rem, 4vw, 2rem);
 }
 
 .form-feedback--message,
 .form-feedback--error,
 .admin-page__message,
-.admin-page__error {
+.admin-page__error,
+.profile-form-error {
     margin: 0 0 16px;
     padding: 14px 16px;
     border-radius: 12px;
@@ -33,7 +54,8 @@
 }
 
 .form-feedback--error,
-.admin-page__error {
+.admin-page__error,
+.profile-form-error {
     background: #fef2f2;
     color: #991b1b;
 }
@@ -64,6 +86,8 @@
 
 .form-card input,
 .form-card textarea,
+.profile-form select,
+.profile-form textarea,
 .admin-form__field input,
 .admin-form textarea {
     width: 100%;
@@ -74,14 +98,92 @@
     font: inherit;
 }
 
+.auth-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.profile-form textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.auth-form input:focus,
+.auth-form textarea:focus,
+.profile-form select:focus,
+.profile-form textarea:focus,
+.profile-form input:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.16);
+}
+
+.auth-form textarea,
+.auth-form input {
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.auth-form__grid,
+.profile-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+}
+
+.auth-checkbox-group,
+.profile-form__checkbox-group {
+    margin-bottom: 18px;
+}
+
+.profile-form__checkbox-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 600;
+}
+
+.auth-checkbox-group__list,
+.profile-form__checkbox-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.auth-checkbox-group__item,
+.profile-form__checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+    color: #374151;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.auth-checkbox-group__item input,
+.profile-form__checkbox-item input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.profile-form__checkbox-item input {
+    accent-color: #1f2937;
+}
+
 .form-actions,
-.admin-form__actions {
+.admin-form__actions,
+.profile-form__actions {
     display: flex;
     gap: 12px;
 }
 
 .form-button,
-.admin-form__button {
+.admin-form__button,
+.profile-form__button {
     display: inline-block;
     padding: 12px 18px;
     border: 0;
@@ -95,7 +197,8 @@
 }
 
 .form-button--secondary,
-.admin-form__button--secondary {
+.admin-form__button--secondary,
+.profile-form__button--secondary {
     background: #e5e7eb;
     color: #111827;
 }
@@ -105,10 +208,24 @@
     background: #b91c1c;
 }
 
+.profile-form__actions {
+    margin-top: 8px;
+}
+
 @media (max-width: 640px) {
+    .auth-form__grid,
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+    }
+
     .form-actions,
-    .admin-form__actions {
+    .admin-form__actions,
+    .profile-form__actions {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .profile-form__button {
+        text-align: center;
     }
 }

@@ -9,14 +9,14 @@
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <section class="dashboard-page">
-        <div class="dashboard-page__header">
-            <p class="dashboard-page__eyebrow">Admin</p>
+    <section class="home-page">
+        <div class="home-page__header">
+            <p class="home-page__eyebrow">Admin</p>
             <h1>Overview</h1>
-            <p class="dashboard-page__intro">Manage organizer sponsorships and featured placement across the marketplace.</p>
+            <p class="home-page__intro">Manage organizer sponsorships and featured placement across the marketplace.</p>
         </div>
-        <div class="dashboard-grid">
-            <a th:href="@{/admin/sponsorships}" class="dashboard-card">
+        <div class="home-grid">
+            <a th:href="@{/admin/sponsorships}" class="home-card">
                 <h2>Manage Sponsorships</h2>
                 <p>Review sponsored organizer windows and keep featured placement up to date.</p>
             </a>

@@ -4,54 +4,54 @@
     <meta charset="UTF-8">
     <title>Thank You</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/thankyou.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-
-    <div class="container">
+    <section class="thankyou-page">
         <div class="thankyou-card">
-            <h1>🎉 Thank You!</h1>
-            <p>Your booking has been requested!</p>
+            <p class="thankyou-card__eyebrow">Booking Requested</p>
+            <h1>Thank You!</h1>
+            <p class="thankyou-card__intro">Your booking request has been submitted successfully. You can review the details below and track updates from your bookings page.</p>
 
-            <table class="info-table">
-                <tr>
-                    <td>Booking ID:</td>
-                    <td th:text="${booking.id}">ID</td>
-                </tr>
-                <tr>
-                    <td>Organizer:</td>
-                    <td th:text="${booking.organizerProfile != null
-                               ? booking.organizerProfile.businessName : 'N/A'}">
+            <div class="thankyou-card__summary">
+                <div>
+                    <p class="thankyou-card__label">Status</p>
+                    <p class="thankyou-card__status" th:text="${booking.status}">Status</p>
+                </div>
+                <div>
+                    <p class="thankyou-card__label">Price</p>
+                    <p class="thankyou-card__price">$<span th:text="${booking.price}">Price</span></p>
+                </div>
+            </div>
+
+            <dl class="thankyou-card__details">
+                <div class="thankyou-card__row">
+                    <dt>Booking ID</dt>
+                    <dd th:text="${booking.id}">ID</dd>
+                </div>
+                <div class="thankyou-card__row">
+                    <dt>Organizer</dt>
+                    <dd th:text="${booking.organizerProfile != null ? booking.organizerProfile.businessName : 'N/A'}">
                         Organizer Name
-                    </td>
-                </tr>
-                <tr>
-                    <td>Plan Name:</td>
-                    <td th:text="${booking.planName}">Plan Name</td>
-                </tr>
-                <tr>
-                    <td>Date:</td>
-                    <td th:text="${booking.eventDate}">Date</td>
-                </tr>
-                <tr>
-                    <td>Price:</td>
-                    <td>$<span th:text="${booking.price}">Price</span></td>
-                </tr>
-                <tr>
-                    <td>Status:</td>
-                    <td th:text="${booking.status}">Status</td>
-                </tr>
-            </table>
+                    </dd>
+                </div>
+                <div class="thankyou-card__row">
+                    <dt>Plan Name</dt>
+                    <dd th:text="${booking.planName}">Plan Name</dd>
+                </div>
+                <div class="thankyou-card__row">
+                    <dt>Date</dt>
+                    <dd th:text="${booking.eventDate}">Date</dd>
+                </div>
+            </dl>
 
-            <div class="buttons">
-                <a th:href="@{/customer/bookings}">
-                    <button>View My Bookings</button>
-                </a>
+            <div class="thankyou-card__actions">
+                <a th:href="@{/customer/bookings}" class="thankyou-card__button">View My Bookings</a>
             </div>
         </div>
-    </div>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>

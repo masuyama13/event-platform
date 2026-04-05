@@ -4,27 +4,29 @@
     <meta charset="UTF-8">
     <title>Organizer Form</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+    <link rel="stylesheet" th:href="@{/css/profile-form.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="profile-form-page">
+        <div class="profile-form-page__header">
+            <p class="profile-form-page__eyebrow">Profile</p>
+            <h1 th:text="${isEdit ? 'Edit Organizer Profile' : 'Create Organizer Profile'}">Organizer Form</h1>
+            <p class="profile-form-page__intro">Keep your business profile accurate so customers can understand your services and contact details.</p>
+        </div>
 
-<div class="container">
-    <h1 th:text="${isEdit ? 'Edit Organizer' : 'Create Organizer'}">Organizer Form</h1>
+        <p class="profile-form-error" th:if="${error}" th:text="${error}"></p>
 
-    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
-
-    <div class="plan-card">
-        <form th:action="${isEdit} ? @{/profile/organizer} : @{/organizers}" method="post">
-
+        <form th:action="${isEdit} ? @{/profile/organizer} : @{/organizers}" method="post" class="admin-form profile-form">
             <input type="hidden"
                    th:if="${_csrf != null}"
                    th:name="${_csrf.parameterName}"
                    th:value="${_csrf.token}"/>
 
-            <div th:if="${!isEdit}">
-                <label for="userId">Organizer User:</label><br>
+            <label class="admin-form__field" th:if="${!isEdit}">
+                <span>Organizer User</span>
                 <select id="userId" name="userId" required>
                     <option value="">-- Select Organizer User --</option>
                     <option th:each="user : ${users}"
@@ -32,46 +34,39 @@
                             th:text="${user.email}">
                     </option>
                 </select>
-            </div>
+            </label>
 
-            <div th:if="${isEdit}">
-                <label for="email">Email:</label><br>
+            <label class="admin-form__field" th:if="${isEdit}">
+                <span>Email</span>
                 <input type="email"
                        id="email"
                        name="email"
                        th:value="${email}"
                        required>
-            </div>
+            </label>
 
-            <br>
-
-            <div>
-                <label for="businessName">Business Name:</label><br>
+            <label class="admin-form__field">
+                <span>Business Name</span>
                 <input type="text"
                        id="businessName"
                        name="businessName"
                        th:value="${organizer.businessName}"
                        required>
-            </div>
+            </label>
 
-            <br>
-
-            <div>
-                <label for="description">Description:</label><br>
+            <label class="admin-form__field">
+                <span>Description</span>
                 <textarea id="description"
                           name="description"
                           rows="4"
-                          cols="40"
                           required
                           th:text="${organizer.description}"></textarea>
-            </div>
+            </label>
 
-            <br>
-
-            <div>
-                <label>Service Categories:</label><br>
-                <div th:each="category : ${categories}">
-                    <label>
+            <section class="profile-form__checkbox-group">
+                <p class="profile-form__checkbox-label">Service Categories</p>
+                <div class="profile-form__checkbox-list">
+                    <label class="profile-form__checkbox-item" th:each="category : ${categories}">
                         <input type="checkbox"
                                name="categoryIds"
                                th:value="${category.id}"
@@ -79,59 +74,48 @@
                         <span th:text="${category.name}">Category</span>
                     </label>
                 </div>
+            </section>
+
+            <div class="profile-form-grid">
+                <label class="admin-form__field">
+                    <span>Phone</span>
+                    <input type="text"
+                           id="phone"
+                           name="phone"
+                           required
+                           th:value="${organizer.phone}">
+                </label>
+
+                <label class="admin-form__field">
+                    <span>Website</span>
+                    <input type="text"
+                           id="website"
+                           name="website"
+                           required
+                           th:value="${organizer.website}">
+                </label>
+
+                <label class="admin-form__field">
+                    <span>Address</span>
+                    <input type="text"
+                           id="address"
+                           name="address"
+                           required
+                           th:value="${organizer.address}">
+                </label>
             </div>
 
-            <br>
-
-            <div>
-                <label for="phone">Phone:</label><br>
-                <input type="text"
-                       id="phone"
-                       name="phone"
-                       required
-                       th:value="${organizer.phone}">
-            </div>
-
-            <br>
-
-            <div>
-                <label for="website">Website:</label><br>
-                <input type="text"
-                       id="website"
-                       name="website"
-                       required
-                       th:value="${organizer.website}">
-            </div>
-
-            <br>
-
-            <div>
-                <label for="address">Address:</label><br>
-                <input type="text"
-                       id="address"
-                       name="address"
-                       required
-                       th:value="${organizer.address}">
-            </div>
-
-            <br>
-
-            <div>
+            <div class="profile-form__actions">
+                <a th:href="@{/profile}" class="profile-form__button profile-form__button--secondary">Cancel</a>
                 <button type="submit"
+                        class="profile-form__button"
                         th:text="${isEdit ? 'Save Changes' : 'Create Organizer'}">
                     Save
                 </button>
             </div>
         </form>
-
-        <br>
-
-        <p>
-            <a th:href="@{/}" onclick="if (history.length > 1) { history.back(); return false; }">Back</a>
-        </p>
-    </div>
-</div>
- </main>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

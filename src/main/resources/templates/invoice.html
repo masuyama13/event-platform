@@ -1,148 +1,99 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Invoice</title>
+    <meta charset="UTF-8">
+    <title th:text="${booking.eventDate} + ' Event'">Invoice</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            width: 600px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            text-align: center;
-        }
-
-        .row {
-            margin: 10px 0;
-        }
-
-        .label {
-            font-weight: bold;
-        }
-
-        .total {
-            font-size: 20px;
-            font-weight: bold;
-            color: green;
-        }
-
-        .btn {
-            margin-top: 20px;
-            padding: 10px;
-            width: 100%;
-            background: green;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/invoice.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
+    <section class="invoice-page">
+        <div class="invoice-card">
+            <p class="invoice-card__eyebrow">Invoice</p>
+            <h1 th:text="${booking.eventDate} + ' Event'">Invoice</h1>
+            <p class="invoice-card__intro">Review the booking charges and complete payment when you are ready.</p>
 
-<div class="container">
+            <div class="invoice-card__summary">
+                <div>
+                    <p class="invoice-card__label">Status</p>
+                    <p class="invoice-card__status"
+                       th:if="${invoice.status.name() != 'PAID'}"
+                       th:text="${invoice.status}">
+                        Status
+                    </p>
+                    <p class="invoice-card__status invoice-card__status--paid"
+                       th:if="${invoice.status.name() == 'PAID'}"
+                       th:text="${invoice.status}">
+                        Status
+                    </p>
+                </div>
+                <div>
+                    <p class="invoice-card__label">Total Amount</p>
+                    <p class="invoice-card__total">
+                        <span th:text="${invoice.totalAmount}">0.00</span>
+                        <span th:text="${#strings.toUpperCase(invoice.currency)}">CAD</span>
+                    </p>
+                </div>
+            </div>
 
-    <h2>Invoice</h2>
+            <dl class="invoice-card__details">
+                <div class="invoice-card__row">
+                    <dt>Invoice ID</dt>
+                    <dd th:text="${invoice.id}">ID</dd>
+                </div>
+                <div class="invoice-card__row">
+                    <dt>Booking ID</dt>
+                    <dd th:text="${booking.id}">ID</dd>
+                </div>
+                <div class="invoice-card__row">
+                    <dt>Organizer</dt>
+                    <dd th:text="${booking.plannerName}">Organizer</dd>
+                </div>
+                <div class="invoice-card__row">
+                    <dt>Plan Name</dt>
+                    <dd th:text="${booking.planName}">Plan</dd>
+                </div>
+                <div class="invoice-card__row">
+                    <dt>Event Date</dt>
+                    <dd th:text="${booking.eventDate}">Date</dd>
+                </div>
+                <div class="invoice-card__row">
+                    <dt>Base Price</dt>
+                    <dd th:text="${booking.price}">0.00</dd>
+                </div>
+                <div class="invoice-card__row">
+                    <dt>Tax GST (5%)</dt>
+                    <dd th:text="${#numbers.formatDecimal(booking.price * 0.05, 1, 2)}">0.00</dd>
+                </div>
+                <div class="invoice-card__row">
+                    <dt>Created At</dt>
+                    <dd th:text="${#temporals.format(invoice.createdAt, 'yyyy-MM-dd HH:mm')}">Created</dd>
+                </div>
+                <div class="invoice-card__row" th:if="${invoice.paidAt != null}">
+                    <dt>Paid At</dt>
+                    <dd th:text="${#temporals.format(invoice.paidAt, 'yyyy-MM-dd HH:mm')}">Paid</dd>
+                </div>
+            </dl>
 
-    <div class="row">
-        <span class="label">Invoice ID:</span>
-        <span th:text="${invoice.id}"></span>
-    </div>
+            <form class="invoice-card__actions"
+                  th:if="${invoice.status.name() != 'PAID'}"
+                  th:action="@{/payments/checkout/{invoiceId}(invoiceId=${invoice.id})}"
+                  method="post">
+                <input type="hidden"
+                       th:if="${_csrf != null}"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"/>
+                <button class="invoice-card__button" type="submit">Proceed to Payment</button>
+            </form>
 
-    <div class="row">
-        <span class="label">Booking ID:</span>
-        <span th:text="${booking.id}"></span>
-    </div>
-
-    <hr>
-
-    <div class="row">
-        <span class="label">Organizer:</span>
-        <span th:text="${booking.plannerName}"></span>
-    </div>
-
-    <div class="row">
-        <span class="label">Plan Name:</span>
-        <span th:text="${booking.planName}"></span>
-    </div>
-
-    <div class="row">
-        <span class="label">Event Date:</span>
-        <span th:text="${booking.eventDate}"></span>
-    </div>
-
-    <hr>
-
-
-    <div class="row">
-        <span class="label">Base Price:</span>
-        <span th:text="${booking.price}"></span>
-    </div>
-
-    <div class="row">
-        <span class="label">Tax:GST(5%):</span>
-        <span th:text="${#numbers.formatDecimal(booking.price * 0.05, 1, 2)}"></span>
-    </div>
-
-    <div class="row">
-        <span class="label">Discount:</span>
-        <span>0</span>
-    </div>
-
-    <hr>
-
-
-    <div class="row total">
-        Total Amount:
-        <span th:text="${invoice.totalAmount}"></span>
-        <span th:text="${#strings.toUpperCase(invoice.currency)}"></span>
-    </div>
-
-    <hr>
-
-    <div class="row">
-        <span class="label">Status:</span>
-        <span th:text="${invoice.status}"></span>
-    </div>
-
-    <div class="row">
-        <span class="label">Created At:</span>
-        <span th:text="${#temporals.format(invoice.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
-    </div>
-
-    <div class="row" th:if="${invoice.paidAt != null}">
-        <span class="label">Paid At:</span>
-        <span th:text="${#temporals.format(invoice.paidAt, 'yyyy-MM-dd HH:mm')}"></span>
-    </div>
-
-    <form th:if="${invoice.status.name() != 'PAID'}"
-          th:action="@{/payments/checkout/{invoiceId}(invoiceId=${invoice.id})}"
-          method="post">
-        <input type="hidden"
-               th:if="${_csrf != null}"
-               th:name="${_csrf.parameterName}"
-               th:value="${_csrf.token}"/>
-        <button class="btn" type="submit">Proceed to Payment</button>
-    </form>
-
-    <div class="row" th:if="${invoice.status.name() == 'PAID'}">
-        <span class="label">Payment completed.</span>
-    </div>
-
-</div>
- </main>
+            <p class="invoice-card__message" th:if="${invoice.status.name() == 'PAID'}">
+                Payment completed.
+            </p>
+        </div>
+    </section>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
