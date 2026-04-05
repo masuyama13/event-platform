@@ -4,47 +4,46 @@
     <meta charset="UTF-8">
     <title>My Messages</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/message-inbox.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <div class="container">
-
-        <h1>My Messages</h1>
-
-        <div th:if="${conversations != null and !#lists.isEmpty(conversations)}">
-            <table class="info-table">
-                <thead>
-                <tr>
-                    <th>Organizer</th>
-                    <th>Last Message</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="conv : ${conversations}">
-                    <td th:text="${conv['organizerBusinessName']}">Organizer Name</td>
-                    <td th:text="${#temporals.format(conv['lastMessageTime'], 'yyyy-MM-dd HH:mm')}">
-                        Date Time
-                    </td>
-                    <td>
-                        <a th:href="@{/messages(organizerUserId=${conv['organizerUserId']})}">
-                            View Message
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <section class="message-inbox">
+        <div class="message-inbox__header">
+            <p class="message-inbox__eyebrow">Messages</p>
+            <h1>My Messages</h1>
+            <p class="message-inbox__intro">Keep track of conversations with organizers and jump back into any thread.</p>
         </div>
 
-        <div th:if="${conversations == null or #lists.isEmpty(conversations)}">
+        <div class="message-inbox__list" th:if="${conversations != null and !#lists.isEmpty(conversations)}">
+            <article class="message-inbox__card" th:each="conv : ${conversations}">
+                <div class="message-inbox__content">
+                    <p class="message-inbox__label">Organizer</p>
+                    <h2 th:text="${conv['organizerBusinessName']}">Organizer Name</h2>
+                    <p class="message-inbox__timestamp">
+                        Last message:
+                        <span th:text="${#temporals.format(conv['lastMessageTime'], 'yyyy-MM-dd HH:mm')}">
+                            Date Time
+                        </span>
+                    </p>
+                </div>
+                <div class="message-inbox__actions">
+                    <a th:href="@{/messages(organizerUserId=${conv['organizerUserId']})}" class="message-inbox__button">
+                        Open Conversation
+                    </a>
+                </div>
+            </article>
+        </div>
+
+        <div class="message-inbox__empty" th:if="${conversations == null or #lists.isEmpty(conversations)}">
             <p>No messages yet. Find an organizer to start a conversation!</p>
         </div>
 
-        <a th:href="@{/}" class="btn-back">Back to Home</a>
-
-    </div>
+        <div class="message-inbox__footer">
+            <a th:href="@{/}" class="message-inbox__back">Back to Home</a>
+        </div>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
