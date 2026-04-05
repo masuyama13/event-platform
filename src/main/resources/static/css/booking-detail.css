@@ -138,8 +138,8 @@
     text-decoration: none;
 }
 
-.booking-detail-card__button--back {
-    background: #e5e7eb;
+.booking-detail-card__button--payment {
+    background: #f59e0b;
     color: #111827;
 }
 
