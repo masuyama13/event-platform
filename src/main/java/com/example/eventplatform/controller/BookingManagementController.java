@@ -43,15 +43,24 @@ public class BookingManagementController {
         return "organizer-bookings";
     }
 
+    @GetMapping("/organizer/bookings/{bookingId}")
+    public String organizerBookingDetail(@PathVariable Long bookingId,
+                                         Authentication authentication,
+                                         Model model) {
+        Booking booking = bookingService.getOrganizerBooking(bookingId, authentication.getName());
+        model.addAttribute("booking", booking);
+        return "organizer-booking-detail";
+    }
+
     @PostMapping("/organizer/bookings/{bookingId}/approve")
     public String approveBooking(@PathVariable Long bookingId, Authentication authentication) {
         bookingService.approveBooking(bookingId, authentication.getName());
-        return "redirect:/organizer/bookings";
+        return "redirect:/organizer/bookings/" + bookingId;
     }
 
     @PostMapping("/organizer/bookings/{bookingId}/reject")
     public String rejectBooking(@PathVariable Long bookingId, Authentication authentication) {
         bookingService.rejectBooking(bookingId, authentication.getName());
-        return "redirect:/organizer/bookings";
+        return "redirect:/organizer/bookings/" + bookingId;
     }
 }

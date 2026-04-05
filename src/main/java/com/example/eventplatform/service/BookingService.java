@@ -104,6 +104,10 @@ public class BookingService {
         return booking;
     }
 
+    public Booking getOrganizerBooking(Long bookingId, String organizerEmail) {
+        return getOwnedOrganizerBooking(bookingId, organizerEmail);
+    }
+
     private Booking getOwnedOrganizerBooking(Long bookingId, String organizerEmail) {
         OrganizerProfile organizerProfile = organizerProfileRepository.findByUserEmail(organizerEmail)
                 .orElseThrow(() -> new RuntimeException("No organizer profile found"));

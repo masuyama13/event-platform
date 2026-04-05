@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Request</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/organizer-booking-detail.css}">
+</head>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
+    <section class="organizer-booking-detail-page">
+        <div class="organizer-booking-detail-card">
+            <p class="organizer-booking-detail-card__eyebrow">Booking Request</p>
+            <h1>Request Details</h1>
+
+            <p class="organizer-booking-detail-card__intro" th:if="${booking.status.name() == 'REQUESTED'}">
+                Review the request details and decide whether to approve or reject it.
+            </p>
+            <p class="organizer-booking-detail-card__intro" th:if="${booking.status.name() == 'APPROVED'}">
+                This request was approved.
+            </p>
+            <p class="organizer-booking-detail-card__intro organizer-booking-detail-card__intro--rejected"
+               th:if="${booking.status.name() == 'REJECTED'}">
+                This request was rejected.
+            </p>
+
+            <div class="organizer-booking-detail-card__summary">
+                <div>
+                    <p class="organizer-booking-detail-card__label">Status</p>
+                    <p class="organizer-booking-detail-card__status"
+                       th:if="${booking.status.name() == 'REQUESTED'}"
+                       th:text="${booking.status}">
+                        REQUESTED
+                    </p>
+                    <p class="organizer-booking-detail-card__status organizer-booking-detail-card__status--approved"
+                       th:if="${booking.status.name() == 'APPROVED'}"
+                       th:text="${booking.status}">
+                        APPROVED
+                    </p>
+                    <p class="organizer-booking-detail-card__status organizer-booking-detail-card__status--rejected"
+                       th:if="${booking.status.name() == 'REJECTED'}"
+                       th:text="${booking.status}">
+                        REJECTED
+                    </p>
+                </div>
+                <div>
+                    <p class="organizer-booking-detail-card__label">Price</p>
+                    <p class="organizer-booking-detail-card__price">$<span th:text="${booking.price}">0.00</span></p>
+                </div>
+            </div>
+
+            <dl class="organizer-booking-detail-card__details">
+                <div class="organizer-booking-detail-card__row">
+                    <dt>Booking ID</dt>
+                    <dd th:text="${booking.id}">1</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row">
+                    <dt>Customer</dt>
+                    <dd th:text="${booking.customerProfile != null ? booking.customerProfile.user.email : 'N/A'}">customer@example.com</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row">
+                    <dt>Plan Name</dt>
+                    <dd th:text="${booking.planName}">Plan Name</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row">
+                    <dt>Event Date</dt>
+                    <dd th:text="${booking.eventDate}">2026-04-20</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row">
+                    <dt>Requested Date</dt>
+                    <dd th:text="${#temporals.format(booking.createdAt, 'yyyy-MM-dd HH:mm')}">2026-04-05 14:30</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row" th:if="${booking.eventType != null and !#strings.isEmpty(booking.eventType)}">
+                    <dt>Event Type</dt>
+                    <dd th:text="${booking.eventType}">Wedding</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row" th:if="${booking.location != null and !#strings.isEmpty(booking.location)}">
+                    <dt>Location</dt>
+                    <dd th:text="${booking.location}">Vancouver</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row" th:if="${booking.requestDetails != null and !#strings.isEmpty(booking.requestDetails)}">
+                    <dt>Request Details</dt>
+                    <dd th:text="${booking.requestDetails}">Details</dd>
+                </div>
+            </dl>
+
+            <div class="organizer-booking-detail-card__actions">
+                <a th:href="@{/organizer/bookings}"
+                   class="organizer-booking-detail-card__button organizer-booking-detail-card__button--secondary">
+                    Back to Requests
+                </a>
+
+                <form th:if="${booking.status.name() == 'REQUESTED'}"
+                      th:action="@{/organizer/bookings/{bookingId}/approve(bookingId=${booking.id})}"
+                      method="post">
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+                    <button type="submit" class="organizer-booking-detail-card__button">Approve</button>
+                </form>
+
+                <form th:if="${booking.status.name() == 'REQUESTED'}"
+                      th:action="@{/organizer/bookings/{bookingId}/reject(bookingId=${booking.id})}"
+                      method="post">
+                    <input type="hidden"
+                           th:if="${_csrf != null}"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+                    <button type="submit"
+                            class="organizer-booking-detail-card__button organizer-booking-detail-card__button--danger">
+                        Reject
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+</body>
+</html>
