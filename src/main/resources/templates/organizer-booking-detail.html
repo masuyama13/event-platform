@@ -72,6 +72,10 @@
                     <dd th:text="${booking.planName}">Plan Name</dd>
                 </div>
                 <div class="organizer-booking-detail-card__row">
+                    <dt>Plan Description</dt>
+                    <dd th:text="${booking.planDescription} ?: 'N/A'">Plan Description</dd>
+                </div>
+                <div class="organizer-booking-detail-card__row">
                     <dt>Event Date</dt>
                     <dd th:text="${booking.eventDate}">2026-04-20</dd>
                 </div>
@@ -88,8 +92,8 @@
                     <dd th:text="${booking.location}">Vancouver</dd>
                 </div>
                 <div class="organizer-booking-detail-card__row">
-                    <dt>Description</dt>
-                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Details</dd>
+                    <dt>Event Description</dt>
+                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Event Description</dd>
                 </div>
             </dl>
 

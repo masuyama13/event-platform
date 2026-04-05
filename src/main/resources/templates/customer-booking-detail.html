@@ -73,6 +73,10 @@
                     <dd th:text="${booking.planName}">Plan Name</dd>
                 </div>
                 <div class="booking-detail-card__row">
+                    <dt>Plan Description</dt>
+                    <dd th:text="${booking.planDescription} ?: 'N/A'">Plan Description</dd>
+                </div>
+                <div class="booking-detail-card__row">
                     <dt>Event Date</dt>
                     <dd th:text="${booking.eventDate}">Date</dd>
                 </div>
@@ -81,8 +85,8 @@
                     <dd th:text="${booking.eventType} ?: 'N/A'">Event Category</dd>
                 </div>
                 <div class="booking-detail-card__row">
-                    <dt>Description</dt>
-                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Description</dd>
+                    <dt>Event Description</dt>
+                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Event Description</dd>
                 </div>
                 <div class="booking-detail-card__row">
                     <dt>Requested Date</dt>

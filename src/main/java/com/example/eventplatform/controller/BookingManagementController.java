@@ -33,7 +33,7 @@ public class BookingManagementController {
                                         Model model) {
         Booking booking = bookingService.getCustomerBooking(bookingId, authentication.getName());
         model.addAttribute("booking", booking);
-        return "booking-detail";
+        return "customer-booking-detail";
     }
 
     @PostMapping("/customer/bookings/{bookingId}/cancel")

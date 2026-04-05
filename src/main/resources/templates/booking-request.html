@@ -55,6 +55,11 @@
                                required/>
                     </label>
 
+                    <p class="booking-request-card__note">
+                        Earliest available booking date:
+                        <strong th:text="${#temporals.format(earliestBookingDate, 'yyyy-MM-dd')}">Date</strong>
+                    </p>
+
                     <section class="booking-request-card__field">
                         <span>Event Category</span>
                         <div class="booking-request-card__radio-list"
@@ -82,11 +87,6 @@
                                   placeholder="Share the event style, guest count, venue, timing, and anything the organizer should know."
                                   required></textarea>
                     </label>
-
-                    <p class="booking-request-card__note">
-                        Earliest available booking date:
-                        <strong th:text="${#temporals.format(earliestBookingDate, 'yyyy-MM-dd')}">Date</strong>
-                    </p>
 
                     <div class="booking-request-card__actions">
                         <a th:href="@{/booking/plans(organizerId=${organizerId})}" class="booking-request-card__button booking-request-card__button--secondary button button--secondary">Cancel</a>
