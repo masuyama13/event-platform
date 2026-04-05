@@ -2,7 +2,9 @@ package com.example.eventplatform.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -83,6 +85,14 @@ public class OrganizerProfile {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    public List<Category> getSortedCategories() {
+        return categories == null
+                ? List.of()
+                : categories.stream()
+                .sorted(Comparator.comparing(Category::getName, String.CASE_INSENSITIVE_ORDER))
+                .toList();
     }
 
     public String getPhone() {

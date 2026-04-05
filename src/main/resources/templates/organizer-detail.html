@@ -32,15 +32,15 @@
                 <section class="organizer-detail__section">
                     <p class="organizer-detail__section-label">Service Categories</p>
                     <div class="organizer-detail__tags"
-                         th:if="${organizer.categories != null and !#sets.isEmpty(organizer.categories)}">
+                         th:if="${organizer.sortedCategories != null and !#lists.isEmpty(organizer.sortedCategories)}">
                         <span class="organizer-detail__tag"
-                              th:each="category : ${organizer.categories}"
+                              th:each="category : ${organizer.sortedCategories}"
                               th:text="${category.name}">
                             Category
                         </span>
                     </div>
                     <p class="organizer-detail__empty"
-                       th:if="${organizer.categories == null or #sets.isEmpty(organizer.categories)}">
+                       th:if="${organizer.sortedCategories == null or #lists.isEmpty(organizer.sortedCategories)}">
                         No categories listed.
                     </p>
                 </section>

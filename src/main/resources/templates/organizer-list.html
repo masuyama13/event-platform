@@ -48,15 +48,15 @@
                     </p>
 
                     <div class="organizer-list__categories"
-                         th:if="${organizer.categories != null and !#sets.isEmpty(organizer.categories)}">
+                         th:if="${organizer.sortedCategories != null and !#lists.isEmpty(organizer.sortedCategories)}">
                         <span class="organizer-list__tag"
-                              th:each="category : ${organizer.categories}"
+                              th:each="category : ${organizer.sortedCategories}"
                               th:text="${category.name}">
                             Category
                         </span>
                     </div>
                     <p class="organizer-list__categories organizer-list__categories--empty"
-                       th:if="${organizer.categories == null or #sets.isEmpty(organizer.categories)}">
+                       th:if="${organizer.sortedCategories == null or #lists.isEmpty(organizer.sortedCategories)}">
                         No categories
                     </p>
 
@@ -92,15 +92,15 @@
                 </p>
 
                 <div class="organizer-list__categories"
-                     th:if="${organizer.categories != null and !#sets.isEmpty(organizer.categories)}">
+                     th:if="${organizer.sortedCategories != null and !#lists.isEmpty(organizer.sortedCategories)}">
                     <span class="organizer-list__tag"
-                          th:each="category : ${organizer.categories}"
+                          th:each="category : ${organizer.sortedCategories}"
                           th:text="${category.name}">
                         Category
                     </span>
                 </div>
                 <p class="organizer-list__categories organizer-list__categories--empty"
-                   th:if="${organizer.categories == null or #sets.isEmpty(organizer.categories)}">
+                   th:if="${organizer.sortedCategories == null or #lists.isEmpty(organizer.sortedCategories)}">
                     No categories
                 </p>
 

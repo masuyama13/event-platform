@@ -41,7 +41,7 @@
                 <div th:if="${organizerProfile != null}">
                     <div class="profile-details__row">
                         <dt>Category</dt>
-                        <dd th:text="${organizerProfile.categories != null and !#sets.isEmpty(organizerProfile.categories) ? #strings.listJoin(organizerProfile.categories.![name], ', ') : '-'}">-</dd>
+                        <dd th:text="${organizerProfile.sortedCategories != null and !#lists.isEmpty(organizerProfile.sortedCategories) ? #strings.listJoin(organizerProfile.sortedCategories.![name], ', ') : '-'}">-</dd>
                     </div>
                     <div class="profile-details__row">
                         <dt>Phone</dt>
