@@ -1,0 +1,114 @@
+.admin-form-page {
+    width: min(100%, 720px);
+    margin: 0 auto;
+}
+
+.admin-page__eyebrow {
+    margin: 0 0 8px;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.admin-form-page h1 {
+    margin: 0;
+    color: #111827;
+}
+
+.form-feedback--message,
+.form-feedback--error,
+.admin-page__message,
+.admin-page__error {
+    margin: 0 0 16px;
+    padding: 14px 16px;
+    border-radius: 12px;
+}
+
+.form-feedback--message,
+.admin-page__message {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.form-feedback--error,
+.admin-page__error {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.form-card,
+.admin-form {
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+}
+
+.form-field,
+.admin-form__field {
+    display: block;
+    margin-bottom: 18px;
+}
+
+.form-field__label,
+.admin-form__field span {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 600;
+}
+
+.form-card input,
+.form-card textarea,
+.admin-form__field input,
+.admin-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+.form-actions,
+.admin-form__actions {
+    display: flex;
+    gap: 12px;
+}
+
+.form-button,
+.admin-form__button {
+    display: inline-block;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #111827;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-button--secondary,
+.admin-form__button--secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.form-button--danger,
+.admin-form__button--danger {
+    background: #b91c1c;
+}
+
+@media (max-width: 640px) {
+    .form-actions,
+    .admin-form__actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

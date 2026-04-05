@@ -1,0 +1,116 @@
+.auth-page {
+    width: min(100%, 720px);
+    margin: 0 auto;
+}
+
+.auth-page--register {
+    width: min(100%, 820px);
+}
+
+.auth-page__intro {
+    margin: 10px 0 0;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.auth-form {
+    margin-top: 24px;
+}
+
+.auth-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+}
+
+.auth-form__stack {
+    display: block;
+}
+
+.auth-form textarea,
+.auth-form input {
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.auth-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.auth-form input:focus,
+.auth-form textarea:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.16);
+}
+
+.auth-checkbox-group {
+    margin-bottom: 18px;
+}
+
+.auth-checkbox-group__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.auth-checkbox-group__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+    color: #374151;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.auth-checkbox-group__item input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.auth-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.auth-links--single {
+    grid-template-columns: 1fr;
+}
+
+.auth-links__item {
+    display: block;
+    padding: 18px 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    color: #111827;
+    text-decoration: none;
+}
+
+.auth-links__label {
+    display: block;
+    margin-bottom: 6px;
+    color: #6b7280;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+    .auth-form__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-links {
+        grid-template-columns: 1fr;
+    }
+}

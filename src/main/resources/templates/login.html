@@ -3,34 +3,50 @@
 <head>
     <title>EventOmakase | Login</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-<h1>Login</h1>
+    <div class="auth-page admin-form-page">
+        <p class="admin-page__eyebrow">User Account</p>
+        <h1>Login</h1>
+        <p class="auth-page__intro">Sign in to manage bookings, profiles, and event requests.</p>
 
-<p th:if="${param.error != null}">Invalid email or password.</p>
-<p th:if="${param.logout != null}">You have been logged out.</p>
+        <p class="admin-page__error" th:if="${param.error != null}">Invalid email or password.</p>
+        <p class="admin-page__message" th:if="${param.logout != null}">You have been logged out.</p>
 
-<form th:action="@{/login}" method="post">
-    <input type="hidden"
-           th:if="${_csrf != null}"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}"/>
-    <div>
-        <label>Email:</label>
-        <input type="email" name="username" required>
+        <form th:action="@{/login}" method="post" class="admin-form auth-form">
+            <input type="hidden"
+                   th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"/>
+            <label class="admin-form__field">
+                <span>Email</span>
+                <input type="email" name="username" required>
+            </label>
+            <label class="admin-form__field">
+                <span>Password</span>
+                <input type="password" name="password" required>
+            </label>
+            <div class="admin-form__actions">
+                <button type="submit" class="admin-form__button">Login</button>
+            </div>
+        </form>
+
+        <div class="auth-links">
+            <a class="auth-links__item" th:href="@{/register}">
+                <span class="auth-links__label">Planning an event?</span>
+                <span>Create a customer account</span>
+            </a>
+            <a class="auth-links__item" th:href="@{/organizer/register}">
+                <span class="auth-links__label">Offering event services?</span>
+                <span>Create an organizer account</span>
+            </a>
+        </div>
     </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-    </div>
-    <button type="submit">Login</button>
-</form>
-
-<p><a th:href="@{/register}">Create a customer account</a></p>
-<p><a th:href="@{/organizer/register}">Create an organizer account</a></p>
- </main>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>

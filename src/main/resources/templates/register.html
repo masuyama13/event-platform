@@ -3,101 +3,117 @@
 <head>
   <title th:text="${pageTitle}">Register</title>
   <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/form.css}">
+  <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-<h1 th:text="${pageTitle}">Register</h1>
+  <div class="auth-page admin-form-page auth-page--register">
+    <p class="admin-page__eyebrow">User Account</p>
+    <h1 th:text="${pageTitle}">Register</h1>
+    <p class="auth-page__intro"
+       th:text="${pageTitle == 'Organizer Register'} ?
+       'Create your organizer account to showcase services and respond to event requests.' :
+       'Create your account to start planning events and connecting with organizers.'">
+      Create your account to start planning events and connecting with organizers.
+    </p>
 
-<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+    <p class="admin-page__error" th:if="${error}" th:text="${error}"></p>
 
-<form th:action="${formAction}" method="post">
-  <input type="hidden"
-         th:if="${_csrf != null}"
-         th:name="${_csrf.parameterName}"
-         th:value="${_csrf.token}"/>
-  <div>
-    <label>Email:</label>
-    <input type="email" name="email" required>
-  </div>
+    <form th:action="${formAction}" method="post" class="admin-form auth-form">
+      <input type="hidden"
+             th:if="${_csrf != null}"
+             th:name="${_csrf.parameterName}"
+             th:value="${_csrf.token}"/>
+      <label class="admin-form__field">
+        <span>Email</span>
+        <input type="email" name="email" required>
+      </label>
 
-  <div>
-    <label>Password:</label>
-    <input type="password" name="password" required>
-  </div>
+      <label class="admin-form__field">
+        <span>Password</span>
+        <input type="password" name="password" required>
+      </label>
 
-  <div th:if="${pageTitle == 'Customer Register'}">
-    <div>
-      <label>First Name:</label>
-      <input type="text" name="firstName" required>
-    </div>
-    <div>
-      <label>Last Name:</label>
-      <input type="text" name="lastName" required>
-    </div>
-    <div>
-      <label>Phone:</label>
-      <input type="text" name="phone">
-    </div>
-    <div>
-      <label>Address:</label>
-      <input type="text" name="address">
-    </div>
-    <div>
-      <label>City:</label>
-      <input type="text" name="city">
-    </div>
-    <div>
-      <label>Country:</label>
-      <input type="text" name="country">
-    </div>
-  </div>
-
-  <div th:if="${pageTitle == 'Organizer Register'}">
-    <div>
-      <label>Business Name:</label>
-      <input type="text" name="businessName" required>
-    </div>
-
-    <div>
-      <label>Description:</label>
-      <textarea name="description" rows="4" cols="40" required></textarea>
-    </div>
-
-    <div>
-      <label>Service Categories:</label>
-      <div th:each="category : ${categories}">
-        <label>
-          <input type="checkbox" name="categoryIds" th:value="${category.id}">
-          <span th:text="${category.name}">Category</span>
+      <div class="auth-form__grid" th:if="${pageTitle == 'Customer Register'}">
+        <label class="admin-form__field">
+          <span>First Name</span>
+          <input type="text" name="firstName" required>
+        </label>
+        <label class="admin-form__field">
+          <span>Last Name</span>
+          <input type="text" name="lastName" required>
+        </label>
+        <label class="admin-form__field">
+          <span>Phone</span>
+          <input type="text" name="phone">
+        </label>
+        <label class="admin-form__field">
+          <span>Address</span>
+          <input type="text" name="address">
+        </label>
+        <label class="admin-form__field">
+          <span>City</span>
+          <input type="text" name="city">
+        </label>
+        <label class="admin-form__field">
+          <span>Country</span>
+          <input type="text" name="country">
         </label>
       </div>
-    </div>
 
-    <div>
-      <label>Phone:</label>
-      <input type="text" name="phone" required>
-    </div>
+      <div class="auth-form__stack" th:if="${pageTitle == 'Organizer Register'}">
+        <label class="admin-form__field">
+          <span>Business Name</span>
+          <input type="text" name="businessName" required>
+        </label>
 
-    <div>
-      <label>Website:</label>
-      <input type="text" name="website" required>
-    </div>
+        <label class="admin-form__field">
+          <span>Description</span>
+          <textarea name="description" rows="4" required></textarea>
+        </label>
 
-    <div>
-      <label>Address:</label>
-      <input type="text" name="address" required>
+        <section class="admin-form__field auth-checkbox-group">
+          <span>Service Categories</span>
+          <div class="auth-checkbox-group__list">
+            <label class="auth-checkbox-group__item" th:each="category : ${categories}">
+              <input type="checkbox" name="categoryIds" th:value="${category.id}">
+              <span th:text="${category.name}">Category</span>
+            </label>
+          </div>
+        </section>
+
+        <label class="admin-form__field">
+          <span>Phone</span>
+          <input type="text" name="phone" required>
+        </label>
+
+        <label class="admin-form__field">
+          <span>Website</span>
+          <input type="text" name="website" required>
+        </label>
+
+        <label class="admin-form__field">
+          <span>Address</span>
+          <input type="text" name="address" required>
+        </label>
+      </div>
+
+      <div class="admin-form__actions">
+        <button type="submit" class="admin-form__button">Sign Up</button>
+        <a th:href="@{/login}" class="admin-form__button admin-form__button--secondary">Back to Login</a>
+      </div>
+    </form>
+
+    <div class="auth-links auth-links--single">
+      <a class="auth-links__item" th:href="${alternateRegisterPath}">
+        <span class="auth-links__label">Need a different account type?</span>
+        <span th:text="'Register as ' + ${alternateRegisterLabel}">Register as Organizer</span>
+      </a>
     </div>
   </div>
-
-  <button type="submit">Sign Up</button>
-</form>
-
-<p>
-  <a th:href="${alternateRegisterPath}"
-     th:text="'Register as ' + ${alternateRegisterLabel}">Register as Organizer</a>
-</p>
- </main>
+</main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>
 </html>
