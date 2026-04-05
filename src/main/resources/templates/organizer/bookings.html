@@ -45,7 +45,10 @@
                            th:text="${invoice.status}">
                             PENDING
                         </p>
-                        <p class="organizer-bookings__status" th:if="${invoice == null and booking.status.name() == 'REQUESTED'}">REQUESTED</p>
+                        <p class="organizer-bookings__status organizer-bookings__status--requested"
+                           th:if="${invoice == null and booking.status.name() == 'REQUESTED'}">
+                            REQUESTED
+                        </p>
                         <p class="organizer-bookings__status organizer-bookings__status--approved"
                            th:if="${invoice == null and booking.status.name() == 'APPROVED'}">
                             APPROVED

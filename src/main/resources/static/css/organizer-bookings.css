@@ -95,6 +95,12 @@
     font-weight: 800;
 }
 
+.organizer-bookings__status--requested {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: #111827;
+}
+
 .organizer-bookings__status--approved {
     background: #111827;
     border-color: #111827;

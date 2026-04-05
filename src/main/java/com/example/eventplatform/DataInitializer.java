@@ -130,12 +130,12 @@ public class DataInitializer {
             createBooking(customer, organizer, savedPlans.get(1), BookingStatus.APPROVED, LocalDate.now().plusDays(14));
             createBooking(customer, organizer, savedPlans.get(2), BookingStatus.REJECTED, LocalDate.now().plusDays(18));
             createBooking(customer, organizer, savedPlans.get(3), BookingStatus.CANCELLED, LocalDate.now().plusDays(22));
+
+            System.out.println(">>> Temporary booking requests created");
+
             Booking completedBooking = createBooking(customer, organizer, savedPlans.get(0), BookingStatus.COMPLETED, LocalDate.now().plusDays(26));
-
-            System.out.println(">>> Temporary bookings for each status created");
-
             createPaidInvoice(completedBooking);
-            System.out.println(">>> Temporary paid invoice created");
+            System.out.println(">>> Temporary completed booking with paid invoice created");
         }
     }
 
