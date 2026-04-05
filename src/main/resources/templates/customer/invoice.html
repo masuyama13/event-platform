@@ -78,7 +78,7 @@
             </dl>
 
             <form class="invoice-card__actions"
-                  th:if="${invoice.status.name() != 'PAID'}"
+                  th:if="${invoice.status.name() == 'PENDING'}"
                   th:action="@{/payments/checkout/{invoiceId}(invoiceId=${invoice.id})}"
                   method="post">
                 <input type="hidden"

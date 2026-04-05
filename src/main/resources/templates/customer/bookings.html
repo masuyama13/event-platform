@@ -109,7 +109,7 @@
                     <a th:href="@{/customer/bookings/{bookingId}(bookingId=${booking.id})}" class="customer-bookings__button button button--primary">
                         View Details
                     </a>
-                    <a th:if="${booking.status.name() == 'APPROVED'}"
+                    <a th:if="${invoicesByBookingId[booking.id] != null and invoicesByBookingId[booking.id].status.name() == 'PENDING'}"
                        th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
                        class="customer-bookings__button button button--accent">
                         Proceed to Payment

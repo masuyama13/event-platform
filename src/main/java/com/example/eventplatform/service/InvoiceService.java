@@ -1,6 +1,7 @@
 package com.example.eventplatform.service;
 
 import com.example.eventplatform.entity.*;
+import com.example.eventplatform.repository.BookingRepository;
 import com.example.eventplatform.repository.InvoiceRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,11 @@ public class InvoiceService {
     private static final String DEFAULT_CURRENCY = "cad";
 
     private final InvoiceRepository invoiceRepository;
+    private final BookingRepository bookingRepository;
 
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, BookingRepository bookingRepository) {
         this.invoiceRepository = invoiceRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     public Invoice createInvoiceIfNotExists(Booking booking) {
@@ -97,6 +100,9 @@ public class InvoiceService {
         }
         invoice.setStripePaymentIntentId(stripePaymentIntentId);
         invoice.setPaidAt(LocalDateTime.now());
+        Booking booking = invoice.getBooking();
+        booking.setStatus(BookingStatus.COMPLETED);
+        bookingRepository.save(booking);
         return invoiceRepository.save(invoice);
     }
 }

@@ -148,7 +148,7 @@
                    class="booking-detail-card__button button button--secondary">
                     View Invoice
                 </a>
-                <a th:if="${booking.status.name() == 'APPROVED'}"
+                <a th:if="${invoice != null and invoice.status.name() == 'PENDING'}"
                    th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
                    class="booking-detail-card__button button button--accent">
                     Proceed to Payment

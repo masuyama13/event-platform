@@ -28,7 +28,7 @@ public class BookingManagementController {
     public String customerBookings(Authentication authentication, Model model) {
         List<Booking> bookings = bookingService.getCustomerBookings(authentication.getName());
         model.addAttribute("bookings", bookings);
-        model.addAttribute("invoicesByBookingId", invoiceService.findByBookingIds(extractBookingIds(bookings)));
+        model.addAttribute("invoicesByBookingId", buildCustomerInvoicesByBookingId(bookings));
         return "customer/bookings";
     }
 
@@ -38,7 +38,7 @@ public class BookingManagementController {
                                         Model model) {
         Booking booking = bookingService.getCustomerBooking(bookingId, authentication.getName());
         model.addAttribute("booking", booking);
-        model.addAttribute("invoice", invoiceService.findByBookingId(bookingId).orElse(null));
+        model.addAttribute("invoice", getCustomerInvoice(booking));
         return "customer/booking-detail";
     }
 
@@ -84,5 +84,26 @@ public class BookingManagementController {
             bookingIds.add(booking.getId());
         }
         return bookingIds;
+    }
+
+    private java.util.Map<Long, com.example.eventplatform.entity.Invoice> buildCustomerInvoicesByBookingId(List<Booking> bookings) {
+        java.util.Map<Long, com.example.eventplatform.entity.Invoice> invoicesByBookingId =
+                invoiceService.findByBookingIds(extractBookingIds(bookings));
+        for (Booking booking : bookings) {
+            if (!invoicesByBookingId.containsKey(booking.getId())
+                    && (booking.getStatus() == com.example.eventplatform.entity.BookingStatus.APPROVED
+                    || booking.getStatus() == com.example.eventplatform.entity.BookingStatus.COMPLETED)) {
+                invoicesByBookingId.put(booking.getId(), invoiceService.createInvoiceIfNotExists(booking));
+            }
+        }
+        return invoicesByBookingId;
+    }
+
+    private com.example.eventplatform.entity.Invoice getCustomerInvoice(Booking booking) {
+        if (booking.getStatus() == com.example.eventplatform.entity.BookingStatus.APPROVED
+                || booking.getStatus() == com.example.eventplatform.entity.BookingStatus.COMPLETED) {
+            return invoiceService.createInvoiceIfNotExists(booking);
+        }
+        return invoiceService.findByBookingId(booking.getId()).orElse(null);
     }
 }
