@@ -10,23 +10,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/contact")
-public class OrganizerInquiryController {
+public class ContactController {
 
     private final String supportEmail;
 
-    public OrganizerInquiryController(
+    public ContactController(
             @Value("${app.support-email:support@example.com}") String supportEmail) {
         this.supportEmail = supportEmail;
     }
 
     @GetMapping("/organizer")
-    public String inquiryForm(@AuthenticationPrincipal UserPrincipal principal, Model model) {
+    public String organizerContactPage(@AuthenticationPrincipal UserPrincipal principal, Model model) {
         if (principal == null || principal.getAuthorities().stream().noneMatch(a -> "ROLE_ORGANIZER".equals(a.getAuthority()))) {
             return "redirect:/";
         }
 
         model.addAttribute("organizerEmail", principal.getUsername());
         model.addAttribute("supportEmail", supportEmail);
-        return "organizer-inquiry-form";
+        return "organizer-contact";
+    }
+
+    @GetMapping("/customer")
+    public String customerContactPage(@AuthenticationPrincipal UserPrincipal principal, Model model) {
+        if (principal == null || principal.getAuthorities().stream().noneMatch(a -> "ROLE_CUSTOMER".equals(a.getAuthority()))) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("customerEmail", principal.getUsername());
+        model.addAttribute("supportEmail", supportEmail);
+        return "customer-contact";
     }
 }
