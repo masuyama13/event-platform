@@ -45,6 +45,11 @@ public class Booking {
 
     private String plannerName;
 
+    private String planName;
+
+    @Column(length = 2000)
+    private String planDescription;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
@@ -73,7 +78,10 @@ public class Booking {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public String getPlannerName() { return plannerName; }
-    public String getPlanName() { return plan != null ? plan.getPlanName() : null; }
+    public String getPlanName() { return planName != null ? planName : plan != null ? plan.getPlanName() : null; }
+    public String getPlanDescription() {
+        return planDescription != null ? planDescription : plan != null ? plan.getDescription() : null;
+    }
     public BigDecimal getPrice() { return price; }
 
     public void setId(Long id) { this.id = id; }
@@ -94,5 +102,7 @@ public class Booking {
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
     public void setPlannerName(String plannerName) { this.plannerName = plannerName; }
+    public void setPlanName(String planName) { this.planName = planName; }
+    public void setPlanDescription(String planDescription) { this.planDescription = planDescription; }
     public void setPrice(BigDecimal price) { this.price = price; }
 }

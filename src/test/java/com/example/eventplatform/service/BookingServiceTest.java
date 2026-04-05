@@ -7,6 +7,7 @@ import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.PlanRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -129,6 +131,7 @@ class BookingServiceTest {
         plan.setId(10L);
         plan.setOrganizer(organizerProfile);
         plan.setPlanName("planName");
+        plan.setDescription("plan description");
         plan.setPrice(new BigDecimal("123.45"));
         when(mockPlanRepository.findById(10L)).thenReturn(Optional.of(plan));
 
@@ -155,6 +158,12 @@ class BookingServiceTest {
 
         // Verify the results
         assertThat(result).isSameAs(booking);
+
+        final ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);
+        verify(mockBookingRepository).save(bookingCaptor.capture());
+        assertThat(bookingCaptor.getValue().getPlanName()).isEqualTo("planName");
+        assertThat(bookingCaptor.getValue().getPlanDescription()).isEqualTo("plan description");
+        assertThat(bookingCaptor.getValue().getPrice()).isEqualByComparingTo("123.45");
     }
 
     @Test

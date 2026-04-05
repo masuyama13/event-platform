@@ -68,6 +68,8 @@ public class BookingService {
         Booking booking = new Booking();
         booking.setPlan(selectedPlan);
         booking.setPlannerName(organizerProfile.getBusinessName());
+        booking.setPlanName(selectedPlan.getPlanName());
+        booking.setPlanDescription(selectedPlan.getDescription());
         booking.setEventDate(eventDate);
         booking.setEventType(eventType);
         booking.setRequestDetails(requestDetails);
