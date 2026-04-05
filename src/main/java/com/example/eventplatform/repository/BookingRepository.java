@@ -9,7 +9,7 @@ import java.util.List;
 public interface BookingRepository
     extends JpaRepository<Booking, Long> {
 
-    List<Booking> findByCustomerProfileUserEmailOrderByCreatedAtDesc(String email);
+    List<Booking> findByCustomerProfileUserEmailOrderByUpdatedAtDesc(String email);
 
     List<Booking> findByOrganizerProfileUserEmailOrderByCreatedAtDesc(String email);
 

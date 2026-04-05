@@ -45,14 +45,18 @@ public class BookingController {
 
     // POST /bookings
     @PostMapping("/bookings")
-    public RedirectView confirmBooking(
+    public RedirectView submitBookingRequest(
             @RequestParam Long planId,
             @RequestParam String eventDate,
+            @RequestParam String eventType,
+            @RequestParam String requestDetails,
             Authentication authentication) {
 
-        Booking savedBooking = bookingService.confirmBooking(
+        Booking savedBooking = bookingService.submitBookingRequest(
                 planId,
                 LocalDate.parse(eventDate),
+                eventType,
+                requestDetails,
                 authentication.getName()
         );
         return new RedirectView("/booking/complete/" + savedBooking.getId());

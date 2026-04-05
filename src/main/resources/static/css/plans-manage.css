@@ -1,0 +1,138 @@
+.plans-manage-page {
+    width: min(100%, 1040px);
+    margin: 0 auto;
+}
+
+.plans-manage-page__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.plans-manage-page__eyebrow,
+.plans-manage-card__label {
+    margin: 0 0 8px;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.plans-manage-page h1 {
+    margin: 0;
+    color: #111827;
+    font-size: clamp(1.75rem, 4vw, 2rem);
+}
+
+.plans-manage-page__intro {
+    margin: 12px 0 0;
+    max-width: 48rem;
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+.plans-manage-page__create,
+.plans-manage-card__button {
+    text-align: center;
+}
+
+.plans-manage-list {
+    display: grid;
+    gap: 18px;
+}
+
+.plans-manage-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: start;
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.plans-manage-card__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 18px;
+}
+
+.plans-manage-card h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 1.25rem;
+}
+
+.plans-manage-card__price-block {
+    text-align: right;
+}
+
+.plans-manage-card__price {
+    margin: 0;
+    color: #111827;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.plans-manage-card__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.plans-manage-card__value,
+.plans-manage-card__description {
+    margin: 0;
+    color: #374151;
+    line-height: 1.7;
+    word-break: break-word;
+}
+
+.plans-manage-card__actions {
+    align-self: center;
+}
+
+.plans-manage-page__empty {
+    padding: 28px 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #ffffff;
+    color: #6b7280;
+    text-align: center;
+}
+
+.plans-manage-page__empty p {
+    margin: 0 0 18px;
+}
+
+@media (max-width: 720px) {
+    .plans-manage-page__header,
+    .plans-manage-card,
+    .plans-manage-card__top,
+    .plans-manage-card__meta {
+        grid-template-columns: 1fr;
+    }
+
+    .plans-manage-page__header {
+        display: grid;
+        align-items: start;
+    }
+
+    .plans-manage-page__create,
+    .plans-manage-card__button {
+        display: block;
+        text-align: center;
+    }
+
+    .plans-manage-card__price-block {
+        text-align: left;
+    }
+}

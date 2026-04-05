@@ -29,7 +29,7 @@
                     </p>
                 </div>
                 <div class="message-inbox__actions">
-                    <a th:href="@{/messages(organizerUserId=${conv['organizerUserId']})}" class="message-inbox__button">
+                    <a th:href="@{/messages(organizerUserId=${conv['organizerUserId']})}" class="message-inbox__button button button--primary">
                         Open Conversation
                     </a>
                 </div>
@@ -38,10 +38,6 @@
 
         <div class="message-inbox__empty" th:if="${conversations == null or #lists.isEmpty(conversations)}">
             <p>No messages yet. Find an organizer to start a conversation!</p>
-        </div>
-
-        <div class="message-inbox__footer">
-            <a th:href="@{/}" class="message-inbox__back">Back to Home</a>
         </div>
     </section>
 </main>

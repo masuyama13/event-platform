@@ -86,21 +86,7 @@
 }
 
 .inquiry-form__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border: 0;
-    border-radius: 999px;
-    background: #111827;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.inquiry-form__button--secondary {
-    background: #e5e7eb;
-    color: #111827;
+    text-align: center;
 }
 
 @media (max-width: 640px) {

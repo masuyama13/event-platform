@@ -36,6 +36,10 @@
     color: #991b1b;
 }
 
+.booking-detail-card__intro--cancelled {
+    color: #92400e;
+}
+
 .booking-detail-card__summary {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -85,6 +89,12 @@
     color: #991b1b;
 }
 
+.booking-detail-card__status--cancelled {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #9a3412;
+}
+
 .booking-detail-card__price {
     font-size: 1.35rem;
 }
@@ -128,19 +138,15 @@
     flex-wrap: wrap;
 }
 
-.booking-detail-card__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border-radius: 999px;
-    background: #111827;
-    color: #ffffff;
-    font-weight: 700;
-    text-decoration: none;
+.booking-detail-card__action-form {
+    margin: 0;
 }
 
-.booking-detail-card__button--back {
-    background: #e5e7eb;
-    color: #111827;
+.booking-detail-card__button {
+    order: 2;
+}
+.booking-detail-card__button:first-child {
+    order: 1;
 }
 
 @media (max-width: 640px) {
@@ -158,8 +164,12 @@
     }
 
     .booking-detail-card__button {
-        display: block;
         text-align: center;
+        width: 100%;
+    }
+
+    .booking-detail-card__action-form {
+        width: 100%;
     }
 
     .booking-detail-card__actions {

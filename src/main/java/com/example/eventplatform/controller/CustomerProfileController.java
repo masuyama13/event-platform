@@ -48,8 +48,6 @@ public class CustomerProfileController {
                                         @RequestParam String lastName,
                                         @RequestParam(required = false) String phone,
                                         @RequestParam(required = false) String address,
-                                        @RequestParam(required = false) String city,
-                                        @RequestParam(required = false) String country,
                                         Model model) {
         User user = getCurrentUser(principal);
         if (user.getRole() != UserRole.CUSTOMER) {
@@ -57,7 +55,7 @@ public class CustomerProfileController {
         }
 
         try {
-            customerProfileService.updateProfile(user.getId(), email, firstName, lastName, phone, address, city, country);
+            customerProfileService.updateProfile(user.getId(), email, firstName, lastName, phone, address);
             refreshAuthentication(user.getId());
             return "redirect:/profile";
         } catch (RuntimeException e) {

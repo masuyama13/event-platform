@@ -61,8 +61,6 @@ public class AuthController {
             @RequestParam String lastName,
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) String address,
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String country,
             Model model
     ) {
         if (userRepository.existsByEmail(email)) {
@@ -78,8 +76,6 @@ public class AuthController {
         profile.setLastName(lastName);
         profile.setPhone(phone);
         profile.setAddress(address);
-        profile.setCity(city);
-        profile.setCountry(country);
         customerProfileRepository.save(profile);
 
         return "redirect:/login";

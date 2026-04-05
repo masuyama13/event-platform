@@ -85,6 +85,11 @@
 
 .booking-request-card__field {
     display: block;
+    margin-top: 16px;
+}
+
+.booking-request-card__field:first-child {
+    margin-top: 0;
 }
 
 .booking-request-card__field span {
@@ -94,7 +99,8 @@
     font-weight: 600;
 }
 
-.booking-request-card__field input {
+.booking-request-card__field input,
+.booking-request-card__field textarea {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid #d1d5db;
@@ -103,7 +109,39 @@
     font: inherit;
 }
 
-.booking-request-card__field input:focus {
+.booking-request-card__field textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.booking-request-card__radio-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.booking-request-card__radio-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+    color: #374151;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.booking-request-card__radio-item input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: #111827;
+}
+
+.booking-request-card__field input:focus,
+.booking-request-card__field textarea:focus {
     outline: none;
     border-color: #f59e0b;
     box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.16);
@@ -115,6 +153,10 @@
     line-height: 1.7;
 }
 
+.booking-request-card__note--inline {
+    margin-top: 10px;
+}
+
 .booking-request-card__actions {
     display: flex;
     gap: 12px;
@@ -122,21 +164,7 @@
 }
 
 .booking-request-card__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border: 0;
-    border-radius: 999px;
-    background: #111827;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.booking-request-card__button--secondary {
-    background: #e5e7eb;
-    color: #111827;
+    text-align: center;
 }
 
 @media (max-width: 640px) {

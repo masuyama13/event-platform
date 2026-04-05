@@ -67,27 +67,8 @@
     line-height: 1.6;
 }
 
-.message-inbox__button,
-.message-inbox__back {
-    display: inline-block;
-    padding: 12px 18px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-weight: 700;
-}
-
 .message-inbox__button {
-    background: #111827;
-    color: #ffffff;
-}
-
-.message-inbox__footer {
-    margin-top: 22px;
-}
-
-.message-inbox__back {
-    background: #e5e7eb;
-    color: #111827;
+    text-align: center;
 }
 
 .message-inbox__empty {
@@ -113,8 +94,7 @@
         width: 100%;
     }
 
-    .message-inbox__button,
-    .message-inbox__back {
+    .message-inbox__button {
         display: block;
         text-align: center;
     }

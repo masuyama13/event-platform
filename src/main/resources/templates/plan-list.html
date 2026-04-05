@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="plan-list__actions">
-                    <a th:href="@{/plan/{planId}/book(planId=${plan.id})}" class="plan-list__button">
+                    <a th:href="@{/plan/{planId}/book(planId=${plan.id})}" class="plan-list__button button button--primary">
                         Book Now
                     </a>
                 </div>
@@ -56,12 +56,6 @@
 
         <div class="plan-directory__empty" th:if="${plans == null or #lists.isEmpty(plans)}">
             <p>No plans are available for this organizer yet.</p>
-        </div>
-
-        <div class="plan-directory__footer">
-            <a th:href="@{/organizers/{organizerId}(organizerId=${organizerId})}" class="plan-directory__back">
-                Back to Organizer
-            </a>
         </div>
     </section>
 </main>

@@ -25,7 +25,6 @@
 <div class="container">
     <h2>Payment Cancelled</h2>
     <p>Your payment has not been completed. You can return to the invoice and try again.</p>
-    <a th:href="@{/invoices/view/{bookingId}(bookingId=${invoice.booking.id})}">Back to Invoice</a>
 </div>
  </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>

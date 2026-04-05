@@ -29,14 +29,6 @@
                         <dt>Address</dt>
                         <dd th:text="${customerProfile.address} ?: '-'">-</dd>
                     </div>
-                    <div class="profile-details__row">
-                        <dt>City</dt>
-                        <dd th:text="${customerProfile.city} ?: '-'">-</dd>
-                    </div>
-                    <div class="profile-details__row">
-                        <dt>Country</dt>
-                        <dd th:text="${customerProfile.country} ?: '-'">-</dd>
-                    </div>
                 </div>
 
                 <div th:if="${organizerProfile != null}">
@@ -62,7 +54,6 @@
             </dl>
 
             <div class="profile-actions">
-                <a th:href="@{/}" onclick="if (history.length > 1) { history.back(); return false; }" class="profile-button profile-button--secondary">Back</a>
                 <a th:href="${editPath}" class="profile-button">Edit Profile</a>
             </div>
         </div>

@@ -7,6 +7,7 @@ import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.PlanRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,7 +51,7 @@ class BookingServiceTest {
         plan.setOrganizer(organizer);
         plan.setPlanName("planName");
         final List<Plan> plans = List.of(plan);
-        when(mockPlanRepository.findByOrganizerId(0L)).thenReturn(plans);
+        when(mockPlanRepository.findByOrganizerIdOrderByUpdatedAtDesc(0L)).thenReturn(plans);
 
         // Run the test
         final List<Plan> result = bookingServiceUnderTest.getAvailablePlans(0L);
@@ -61,7 +63,7 @@ class BookingServiceTest {
     @Test
     void testGetAvailablePlans_PlanRepositoryReturnsNoItems() {
         // Setup
-        when(mockPlanRepository.findByOrganizerId(0L)).thenReturn(Collections.emptyList());
+        when(mockPlanRepository.findByOrganizerIdOrderByUpdatedAtDesc(0L)).thenReturn(Collections.emptyList());
 
         // Run the test
         final List<Plan> result = bookingServiceUnderTest.getAvailablePlans(0L);
@@ -129,6 +131,7 @@ class BookingServiceTest {
         plan.setId(10L);
         plan.setOrganizer(organizerProfile);
         plan.setPlanName("planName");
+        plan.setDescription("plan description");
         plan.setPrice(new BigDecimal("123.45"));
         when(mockPlanRepository.findById(10L)).thenReturn(Optional.of(plan));
 
@@ -146,10 +149,21 @@ class BookingServiceTest {
         when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
 
         // Run the test
-        final Booking result = bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email");
+        final Booking result = bookingServiceUnderTest.submitBookingRequest(
+                10L,
+                requestedDate,
+                "Wedding",
+                "Outdoor ceremony for 80 guests",
+                "email");
 
         // Verify the results
         assertThat(result).isSameAs(booking);
+
+        final ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);
+        verify(mockBookingRepository).save(bookingCaptor.capture());
+        assertThat(bookingCaptor.getValue().getPlanName()).isEqualTo("planName");
+        assertThat(bookingCaptor.getValue().getPlanDescription()).isEqualTo("plan description");
+        assertThat(bookingCaptor.getValue().getPrice()).isEqualByComparingTo("123.45");
     }
 
     @Test
@@ -170,7 +184,12 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
+                () -> bookingServiceUnderTest.submitBookingRequest(
+                        10L,
+                        requestedDate,
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -197,7 +216,12 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
+                () -> bookingServiceUnderTest.submitBookingRequest(
+                        10L,
+                        requestedDate,
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -205,7 +229,12 @@ class BookingServiceTest {
     void testConfirmBooking_EventDateTooSoon() {
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, LocalDate.now().plusDays(6), "email"))
+                () -> bookingServiceUnderTest.submitBookingRequest(
+                        10L,
+                        LocalDate.now().plusDays(6),
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Event date must be at least one week from today");
     }
@@ -219,8 +248,53 @@ class BookingServiceTest {
 
         // Run the test
         assertThatThrownBy(
-                () -> bookingServiceUnderTest.confirmBooking(10L, requestedDate, "email"))
+                () -> bookingServiceUnderTest.submitBookingRequest(
+                        10L,
+                        requestedDate,
+                        "Wedding",
+                        "Outdoor ceremony for 80 guests",
+                        "email"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("You already have a booking request for this plan and date");
+    }
+
+    @Test
+    void testCancelCustomerBooking() {
+        final User user = new User();
+        user.setEmail("customer@example.com");
+        final CustomerProfile customerProfile = new CustomerProfile();
+        customerProfile.setUser(user);
+
+        final Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setCustomerProfile(customerProfile);
+        booking.setStatus(BookingStatus.REQUESTED);
+
+        when(mockBookingRepository.findById(1L)).thenReturn(Optional.of(booking));
+        when(mockBookingRepository.save(any(Booking.class))).thenReturn(booking);
+
+        final Booking result = bookingServiceUnderTest.cancelCustomerBooking(1L, "customer@example.com");
+
+        assertThat(result.getStatus()).isEqualTo(BookingStatus.CANCELLED);
+        verify(mockBookingRepository).save(booking);
+    }
+
+    @Test
+    void testCancelCustomerBooking_WhenStatusIsNotRequested() {
+        final User user = new User();
+        user.setEmail("customer@example.com");
+        final CustomerProfile customerProfile = new CustomerProfile();
+        customerProfile.setUser(user);
+
+        final Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setCustomerProfile(customerProfile);
+        booking.setStatus(BookingStatus.APPROVED);
+
+        when(mockBookingRepository.findById(1L)).thenReturn(Optional.of(booking));
+
+        assertThatThrownBy(() -> bookingServiceUnderTest.cancelCustomerBooking(1L, "customer@example.com"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Only requested bookings can be cancelled");
     }
 }

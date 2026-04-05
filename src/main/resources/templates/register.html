@@ -53,14 +53,6 @@
           <span>Address</span>
           <input type="text" name="address">
         </label>
-        <label class="admin-form__field">
-          <span>City</span>
-          <input type="text" name="city">
-        </label>
-        <label class="admin-form__field">
-          <span>Country</span>
-          <input type="text" name="country">
-        </label>
       </div>
 
       <div class="auth-form__stack" th:if="${pageTitle == 'Organizer Register'}">
@@ -102,7 +94,6 @@
 
       <div class="admin-form__actions">
         <button type="submit" class="admin-form__button">Sign Up</button>
-        <a th:href="@{/login}" class="admin-form__button admin-form__button--secondary">Back to Login</a>
       </div>
     </form>
 

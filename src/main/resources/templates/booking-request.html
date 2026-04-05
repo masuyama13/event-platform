@@ -13,7 +13,7 @@
         <div class="booking-request-page__header">
             <p class="booking-request-page__eyebrow">Booking</p>
             <h1>Booking Request</h1>
-            <p class="booking-request-page__intro">Choose an event date and send your booking request to the organizer.</p>
+            <p class="booking-request-page__intro">Choose an event date, describe the event, and send your booking request to the organizer.</p>
         </div>
 
         <section class="booking-request-card booking-request-card--form">
@@ -37,7 +37,7 @@
             </section>
 
             <section class="booking-request-card__section booking-request-card__section--form">
-                <p class="booking-request-card__section-label">Choose Your Date</p>
+                <p class="booking-request-card__section-label">Request Details</p>
 
                 <form action="/bookings" method="post">
                     <input type="hidden"
@@ -55,14 +55,42 @@
                                required/>
                     </label>
 
+                    <section class="booking-request-card__field">
+                        <span>Event Category</span>
+                        <div class="booking-request-card__radio-list"
+                             th:if="${plan.organizer != null and plan.organizer.sortedCategories != null and !#lists.isEmpty(plan.organizer.sortedCategories)}">
+                            <label class="booking-request-card__radio-item"
+                                   th:each="category : ${plan.organizer.sortedCategories}">
+                                <input type="radio"
+                                       name="eventType"
+                                       th:value="${category.name}"
+                                       required>
+                                <span th:text="${category.name}">Category</span>
+                            </label>
+                        </div>
+                        <p class="booking-request-card__note booking-request-card__note--inline"
+                           th:if="${plan.organizer == null or plan.organizer.sortedCategories == null or #lists.isEmpty(plan.organizer.sortedCategories)}">
+                            No event categories are available for this organizer.
+                        </p>
+                    </section>
+
+                    <label class="booking-request-card__field" for="requestDetails">
+                        <span>Description</span>
+                        <textarea id="requestDetails"
+                                  name="requestDetails"
+                                  rows="5"
+                                  placeholder="Share the event style, guest count, venue, timing, and anything the organizer should know."
+                                  required></textarea>
+                    </label>
+
                     <p class="booking-request-card__note">
                         Earliest available booking date:
                         <strong th:text="${#temporals.format(earliestBookingDate, 'yyyy-MM-dd')}">Date</strong>
                     </p>
 
                     <div class="booking-request-card__actions">
-                        <a th:href="@{/booking/plans(organizerId=${organizerId})}" class="booking-request-card__button booking-request-card__button--secondary">Back to Plans</a>
-                        <button type="submit" class="booking-request-card__button">Request Booking</button>
+                        <a th:href="@{/booking/plans(organizerId=${organizerId})}" class="booking-request-card__button booking-request-card__button--secondary button button--secondary">Cancel</a>
+                        <button type="submit" class="booking-request-card__button button button--primary">Request Booking</button>
                     </div>
                 </form>
             </section>

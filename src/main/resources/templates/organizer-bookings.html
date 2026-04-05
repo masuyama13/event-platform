@@ -4,42 +4,80 @@
     <meta charset="UTF-8">
     <title>Booking Requests</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/organizer-bookings.css}">
 </head>
 <body class="app-shell">
 <header th:replace="~{layout/fragments :: siteHeader}"></header>
 <main class="app-main">
-    <h1>Booking Requests</h1>
-
-    <div th:if="${#lists.isEmpty(bookings)}">
-        <p>No booking requests.</p>
-    </div>
-
-    <div th:each="booking : ${bookings}">
-        <p>Booking ID: <span th:text="${booking.id}"></span></p>
-        <p>Customer: <span th:text="${booking.customerProfile.user.email}"></span></p>
-        <p>Plan: <span th:text="${booking.planName}"></span></p>
-        <p>Status: <span th:text="${booking.status}"></span></p>
-        <p>Date: <span th:text="${booking.eventDate}"></span></p>
-
-        <div th:if="${booking.status.name() == 'REQUESTED'}">
-            <form th:action="@{/organizer/bookings/{bookingId}/approve(bookingId=${booking.id})}" method="post">
-                <input type="hidden"
-                       th:if="${_csrf != null}"
-                       th:name="${_csrf.parameterName}"
-                       th:value="${_csrf.token}"/>
-                <button type="submit">Approve</button>
-            </form>
-
-            <form th:action="@{/organizer/bookings/{bookingId}/reject(bookingId=${booking.id})}" method="post">
-                <input type="hidden"
-                       th:if="${_csrf != null}"
-                       th:name="${_csrf.parameterName}"
-                       th:value="${_csrf.token}"/>
-                <button type="submit">Reject</button>
-            </form>
+    <section class="organizer-bookings">
+        <div class="organizer-bookings__header">
+            <p class="organizer-bookings__eyebrow">Organizer Tools</p>
+            <h1>Booking Requests</h1>
+            <p class="organizer-bookings__intro">Review each request, confirm the event date and plan, then approve or reject it.</p>
         </div>
-        <hr>
-    </div>
+
+        <div class="organizer-bookings__empty" th:if="${#lists.isEmpty(bookings)}">
+            <p>No booking requests yet.</p>
+        </div>
+
+        <div class="organizer-bookings__list" th:if="${bookings != null and !#lists.isEmpty(bookings)}">
+            <article class="organizer-bookings__card" th:each="booking : ${bookings}">
+                <div class="organizer-bookings__summary">
+                    <div>
+                        <p class="organizer-bookings__label">Booking ID</p>
+                        <p class="organizer-bookings__value" th:text="${booking.id}">1</p>
+                    </div>
+
+                    <div>
+                        <p class="organizer-bookings__label">Status</p>
+                        <p class="organizer-bookings__status" th:if="${booking.status.name() == 'REQUESTED'}">REQUESTED</p>
+                        <p class="organizer-bookings__status organizer-bookings__status--approved"
+                           th:if="${booking.status.name() == 'APPROVED'}">
+                            APPROVED
+                        </p>
+                        <p class="organizer-bookings__status organizer-bookings__status--rejected"
+                           th:if="${booking.status.name() == 'REJECTED'}">
+                            REJECTED
+                        </p>
+                    </div>
+                </div>
+
+                <dl class="organizer-bookings__details">
+                    <div class="organizer-bookings__row">
+                        <dt>Customer Name</dt>
+                        <dd th:text="${booking.customerProfile != null ? booking.customerProfile.firstName + ' ' + booking.customerProfile.lastName : 'N/A'}">
+                            Customer Name
+                        </dd>
+                    </div>
+                    <div class="organizer-bookings__row">
+                        <dt>Plan</dt>
+                        <dd th:text="${booking.planName}">Plan Name</dd>
+                    </div>
+                    <div class="organizer-bookings__row">
+                        <dt>Event Date</dt>
+                        <dd th:text="${booking.eventDate}">2026-04-20</dd>
+                    </div>
+                </dl>
+
+                <p class="organizer-bookings__note" th:if="${booking.status.name() == 'REQUESTED'}">
+                    Open the request to review pricing and request details.
+                </p>
+                <p class="organizer-bookings__note organizer-bookings__note--approved" th:if="${booking.status.name() == 'APPROVED'}">
+                    This request has already been approved.
+                </p>
+                <p class="organizer-bookings__note organizer-bookings__note--rejected" th:if="${booking.status.name() == 'REJECTED'}">
+                    This request has already been rejected.
+                </p>
+
+                <div class="organizer-bookings__actions">
+                    <a th:href="@{/organizer/bookings/{bookingId}(bookingId=${booking.id})}"
+                       class="organizer-bookings__button button button--primary">
+                        View Request
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
 </main>
 <footer th:replace="~{layout/fragments :: siteFooter}"></footer>
 </body>

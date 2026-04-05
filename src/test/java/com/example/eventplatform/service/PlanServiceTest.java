@@ -86,7 +86,7 @@ class PlanServiceTest {
     @Test
     void testGetPlansByOrganizer() {
         // Setup
-        // Configure PlanRepository.findByOrganizerId(...).
+        // Configure PlanRepository.findByOrganizerIdOrderByUpdatedAtDesc(...).
         final Plan plan = new Plan();
         final OrganizerProfile organizer = new OrganizerProfile();
         plan.setOrganizer(organizer);
@@ -95,7 +95,7 @@ class PlanServiceTest {
         plan.setPrice(new BigDecimal("0.00"));
         plan.setExpiresAt(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
         final List<Plan> plans = List.of(plan);
-        when(mockPlanRepository.findByOrganizerId(0L)).thenReturn(plans);
+        when(mockPlanRepository.findByOrganizerIdOrderByUpdatedAtDesc(0L)).thenReturn(plans);
 
         // Run the test
         final List<Plan> result = planServiceUnderTest.getPlansByOrganizer(0L);
@@ -107,7 +107,7 @@ class PlanServiceTest {
     @Test
     void testGetPlansByOrganizer_PlanRepositoryReturnsNoItems() {
         // Setup
-        when(mockPlanRepository.findByOrganizerId(0L)).thenReturn(Collections.emptyList());
+        when(mockPlanRepository.findByOrganizerIdOrderByUpdatedAtDesc(0L)).thenReturn(Collections.emptyList());
 
         // Run the test
         final List<Plan> result = planServiceUnderTest.getPlansByOrganizer(0L);

@@ -28,7 +28,7 @@ public class BookingService {
 
     // Get available plans for a specific organizer
     public List<Plan> getAvailablePlans(Long organizerId) {
-        return planRepository.findByOrganizerId(organizerId);
+        return planRepository.findByOrganizerIdOrderByUpdatedAtDesc(organizerId);
     }
 
     // Get a specific plan detail
@@ -38,8 +38,12 @@ public class BookingService {
                         "Plan not found: " + planId));
     }
 
-    // Save confirmed booking to database with REQUESTED status
-    public Booking confirmBooking(Long planId, LocalDate eventDate, String customerEmail) {
+    // Submit a booking request with REQUESTED status
+    public Booking submitBookingRequest(Long planId,
+                                        LocalDate eventDate,
+                                        String eventType,
+                                        String requestDetails,
+                                        String customerEmail) {
         LocalDate earliestBookingDate = LocalDate.now().plusWeeks(1);
         if (eventDate.isBefore(earliestBookingDate)) {
             throw new RuntimeException("Event date must be at least one week from today");
@@ -64,7 +68,11 @@ public class BookingService {
         Booking booking = new Booking();
         booking.setPlan(selectedPlan);
         booking.setPlannerName(organizerProfile.getBusinessName());
+        booking.setPlanName(selectedPlan.getPlanName());
+        booking.setPlanDescription(selectedPlan.getDescription());
         booking.setEventDate(eventDate);
+        booking.setEventType(eventType);
+        booking.setRequestDetails(requestDetails);
         booking.setPrice(selectedPlan.getPrice());
         booking.setStatus(BookingStatus.REQUESTED);
         booking.setCustomerProfile(customerProfile);
@@ -74,7 +82,7 @@ public class BookingService {
     }
 
     public List<Booking> getCustomerBookings(String customerEmail) {
-        return bookingRepository.findByCustomerProfileUserEmailOrderByCreatedAtDesc(customerEmail);
+        return bookingRepository.findByCustomerProfileUserEmailOrderByUpdatedAtDesc(customerEmail);
     }
 
     public List<Booking> getOrganizerBookings(String organizerEmail) {
@@ -93,6 +101,16 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    public Booking cancelCustomerBooking(Long bookingId, String customerEmail) {
+        Booking booking = getCustomerBooking(bookingId, customerEmail);
+        if (booking.getStatus() != BookingStatus.REQUESTED) {
+            throw new RuntimeException("Only requested bookings can be cancelled");
+        }
+
+        booking.setStatus(BookingStatus.CANCELLED);
+        return bookingRepository.save(booking);
+    }
+
     public Booking getCustomerBooking(Long bookingId, String customerEmail) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found: " + bookingId));
@@ -102,6 +120,10 @@ public class BookingService {
         }
 
         return booking;
+    }
+
+    public Booking getOrganizerBooking(Long bookingId, String organizerEmail) {
+        return getOwnedOrganizerBooking(bookingId, organizerEmail);
     }
 
     private Booking getOwnedOrganizerBooking(Long bookingId, String organizerEmail) {
