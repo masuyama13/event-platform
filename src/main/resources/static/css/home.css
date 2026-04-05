@@ -46,6 +46,26 @@
     text-decoration: none;
 }
 
+.home-card--featured {
+    position: relative;
+    overflow: hidden;
+}
+
+.home-card--featured::before {
+    content: "Start Here";
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 14px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #f59e0b;
+    color: #111827;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .home-card h2 {
     margin: 0 0 10px;
     font-size: 1.2rem;
