@@ -6,7 +6,9 @@ import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,7 +39,8 @@ public class BookingService {
     // Get a specific plan detail
     public Plan getPlanDetail(Long planId) {
         Plan plan = planRepository.findById(planId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
                         "Plan not found: " + planId));
 
         if (plan.getExpiresAt() != null && plan.getExpiresAt().isBefore(LocalDateTime.now())) {
@@ -122,7 +125,9 @@ public class BookingService {
 
     public Booking getCustomerBooking(Long bookingId, String customerEmail) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found: " + bookingId));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Booking not found: " + bookingId));
 
         if (!booking.getCustomerProfile().getUser().getEmail().equals(customerEmail)) {
             throw new RuntimeException("Booking does not belong to customer");
@@ -140,7 +145,9 @@ public class BookingService {
                 .orElseThrow(() -> new RuntimeException("No organizer profile found"));
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found: " + bookingId));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Booking not found: " + bookingId));
 
         if (!booking.getOrganizerProfile().getId().equals(organizerProfile.getId())) {
             throw new RuntimeException("Booking does not belong to organizer");

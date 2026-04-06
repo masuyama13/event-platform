@@ -3,7 +3,9 @@ package com.example.eventplatform.service;
 import com.example.eventplatform.entity.*;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.PlanRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -52,7 +54,9 @@ public class PlanService {
     public Plan getPlanForOrganizer(Long planId, Long organizerUserId) {
         OrganizerProfile organizer = getOrganizerByUserId(organizerUserId);
         return planRepository.findByIdAndOrganizerId(planId, organizer.getId())
-                .orElseThrow(() -> new RuntimeException("Plan not found for organizer: " + planId));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Plan not found for organizer: " + planId));
     }
 
     public Plan updatePlan(Long planId,

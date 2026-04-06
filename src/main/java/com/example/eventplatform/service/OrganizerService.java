@@ -7,8 +7,10 @@ import com.example.eventplatform.entity.UserRole;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.util.EmailNormalizer;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,7 +45,9 @@ public class OrganizerService {
 
     public OrganizerProfile getOrganizerById(Long id) {
         return organizerProfileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Organizer not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Organizer not found with id: " + id));
     }
 
     public OrganizerProfile getOrganizerByUserId(Long userId) {
