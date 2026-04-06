@@ -17,9 +17,13 @@
                 <span class="profile-role" th:if="${organizerProfile != null}">Organizer</span>
             </div>
             <h1 th:text="${profileTitle}">Profile Name</h1>
-            <p class="profile-subtitle" th:text="${user.email}">user@example.com</p>
 
             <dl class="profile-details">
+                <div class="profile-details__row">
+                    <dt>Email</dt>
+                    <dd th:text="${user.email}">user@example.com</dd>
+                </div>
+
                 <div th:if="${customerProfile != null}">
                     <div class="profile-details__row">
                         <dt>Phone</dt>
