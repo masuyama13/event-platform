@@ -73,6 +73,7 @@ public class AuthController {
             Model model
     ) {
         String normalizedEmail = EmailNormalizer.normalize(email);
+        populateCustomerRegisterForm(model, normalizedEmail, firstName, lastName, phone, address);
 
         if (userRepository.existsByEmail(normalizedEmail)) {
             model.addAttribute("error", "Email is already in use.");
@@ -111,6 +112,16 @@ public class AuthController {
             Model model
     ) {
         String normalizedEmail = EmailNormalizer.normalize(email);
+        populateOrganizerRegisterForm(
+                model,
+                normalizedEmail,
+                businessName,
+                description,
+                categoryIds,
+                phone,
+                website,
+                address
+        );
 
         if (userRepository.existsByEmail(normalizedEmail)) {
             model.addAttribute("error", "Email is already in use.");
@@ -165,6 +176,36 @@ public class AuthController {
         model.addAttribute("alternateRegisterPath", alternateRegisterPath);
         model.addAttribute("alternateRegisterLabel", alternateRegisterLabel);
         model.addAttribute("categories", categoryService.getAllCategories());
+    }
+
+    private void populateCustomerRegisterForm(Model model,
+                                              String email,
+                                              String firstName,
+                                              String lastName,
+                                              String phone,
+                                              String address) {
+        model.addAttribute("email", email);
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("lastName", lastName);
+        model.addAttribute("phone", phone);
+        model.addAttribute("address", address);
+    }
+
+    private void populateOrganizerRegisterForm(Model model,
+                                               String email,
+                                               String businessName,
+                                               String description,
+                                               List<Long> categoryIds,
+                                               String phone,
+                                               String website,
+                                               String address) {
+        model.addAttribute("email", email);
+        model.addAttribute("businessName", businessName);
+        model.addAttribute("description", description);
+        model.addAttribute("selectedCategoryIds", categoryIds);
+        model.addAttribute("phone", phone);
+        model.addAttribute("website", website);
+        model.addAttribute("address", address);
     }
 
     private boolean isAuthenticated(Authentication authentication) {
