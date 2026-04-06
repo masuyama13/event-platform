@@ -2,16 +2,15 @@ package com.example.eventplatform.service;
 
 import com.example.eventplatform.entity.User;
 import com.example.eventplatform.entity.UserRole;
-import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.security.UserPrincipal;
 import com.example.eventplatform.util.EmailNormalizer;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -19,7 +18,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String normalizedEmail = EmailNormalizer.normalize(username);
         User user = userRepository.findByEmail(normalizedEmail)
