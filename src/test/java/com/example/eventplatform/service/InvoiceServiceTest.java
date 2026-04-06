@@ -62,7 +62,7 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void markPaidByInvoiceId_ShouldCompleteBooking() {
+    void markPaidByInvoiceId_ShouldConfirmBooking() {
         Invoice invoice = new Invoice();
         invoice.setId(10L);
         invoice.setBooking(booking);
@@ -74,7 +74,7 @@ class InvoiceServiceTest {
         Invoice result = invoiceService.markPaidByInvoiceId(10L, "sess_123", "pi_123");
 
         assertEquals(InvoiceStatus.PAID, result.getStatus());
-        assertEquals(BookingStatus.COMPLETED, booking.getStatus());
+        assertEquals(BookingStatus.CONFIRMED, booking.getStatus());
         verify(bookingRepository).save(booking);
     }
 }

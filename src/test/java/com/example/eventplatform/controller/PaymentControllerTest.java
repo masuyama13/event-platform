@@ -70,7 +70,7 @@ class PaymentControllerTest {
 
     @Test
     void paymentSuccess_shouldAttachInvoiceWhenSessionIdProvided() {
-        Invoice invoice = invoice(10L, 21L, BookingStatus.COMPLETED, InvoiceStatus.PAID, "customer@test.com");
+        Invoice invoice = invoice(10L, 21L, BookingStatus.CONFIRMED, InvoiceStatus.PAID, "customer@test.com");
         Model model = mock(Model.class);
 
         when(authentication.getName()).thenReturn("customer@test.com");

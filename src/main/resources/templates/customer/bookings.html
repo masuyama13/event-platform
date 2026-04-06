@@ -54,6 +54,11 @@
                            th:text="${booking.status}">
                             Status
                         </p>
+                        <p class="customer-bookings__status customer-bookings__status--approved"
+                           th:if="${invoice == null and booking.status.name() == 'CONFIRMED'}"
+                           th:text="${booking.status}">
+                            Status
+                        </p>
                         <p class="customer-bookings__status customer-bookings__status--rejected"
                            th:if="${invoice == null and booking.status.name() == 'REJECTED'}"
                            th:text="${booking.status}">
@@ -100,6 +105,9 @@
                 </p>
                 <p class="customer-bookings__note customer-bookings__note--approved" th:if="${booking.status.name() == 'APPROVED'}">
                     This booking was approved and is ready for payment.
+                </p>
+                <p class="customer-bookings__note customer-bookings__note--approved" th:if="${booking.status.name() == 'CONFIRMED'}">
+                    This booking is confirmed and payment has been received.
                 </p>
                 <p class="customer-bookings__note customer-bookings__note--cancelled" th:if="${booking.status.name() == 'CANCELLED'}">
                     This booking request was cancelled.
