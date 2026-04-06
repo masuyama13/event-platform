@@ -159,9 +159,9 @@ public class DataInitializer {
 
             System.out.println(">>> Temporary booking requests created");
 
-            Booking completedBooking = createBooking(customer, organizer, savedPlans.get(0), BookingStatus.COMPLETED, LocalDate.now().plusDays(26));
+            Booking completedBooking = createBooking(customer, organizer, savedPlans.get(0), BookingStatus.CONFIRMED, LocalDate.now().plusDays(26));
             createPaidInvoice(completedBooking);
-            System.out.println(">>> Temporary completed booking with paid invoice created");
+            System.out.println(">>> Temporary confirmed booking with paid invoice created");
         }
     }
 

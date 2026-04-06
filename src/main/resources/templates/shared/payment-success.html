@@ -22,8 +22,8 @@
                 </p>
             </div>
             <div class="payment-status-card__actions" th:if="${invoice != null}">
-                <a th:href="@{/invoices/view/{bookingId}(bookingId=${invoice.booking.id})}" class="button button--primary">
-                    Back to Invoice
+                <a th:href="@{/customer/bookings/{bookingId}(bookingId=${invoice.booking.id})}" class="button button--secondary">
+                    Back to Booking
                 </a>
             </div>
         </div>
