@@ -107,7 +107,7 @@ public class InvoiceService {
         invoice.setStripePaymentIntentId(stripePaymentIntentId);
         invoice.setPaidAt(LocalDateTime.now());
         Booking booking = invoice.getBooking();
-        booking.setStatus(BookingStatus.COMPLETED);
+        booking.setStatus(BookingStatus.CONFIRMED);
         bookingRepository.save(booking);
         return invoiceRepository.save(invoice);
     }

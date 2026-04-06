@@ -92,7 +92,7 @@ public class BookingManagementController {
         for (Booking booking : bookings) {
             if (!invoicesByBookingId.containsKey(booking.getId())
                     && (booking.getStatus() == com.example.eventplatform.entity.BookingStatus.APPROVED
-                    || booking.getStatus() == com.example.eventplatform.entity.BookingStatus.COMPLETED)) {
+                    || booking.getStatus() == com.example.eventplatform.entity.BookingStatus.CONFIRMED)) {
                 invoicesByBookingId.put(booking.getId(), invoiceService.createInvoiceIfNotExists(booking));
             }
         }
@@ -101,7 +101,7 @@ public class BookingManagementController {
 
     private com.example.eventplatform.entity.Invoice getCustomerInvoice(Booking booking) {
         if (booking.getStatus() == com.example.eventplatform.entity.BookingStatus.APPROVED
-                || booking.getStatus() == com.example.eventplatform.entity.BookingStatus.COMPLETED) {
+                || booking.getStatus() == com.example.eventplatform.entity.BookingStatus.CONFIRMED) {
             return invoiceService.createInvoiceIfNotExists(booking);
         }
         return invoiceService.findByBookingId(booking.getId()).orElse(null);

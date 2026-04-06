@@ -20,6 +20,9 @@
             <p class="booking-detail-card__intro" th:if="${booking.status.name() == 'APPROVED'}">
                 Your booking was approved. You can proceed to payment from the bookings list.
             </p>
+            <p class="booking-detail-card__intro" th:if="${booking.status.name() == 'CONFIRMED'}">
+                Your booking is confirmed and your payment has been received.
+            </p>
             <p class="booking-detail-card__intro booking-detail-card__intro--rejected" th:if="${booking.status.name() == 'REJECTED'}">
                 This booking request was rejected.
             </p>
@@ -37,6 +40,11 @@
                     </p>
                     <p class="booking-detail-card__status booking-detail-card__status--approved"
                        th:if="${booking.status.name() == 'APPROVED'}"
+                       th:text="${booking.status}">
+                        Status
+                    </p>
+                    <p class="booking-detail-card__status booking-detail-card__status--approved"
+                       th:if="${booking.status.name() == 'CONFIRMED'}"
                        th:text="${booking.status}">
                         Status
                     </p>
@@ -99,7 +107,7 @@
                     <dd th:text="${#temporals.format(booking.createdAt, 'yyyy-MM-dd HH:mm')}">Requested Date</dd>
                 </div>
                 <div class="booking-detail-card__row"
-                     th:if="${booking.status.name() == 'APPROVED' or booking.status.name() == 'COMPLETED' or invoice != null}">
+                     th:if="${booking.status.name() == 'APPROVED' or booking.status.name() == 'CONFIRMED' or invoice != null}">
                     <dt>Invoice Status</dt>
                     <dd th:if="${invoice == null}">Not issued yet</dd>
                     <dd th:if="${invoice != null}">

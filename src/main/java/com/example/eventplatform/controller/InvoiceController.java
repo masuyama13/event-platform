@@ -36,7 +36,7 @@ public class InvoiceController {
 
         ensureBookingOwner(booking, authentication);
         if (booking.getStatus() != BookingStatus.APPROVED
-                && booking.getStatus() != BookingStatus.COMPLETED) {
+                && booking.getStatus() != BookingStatus.CONFIRMED) {
             throw new IllegalStateException("Payment is available only after organizer approval");
         }
 
