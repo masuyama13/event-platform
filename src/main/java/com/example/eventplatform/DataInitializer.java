@@ -56,7 +56,7 @@ public class DataInitializer {
             // Create temporary customer user
             User customerUser = new User();
             customerUser.setEmail("customer@test.com");
-            customerUser.setPasswordHash(passwordEncoder.encode("temp1234"));
+            customerUser.setPasswordHash(passwordEncoder.encode("temp1111"));
             customerUser.setRole(UserRole.CUSTOMER);
             userRepository.save(customerUser);
 
@@ -74,13 +74,13 @@ public class DataInitializer {
             // Create temporary organizer user
             User organizerUser = new User();
             organizerUser.setEmail("organizer@test.com");
-            organizerUser.setPasswordHash(passwordEncoder.encode("temp1234"));
+            organizerUser.setPasswordHash(passwordEncoder.encode("temp1111"));
             organizerUser.setRole(UserRole.ORGANIZER);
             userRepository.save(organizerUser);
 
             User adminUser = new User();
             adminUser.setEmail("admin@test.com");
-            adminUser.setPasswordHash(passwordEncoder.encode("temp1234"));
+            adminUser.setPasswordHash(passwordEncoder.encode("temp1111"));
             adminUser.setRole(UserRole.ADMIN);
             userRepository.save(adminUser);
 
@@ -98,7 +98,7 @@ public class DataInitializer {
 
             User organizerUser2 = new User();
             organizerUser2.setEmail("organizer2@test.com");
-            organizerUser2.setPasswordHash(passwordEncoder.encode("temp1234"));
+            organizerUser2.setPasswordHash(passwordEncoder.encode("temp1111"));
             organizerUser2.setRole(UserRole.ORGANIZER);
             userRepository.save(organizerUser2);
 
