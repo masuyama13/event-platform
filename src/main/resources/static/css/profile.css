@@ -61,22 +61,9 @@
 
 .profile-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 12px;
     margin-top: 24px;
-}
-
-.profile-button {
-    background: #1f2937;
-    color: #ffffff;
-    border-radius: 999px;
-    padding: 10px 18px;
-    text-decoration: none;
-}
-
-.profile-button--secondary {
-    background: #e5e7eb;
-    color: #111827;
 }
 
 @media (max-width: 640px) {

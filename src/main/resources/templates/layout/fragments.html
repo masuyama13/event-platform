@@ -21,7 +21,6 @@
                 <a th:href="@{/profile}" class="site-menu__link" sec:authorize="hasAnyRole('CUSTOMER', 'ORGANIZER')">Profile</a>
                 <a th:href="@{/contact/customer}" class="site-menu__link" sec:authorize="hasRole('CUSTOMER')">Contact</a>
                 <a th:href="@{/contact/organizer}" class="site-menu__link" sec:authorize="hasRole('ORGANIZER')">Contact</a>
-                <a th:href="@{/admin/sponsorships}" class="site-menu__link" sec:authorize="hasRole('ADMIN')">Admin</a>
                 <form th:action="@{/admin/logout}" method="post" class="site-menu__logout" sec:authorize="hasRole('ADMIN')">
                     <input type="hidden"
                            th:if="${_csrf != null}"
