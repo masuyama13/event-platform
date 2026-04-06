@@ -1,20 +1,4 @@
-.button,
-.btn-confirm,
-.btn-back,
-.booking-detail-card__button,
-.booking-request-card__button,
-.customer-bookings__button,
-.inquiry-form__button,
-.invoice-card__button,
-.message-inbox__button,
-.organizer-booking-detail-card__button,
-.organizer-bookings__button,
-.organizer-list__button,
-.plan-list__button,
-.plans-manage-page__create,
-.plans-manage-card__button,
-.review-form-card__button,
-.thankyou-card__button {
+.button {
     display: inline-block;
     padding: 12px 18px;
     border: 0;
@@ -26,33 +10,12 @@
     cursor: pointer;
 }
 
-.button--primary,
-.btn-confirm,
-.booking-detail-card__button,
-.booking-request-card__button,
-.customer-bookings__button,
-.inquiry-form__button,
-.invoice-card__button,
-.message-inbox__button,
-.organizer-booking-detail-card__button,
-.organizer-bookings__button,
-.organizer-list__button,
-.plan-list__button,
-.plans-manage-page__create,
-.plans-manage-card__button,
-.review-form-card__button,
-.thankyou-card__button {
+.button--primary {
     background: #111827;
     color: #ffffff;
 }
 
-.button--secondary,
-.btn-back,
-.customer-bookings__button--back,
-.booking-request-card__button--secondary,
-.organizer-booking-detail-card__button--secondary,
-.review-form-card__button--secondary,
-.inquiry-form__button--secondary {
+.button--secondary {
     background: #e5e7eb;
     color: #111827;
 }
@@ -62,8 +25,7 @@
     color: #111827;
 }
 
-.button--danger,
-.organizer-booking-detail-card__button--danger {
+.button--danger {
     background: #b91c1c;
     color: #ffffff;
 }

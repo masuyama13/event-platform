@@ -85,7 +85,7 @@
                        th:if="${_csrf != null}"
                        th:name="${_csrf.parameterName}"
                        th:value="${_csrf.token}"/>
-                <button class="invoice-card__button" type="submit">Proceed to Payment</button>
+                <button class="invoice-card__button button button--accent" type="submit">Proceed to Payment</button>
             </form>
 
             <p class="invoice-card__message" th:if="${invoice.status.name() == 'PAID'}">
