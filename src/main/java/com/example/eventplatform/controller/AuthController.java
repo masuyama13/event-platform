@@ -3,6 +3,7 @@ package com.example.eventplatform.controller;
 import com.example.eventplatform.entity.*;
 import com.example.eventplatform.service.CategoryService;
 import com.example.eventplatform.service.OrganizerService;
+import com.example.eventplatform.util.EmailNormalizer;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
@@ -71,13 +72,15 @@ public class AuthController {
             @RequestParam(required = false) String address,
             Model model
     ) {
-        if (userRepository.existsByEmail(email)) {
+        String normalizedEmail = EmailNormalizer.normalize(email);
+
+        if (userRepository.existsByEmail(normalizedEmail)) {
             model.addAttribute("error", "Email is already in use.");
             populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
             return "shared/register";
         }
 
-        User user = createUser(email, password, UserRole.CUSTOMER);
+        User user = createUser(normalizedEmail, password, UserRole.CUSTOMER);
         CustomerProfile profile = new CustomerProfile();
         profile.setUser(user);
         profile.setFirstName(firstName);
@@ -107,7 +110,9 @@ public class AuthController {
             @RequestParam String address,
             Model model
     ) {
-        if (userRepository.existsByEmail(email)) {
+        String normalizedEmail = EmailNormalizer.normalize(email);
+
+        if (userRepository.existsByEmail(normalizedEmail)) {
             model.addAttribute("error", "Email is already in use.");
             populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
             return "shared/register";
@@ -122,7 +127,7 @@ public class AuthController {
                     website,
                     address
             );
-            User user = createUser(email, password, UserRole.ORGANIZER);
+            User user = createUser(normalizedEmail, password, UserRole.ORGANIZER);
             OrganizerProfile profile = new OrganizerProfile();
             profile.setUser(user);
             profile.setBusinessName(businessName);

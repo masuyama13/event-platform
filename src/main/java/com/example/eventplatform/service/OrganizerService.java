@@ -6,6 +6,7 @@ import com.example.eventplatform.entity.User;
 import com.example.eventplatform.entity.UserRole;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
+import com.example.eventplatform.util.EmailNormalizer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -167,7 +168,7 @@ public class OrganizerService {
             throw new RuntimeException("Email is required.");
         }
 
-        String normalizedEmail = email.trim();
+        String normalizedEmail = EmailNormalizer.normalize(email);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
