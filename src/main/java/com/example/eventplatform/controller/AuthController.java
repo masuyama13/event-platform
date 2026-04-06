@@ -75,6 +75,12 @@ public class AuthController {
         String normalizedEmail = EmailNormalizer.normalize(email);
         populateCustomerRegisterForm(model, normalizedEmail, firstName, lastName, phone, address);
 
+        if (!isValidPassword(password)) {
+            model.addAttribute("error", "Password must be at least 8 characters.");
+            populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
+            return "shared/register";
+        }
+
         if (userRepository.existsByEmail(normalizedEmail)) {
             model.addAttribute("error", "Email is already in use.");
             populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
@@ -122,6 +128,12 @@ public class AuthController {
                 website,
                 address
         );
+
+        if (!isValidPassword(password)) {
+            model.addAttribute("error", "Password must be at least 8 characters.");
+            populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
+            return "shared/register";
+        }
 
         if (userRepository.existsByEmail(normalizedEmail)) {
             model.addAttribute("error", "Email is already in use.");
@@ -212,5 +224,9 @@ public class AuthController {
         return authentication != null
                 && authentication.isAuthenticated()
                 && !(authentication instanceof AnonymousAuthenticationToken);
+    }
+
+    private boolean isValidPassword(String password) {
+        return password != null && password.length() >= 8;
     }
 }
