@@ -23,7 +23,13 @@
                     <div class="plans-manage-card__top">
                         <div>
                             <p class="plans-manage-card__label">Plan</p>
-                            <h2 th:text="${plan.planName}">Plan Name</h2>
+                            <div class="plans-manage-card__title-row">
+                                <h2 th:text="${plan.planName}">Plan Name</h2>
+                                <span class="plans-manage-card__status plans-manage-card__status--expired"
+                                      th:if="${plan.expiresAt != null and currentTime != null and plan.expiresAt.isBefore(currentTime)}">
+                                    Expired
+                                </span>
+                            </div>
                         </div>
                         <div class="plans-manage-card__price-block">
                             <p class="plans-manage-card__label">Price</p>
@@ -41,6 +47,13 @@
                             <p class="plans-manage-card__value"
                                th:text="${plan.organizer != null ? plan.organizer.businessName : 'N/A'}">
                                 Organizer Name
+                            </p>
+                        </div>
+                        <div class="plans-manage-card__meta-item">
+                            <p class="plans-manage-card__label">Expires At</p>
+                            <p class="plans-manage-card__value"
+                               th:text="${plan.expiresAt != null ? #temporals.format(plan.expiresAt, 'yyyy-MM-dd HH:mm') : 'N/A'}">
+                                Expiration
                             </p>
                         </div>
                     </div>

@@ -35,6 +35,13 @@
                                 $<span th:text="${plan.price}">Price</span>
                             </p>
                         </div>
+                        <div class="plan-list__meta-item">
+                            <p class="plan-list__label">Available Until</p>
+                            <p class="plan-list__value"
+                               th:text="${plan.expiresAt != null ? #temporals.format(plan.expiresAt, 'yyyy-MM-dd HH:mm') : 'N/A'}">
+                                Expiration
+                            </p>
+                        </div>
                     </div>
 
                     <div class="plan-list__section">

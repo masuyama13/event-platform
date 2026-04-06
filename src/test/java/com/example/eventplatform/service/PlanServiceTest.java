@@ -60,7 +60,8 @@ class PlanServiceTest {
                 0L,
                 "planName",
                 new BigDecimal("0.00"),
-                "description"
+                "description",
+                LocalDateTime.of(2030, 1, 1, 12, 0)
         );
 
         // Verify the results
@@ -78,7 +79,8 @@ class PlanServiceTest {
                 0L,
                 "planName",
                 new BigDecimal("0.00"),
-                "description"
+                "description",
+                LocalDateTime.of(2030, 1, 1, 12, 0)
         ))
                 .isInstanceOf(RuntimeException.class);
     }
@@ -131,6 +133,7 @@ class PlanServiceTest {
         plan.setPlanName("before");
         plan.setDescription("before description");
         plan.setPrice(new BigDecimal("10.00"));
+        plan.setExpiresAt(LocalDateTime.of(2030, 1, 1, 12, 0));
 
         when(mockOrganizerProfileRepository.findByUserId(7L))
                 .thenReturn(Optional.of(organizer));
@@ -143,11 +146,13 @@ class PlanServiceTest {
                 7L,
                 "after",
                 new BigDecimal("20.00"),
-                "after description"
+                "after description",
+                LocalDateTime.of(2031, 2, 2, 13, 30)
         );
 
         assertThat(result.getPlanName()).isEqualTo("after");
         assertThat(result.getPrice()).isEqualByComparingTo("20.00");
         assertThat(result.getDescription()).isEqualTo("after description");
+        assertThat(result.getExpiresAt()).isEqualTo(LocalDateTime.of(2031, 2, 2, 13, 30));
     }
 }

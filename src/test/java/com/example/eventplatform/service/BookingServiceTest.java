@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +51,11 @@ class BookingServiceTest {
         organizer.setUser(user);
         plan.setOrganizer(organizer);
         plan.setPlanName("planName");
+        plan.setExpiresAt(LocalDateTime.now().plusDays(1));
         final List<Plan> plans = List.of(plan);
-        when(mockPlanRepository.findByOrganizerIdOrderByUpdatedAtDesc(0L)).thenReturn(plans);
+        when(mockPlanRepository.findByOrganizerIdAndExpiresAtAfterOrderByUpdatedAtDesc(
+                org.mockito.ArgumentMatchers.eq(0L),
+                any(LocalDateTime.class))).thenReturn(plans);
 
         // Run the test
         final List<Plan> result = bookingServiceUnderTest.getAvailablePlans(0L);
@@ -63,7 +67,9 @@ class BookingServiceTest {
     @Test
     void testGetAvailablePlans_PlanRepositoryReturnsNoItems() {
         // Setup
-        when(mockPlanRepository.findByOrganizerIdOrderByUpdatedAtDesc(0L)).thenReturn(Collections.emptyList());
+        when(mockPlanRepository.findByOrganizerIdAndExpiresAtAfterOrderByUpdatedAtDesc(
+                org.mockito.ArgumentMatchers.eq(0L),
+                any(LocalDateTime.class))).thenReturn(Collections.emptyList());
 
         // Run the test
         final List<Plan> result = bookingServiceUnderTest.getAvailablePlans(0L);
@@ -83,6 +89,7 @@ class BookingServiceTest {
         organizer.setUser(user);
         plan.setOrganizer(organizer);
         plan.setPlanName("planName");
+        plan.setExpiresAt(LocalDateTime.now().plusDays(1));
         when(mockPlanRepository.findById(0L)).thenReturn(Optional.of(plan));
 
         // Run the test
@@ -100,6 +107,18 @@ class BookingServiceTest {
         // Run the test
         assertThatThrownBy(() -> bookingServiceUnderTest.getPlanDetail(0L))
                 .isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void testGetPlanDetail_PlanExpired() {
+        final Plan plan = new Plan();
+        plan.setId(0L);
+        plan.setExpiresAt(LocalDateTime.now().minusDays(1));
+        when(mockPlanRepository.findById(0L)).thenReturn(Optional.of(plan));
+
+        assertThatThrownBy(() -> bookingServiceUnderTest.getPlanDetail(0L))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Plan has expired: 0");
     }
 
     @Test
@@ -133,6 +152,7 @@ class BookingServiceTest {
         plan.setPlanName("planName");
         plan.setDescription("plan description");
         plan.setPrice(new BigDecimal("123.45"));
+        plan.setExpiresAt(LocalDateTime.now().plusDays(1));
         when(mockPlanRepository.findById(10L)).thenReturn(Optional.of(plan));
 
         // Configure BookingRepository.save(...).
@@ -179,6 +199,7 @@ class BookingServiceTest {
         final OrganizerProfile organizerProfile = new OrganizerProfile();
         organizerProfile.setId(1L);
         plan.setOrganizer(organizerProfile);
+        plan.setExpiresAt(LocalDateTime.now().plusDays(1));
         when(mockPlanRepository.findById(10L)).thenReturn(Optional.of(plan));
         when(mockCustomerProfileRepository.findByUserEmail("email")).thenReturn(Optional.empty());
 

@@ -6,9 +6,11 @@ import com.example.eventplatform.service.PlanService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -29,6 +31,7 @@ public class PlanController {
         List<Plan> plans = planService.getPlansByOrganizer(organizerId);
         model.addAttribute("plans", plans);
         model.addAttribute("organizerId", organizerId);
+        model.addAttribute("currentTime", LocalDateTime.now());
         return "organizer/plans";
     }
 
@@ -42,6 +45,7 @@ public class PlanController {
         List<Plan> plans = planService.getPlansByOrganizer(organizerId);
         model.addAttribute("plans", plans);
         model.addAttribute("organizerId", organizerId);
+        model.addAttribute("currentTime", LocalDateTime.now());
         return "organizer/plans";
     }
 
@@ -73,13 +77,14 @@ public class PlanController {
             @AuthenticationPrincipal UserPrincipal principal,
             @RequestParam String planName,
             @RequestParam BigDecimal price,
-            @RequestParam String description
+            @RequestParam String description,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime expiresAt
     ) {
         if (principal == null) {
             return "redirect:/login";
         }
 
-        planService.createPlan(principal.getUserId(), planName, price, description);
+        planService.createPlan(principal.getUserId(), planName, price, description, expiresAt);
         return "redirect:/plans/manage";
     }
 
@@ -88,12 +93,13 @@ public class PlanController {
                              @AuthenticationPrincipal UserPrincipal principal,
                              @RequestParam String planName,
                              @RequestParam BigDecimal price,
-                             @RequestParam String description) {
+                             @RequestParam String description,
+                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime expiresAt) {
         if (principal == null) {
             return "redirect:/login";
         }
 
-        planService.updatePlan(planId, principal.getUserId(), planName, price, description);
+        planService.updatePlan(planId, principal.getUserId(), planName, price, description, expiresAt);
         return "redirect:/plans/manage";
     }
 }

@@ -48,6 +48,7 @@ public class DataInitializer {
         if (userRepository.count() == 0) {
             Category wedding = ensureCategory("Wedding");
             Category meeting = ensureCategory("Meeting");
+            Category workshop = ensureCategory("Workshop");
             ensureCategory("Conference");
             ensureCategory("Birthday Party");
             ensureCategory("Workshop");
@@ -95,15 +96,32 @@ public class DataInitializer {
             organizer.setUser(organizerUser);
             organizerProfileRepository.save(organizer);
 
+            User organizerUser2 = new User();
+            organizerUser2.setEmail("organizer2@test.com");
+            organizerUser2.setPasswordHash(passwordEncoder.encode("temp1234"));
+            organizerUser2.setRole(UserRole.ORGANIZER);
+            userRepository.save(organizerUser2);
+
+            OrganizerProfile organizer2 = new OrganizerProfile();
+            organizer2.setBusinessName("Sunset Celebrations");
+            organizer2.setPhone("555-321-6789");
+            organizer2.setAddress("789 Sunset Ave");
+            organizer2.setDescription("Boutique organizer specializing in intimate celebrations and business socials.");
+            organizer2.setCategories(java.util.Set.of(wedding, workshop, meeting));
+            organizer2.setWebsite("https://sunset-celebrations.example.com");
+            organizer2.setAverageRating(0.0);
+            organizer2.setUser(organizerUser2);
+            organizerProfileRepository.save(organizer2);
+
             System.out.println(">>> Temporary organizer profile created");
             System.out.println(">>> Temporary admin user created");
 
             // Create Plan A to D plans
             String[][] plans = {
-                    {"Plan A", "Basic event package with standard decorations and setup."},
-                    {"Plan B", "Standard event package with catering and photography."},
-                    {"Plan C", "Premium event package with full catering, photography and DJ."},
-                    {"Plan D", "Luxury event package with all-inclusive services and VIP setup."}
+                    {"Basic Plan", "Basic event package with standard decorations and setup. Up to 30 guests."},
+                    {"Standard Plan", "Standard wedding package with catering and photography. Up to 20 guests."},
+                    {"Premium Plan", "Premium wedding package with full catering, photography and DJ. Up to 20 guests."},
+                    {"Luxury Plan", "Luxury wedding package with all-inclusive services and VIP setup. Up to 20 guests."}
             };
 
             BigDecimal[] prices = {
@@ -125,6 +143,14 @@ public class DataInitializer {
             }
 
             System.out.println(">>> Temporary plans (Plan A to D) created");
+
+            Plan organizer2Plan = new Plan();
+            organizer2Plan.setOrganizer(organizer2);
+            organizer2Plan.setPlanName("Campaign Package");
+            organizer2Plan.setDescription("This is a special launch discount plan for any events, up to 10 guests. Don’t miss out on this opportunity!");
+            organizer2Plan.setPrice(new BigDecimal("9.99"));
+            organizer2Plan.setExpiresAt(LocalDateTime.now().plusDays(30));
+            planRepository.save(organizer2Plan);
 
             createBooking(customer, organizer, savedPlans.get(0), BookingStatus.REQUESTED, LocalDate.now().plusDays(10));
             createBooking(customer, organizer, savedPlans.get(1), BookingStatus.APPROVED, LocalDate.now().plusDays(14));

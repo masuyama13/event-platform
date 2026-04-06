@@ -30,7 +30,8 @@ public class PlanService {
     public Plan createPlan(Long organizerUserId,
                            String planName,
                            BigDecimal price,
-                             String description) {
+                           String description,
+                           LocalDateTime expiresAt) {
         OrganizerProfile organizer = getOrganizerByUserId(organizerUserId);
 
         Plan plan = new Plan();
@@ -38,7 +39,7 @@ public class PlanService {
         plan.setPlanName(planName);
         plan.setPrice(price);
         plan.setDescription(description);
-        plan.setExpiresAt(LocalDateTime.now().plusDays(7));
+        plan.setExpiresAt(expiresAt);
 
         return planRepository.save(plan);
     }
@@ -58,11 +59,13 @@ public class PlanService {
                            Long organizerUserId,
                            String planName,
                            BigDecimal price,
-                           String description) {
+                           String description,
+                           LocalDateTime expiresAt) {
         Plan plan = getPlanForOrganizer(planId, organizerUserId);
         plan.setPlanName(planName);
         plan.setPrice(price);
         plan.setDescription(description);
+        plan.setExpiresAt(expiresAt);
         return planRepository.save(plan);
     }
 }

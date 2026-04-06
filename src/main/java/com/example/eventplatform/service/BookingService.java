@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,14 +29,22 @@ public class BookingService {
 
     // Get available plans for a specific organizer
     public List<Plan> getAvailablePlans(Long organizerId) {
-        return planRepository.findByOrganizerIdOrderByUpdatedAtDesc(organizerId);
+        return planRepository.findByOrganizerIdAndExpiresAtAfterOrderByUpdatedAtDesc(
+                organizerId,
+                LocalDateTime.now());
     }
 
     // Get a specific plan detail
     public Plan getPlanDetail(Long planId) {
-        return planRepository.findById(planId)
+        Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new RuntimeException(
                         "Plan not found: " + planId));
+
+        if (plan.getExpiresAt() != null && plan.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Plan has expired: " + planId);
+        }
+
+        return plan;
     }
 
     // Submit a booking request with REQUESTED status
