@@ -55,10 +55,10 @@ SUPPORT_EMAIL=support@example.com \
 
 Sample data is inserted automatically on the first startup. You can log in with these test accounts:
 
-- Customer: `customer@test.com` / `temp1234`
-- Organizer: `organizer@test.com` / `temp1234`
-- Organizer: `organizer2@test.com` / `temp1234`
-- Admin: `admin@test.com` / `temp1234`
+- Customer: `customer@test.com` / `temp1111`
+- Organizer: `organizer@test.com` / `temp1111`
+- Organizer: `organizer2@test.com` / `temp1111`
+- Admin: `admin@test.com` / `temp1111`
 
 Sample categories, organizer profiles, plans, bookings, and invoice data are also created.
 
