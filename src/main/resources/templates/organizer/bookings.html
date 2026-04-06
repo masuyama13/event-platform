@@ -53,6 +53,10 @@
                            th:if="${invoice == null and booking.status.name() == 'APPROVED'}">
                             APPROVED
                         </p>
+                        <p class="organizer-bookings__status organizer-bookings__status--approved"
+                           th:if="${invoice == null and booking.status.name() == 'CONFIRMED'}">
+                            CONFIRMED
+                        </p>
                         <p class="organizer-bookings__status organizer-bookings__status--rejected"
                            th:if="${invoice == null and booking.status.name() == 'REJECTED'}">
                             REJECTED
@@ -82,6 +86,9 @@
                 </p>
                 <p class="organizer-bookings__note organizer-bookings__note--approved" th:if="${booking.status.name() == 'APPROVED'}">
                     This request has already been approved.
+                </p>
+                <p class="organizer-bookings__note organizer-bookings__note--approved" th:if="${booking.status.name() == 'CONFIRMED'}">
+                    This booking is confirmed and payment has been received.
                 </p>
                 <p class="organizer-bookings__note organizer-bookings__note--rejected" th:if="${booking.status.name() == 'REJECTED'}">
                     This request has already been rejected.
