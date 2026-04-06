@@ -45,7 +45,7 @@ public class MessageController {
 
         model.addAttribute("conversations", conversations);
 
-        return "message-organizer-inbox";
+        return "organizer/message-inbox";
     }
 
     // ─────────────────────────────────────────────
@@ -84,7 +84,7 @@ public class MessageController {
         model.addAttribute("otherUserName", customerFirstName);
         model.addAttribute("role", "organizer");
 
-        return "messages";
+        return "shared/messages";
     }
 
     // ─────────────────────────────────────────────
@@ -123,7 +123,7 @@ public class MessageController {
         model.addAttribute("otherUserName", organizerBusinessName);
         model.addAttribute("role", "customer");
 
-        return "messages";
+        return "shared/messages";
     }
 
     // ─────────────────────────────────────────────
@@ -165,6 +165,6 @@ public class MessageController {
 
         model.addAttribute("conversations", conversations);
 
-        return "message-customer-inbox";
+        return "customer/message-inbox";
     }
 }

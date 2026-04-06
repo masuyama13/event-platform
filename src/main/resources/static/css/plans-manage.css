@@ -70,6 +70,29 @@
     font-size: 1.25rem;
 }
 
+.plans-manage-card__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.plans-manage-card__status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.plans-manage-card__status--expired {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
 .plans-manage-card__price-block {
     text-align: right;
 }
@@ -83,7 +106,7 @@
 
 .plans-manage-card__meta {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     margin-bottom: 18px;
 }

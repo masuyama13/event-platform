@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Cancelled</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/payment-status.css}">
+</head>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
+    <section class="payment-status-page">
+        <div class="payment-status-card">
+            <p class="payment-status-card__eyebrow">Payment</p>
+            <h1>Payment Cancelled</h1>
+            <p class="payment-status-card__intro">
+                Your payment has not been completed. You can return to the invoice and try again.
+            </p>
+            <div class="payment-status-card__summary" th:if="${invoice != null}">
+                <p class="payment-status-card__label">Current Invoice Status</p>
+                <p class="payment-status-card__status payment-status-card__status--cancelled" th:text="${invoice.status}">
+                    Status
+                </p>
+            </div>
+            <div class="payment-status-card__actions" th:if="${invoice != null}">
+                <a th:href="@{/invoices/view/{bookingId}(bookingId=${invoice.booking.id})}" class="button button--secondary">
+                    Back to Invoice
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+</body>
+</html>

@@ -32,11 +32,6 @@
     font-size: 0.75rem;
 }
 
-.profile-subtitle {
-    margin: 8px 0 0;
-    color: #6b7280;
-}
-
 .profile-details {
     margin: 24px 0 0;
 }
@@ -61,22 +56,9 @@
 
 .profile-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 12px;
     margin-top: 24px;
-}
-
-.profile-button {
-    background: #1f2937;
-    color: #ffffff;
-    border-radius: 999px;
-    padding: 10px 18px;
-    text-decoration: none;
-}
-
-.profile-button--secondary {
-    background: #e5e7eb;
-    color: #111827;
 }
 
 @media (max-width: 640px) {

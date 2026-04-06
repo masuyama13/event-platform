@@ -3,7 +3,9 @@ package com.example.eventplatform.service;
 import com.example.eventplatform.entity.*;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
 import com.example.eventplatform.repository.PlanRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,7 +32,8 @@ public class PlanService {
     public Plan createPlan(Long organizerUserId,
                            String planName,
                            BigDecimal price,
-                             String description) {
+                           String description,
+                           LocalDateTime expiresAt) {
         OrganizerProfile organizer = getOrganizerByUserId(organizerUserId);
 
         Plan plan = new Plan();
@@ -38,7 +41,7 @@ public class PlanService {
         plan.setPlanName(planName);
         plan.setPrice(price);
         plan.setDescription(description);
-        plan.setExpiresAt(LocalDateTime.now().plusDays(7));
+        plan.setExpiresAt(expiresAt);
 
         return planRepository.save(plan);
     }
@@ -51,18 +54,22 @@ public class PlanService {
     public Plan getPlanForOrganizer(Long planId, Long organizerUserId) {
         OrganizerProfile organizer = getOrganizerByUserId(organizerUserId);
         return planRepository.findByIdAndOrganizerId(planId, organizer.getId())
-                .orElseThrow(() -> new RuntimeException("Plan not found for organizer: " + planId));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Plan not found for organizer: " + planId));
     }
 
     public Plan updatePlan(Long planId,
                            Long organizerUserId,
                            String planName,
                            BigDecimal price,
-                           String description) {
+                           String description,
+                           LocalDateTime expiresAt) {
         Plan plan = getPlanForOrganizer(planId, organizerUserId);
         plan.setPlanName(planName);
         plan.setPrice(price);
         plan.setDescription(description);
+        plan.setExpiresAt(expiresAt);
         return planRepository.save(plan);
     }
 }

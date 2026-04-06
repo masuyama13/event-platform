@@ -15,14 +15,14 @@ public class HomeController {
 
         if (authentication.getAuthorities().stream()
                 .anyMatch(authority -> "ROLE_CUSTOMER".equals(authority.getAuthority()))) {
-            return "customer-home";
+            return "customer/home";
         }
 
         if (authentication.getAuthorities().stream()
                 .anyMatch(authority -> "ROLE_ORGANIZER".equals(authority.getAuthority()))) {
-            return "organizer-home";
+            return "organizer/home";
         }
 
-        return "admin-home";
+        return "admin/home";
     }
 }

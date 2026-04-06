@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Inquiry</title>
+    <title>Contact</title>
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/organizer-inquiry.css}">
 </head>
@@ -12,8 +12,8 @@
     <section class="inquiry-page">
         <div class="inquiry-card">
             <p class="inquiry-card__eyebrow">User Support</p>
-            <h1>Sponsorship Inquiry</h1>
-            <p class="inquiry-card__intro">Please contact the admin team by email for sponsorship requests, campaign timing, or general support.</p>
+            <h1>Contact</h1>
+            <p class="inquiry-card__intro">Please contact the support team by email for account help, booking questions, or general customer support.</p>
 
             <div class="inquiry-contact">
                 <p class="inquiry-contact__label">Support Email</p>
@@ -24,22 +24,22 @@
                 </a>
                 <p class="inquiry-contact__note">
                     Send your message from
-                    <strong th:text="${organizerEmail}">organizer@example.com</strong>
-                    so the admin team can identify your account quickly.
+                    <strong th:text="${customerEmail}">customer@example.com</strong>
+                    so the support team can identify your account quickly.
                 </p>
             </div>
 
             <div class="inquiry-card__tips">
                 <h2>What to include</h2>
                 <ul>
-                    <li>Your preferred sponsorship period</li>
-                    <li>The organizer name to promote</li>
-                    <li>Any questions about placement or availability</li>
+                    <li>Your account email</li>
+                    <li>Your booking or organizer details if relevant</li>
+                    <li>A short description of the issue or question</li>
                 </ul>
             </div>
 
             <div class="inquiry-form__actions">
-                <a th:href="'mailto:' + ${supportEmail}" class="inquiry-form__button">Open Email App</a>
+                <a th:href="'mailto:' + ${supportEmail}" class="inquiry-form__button button button--primary">Open Email App</a>
             </div>
         </div>
     </section>

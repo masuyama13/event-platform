@@ -1,12 +1,19 @@
 package com.example.eventplatform.service;
 
 import com.example.eventplatform.entity.*;
+import com.example.eventplatform.repository.BookingRepository;
 import com.example.eventplatform.repository.InvoiceRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class InvoiceService {
@@ -15,9 +22,11 @@ public class InvoiceService {
     private static final String DEFAULT_CURRENCY = "cad";
 
     private final InvoiceRepository invoiceRepository;
+    private final BookingRepository bookingRepository;
 
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, BookingRepository bookingRepository) {
         this.invoiceRepository = invoiceRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     public Invoice createInvoiceIfNotExists(Booking booking) {
@@ -46,12 +55,32 @@ public class InvoiceService {
 
     public Invoice getInvoiceById(Long invoiceId) {
         return invoiceRepository.findById(invoiceId)
-                .orElseThrow(() -> new RuntimeException("Invoice not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Invoice not found: " + invoiceId));
     }
 
     public Invoice getInvoiceBySessionId(String stripeSessionId) {
         return invoiceRepository.findByStripeSessionId(stripeSessionId)
-                .orElseThrow(() -> new RuntimeException("Invoice not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Invoice not found for session: " + stripeSessionId));
+    }
+
+    public Optional<Invoice> findByBookingId(Long bookingId) {
+        return Optional.ofNullable(invoiceRepository.findByBookingId(bookingId));
+    }
+
+    public Map<Long, Invoice> findByBookingIds(Collection<Long> bookingIds) {
+        Map<Long, Invoice> invoicesByBookingId = new HashMap<>();
+        if (bookingIds == null || bookingIds.isEmpty()) {
+            return invoicesByBookingId;
+        }
+
+        for (Invoice invoice : invoiceRepository.findByBookingIdIn(bookingIds)) {
+            invoicesByBookingId.put(invoice.getBooking().getId(), invoice);
+        }
+        return invoicesByBookingId;
     }
 
     public Invoice saveCheckoutSession(Long invoiceId, String stripeSessionId) {
@@ -77,6 +106,9 @@ public class InvoiceService {
         }
         invoice.setStripePaymentIntentId(stripePaymentIntentId);
         invoice.setPaidAt(LocalDateTime.now());
+        Booking booking = invoice.getBooking();
+        booking.setStatus(BookingStatus.COMPLETED);
+        bookingRepository.save(booking);
         return invoiceRepository.save(invoice);
     }
 }

@@ -28,49 +28,52 @@
              th:value="${_csrf.token}"/>
       <label class="admin-form__field">
         <span>Email</span>
-        <input type="email" name="email" required>
+        <input type="email" name="email" th:value="${email}" required>
       </label>
 
       <label class="admin-form__field">
         <span>Password</span>
-        <input type="password" name="password" required>
+        <input type="password" name="password" minlength="8" required>
       </label>
 
       <div class="auth-form__grid" th:if="${pageTitle == 'Customer Register'}">
         <label class="admin-form__field">
           <span>First Name</span>
-          <input type="text" name="firstName" required>
+          <input type="text" name="firstName" th:value="${firstName}" required>
         </label>
         <label class="admin-form__field">
           <span>Last Name</span>
-          <input type="text" name="lastName" required>
+          <input type="text" name="lastName" th:value="${lastName}" required>
         </label>
         <label class="admin-form__field">
           <span>Phone</span>
-          <input type="text" name="phone">
+          <input type="text" name="phone" th:value="${phone}">
         </label>
         <label class="admin-form__field">
           <span>Address</span>
-          <input type="text" name="address">
+          <input type="text" name="address" th:value="${address}">
         </label>
       </div>
 
       <div class="auth-form__stack" th:if="${pageTitle == 'Organizer Register'}">
         <label class="admin-form__field">
           <span>Business Name</span>
-          <input type="text" name="businessName" required>
+          <input type="text" name="businessName" th:value="${businessName}" required>
         </label>
 
         <label class="admin-form__field">
           <span>Description</span>
-          <textarea name="description" rows="4" required></textarea>
+          <textarea name="description" rows="4" required th:text="${description}"></textarea>
         </label>
 
         <section class="admin-form__field auth-checkbox-group">
           <span>Service Categories</span>
           <div class="auth-checkbox-group__list">
             <label class="auth-checkbox-group__item" th:each="category : ${categories}">
-              <input type="checkbox" name="categoryIds" th:value="${category.id}">
+              <input type="checkbox"
+                     name="categoryIds"
+                     th:value="${category.id}"
+                     th:checked="${selectedCategoryIds != null and #lists.contains(selectedCategoryIds, category.id)}">
               <span th:text="${category.name}">Category</span>
             </label>
           </div>
@@ -78,17 +81,17 @@
 
         <label class="admin-form__field">
           <span>Phone</span>
-          <input type="text" name="phone" required>
+          <input type="text" name="phone" th:value="${phone}" required>
         </label>
 
         <label class="admin-form__field">
           <span>Website</span>
-          <input type="text" name="website" required>
+          <input type="text" name="website" th:value="${website}" required>
         </label>
 
         <label class="admin-form__field">
           <span>Address</span>
-          <input type="text" name="address" required>
+          <input type="text" name="address" th:value="${address}" required>
         </label>
       </div>
 

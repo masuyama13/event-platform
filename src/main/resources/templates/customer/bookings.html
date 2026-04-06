@@ -27,25 +27,40 @@
                         <p class="customer-bookings__label">Booking ID</p>
                         <p class="customer-bookings__value" th:text="${booking.id}">ID</p>
                     </div>
-                    <div>
+                    <div th:with="invoice=${invoicesByBookingId[booking.id]}">
                         <p class="customer-bookings__label">Status</p>
+                        <p class="customer-bookings__status customer-bookings__status--approved"
+                           th:if="${invoice != null and invoice.status.name() == 'PAID'}"
+                           th:text="${invoice.status}">
+                            PAID
+                        </p>
+                        <p class="customer-bookings__status customer-bookings__status--cancelled"
+                           th:if="${invoice != null and invoice.status.name() == 'CANCELLED'}"
+                           th:text="${invoice.status}">
+                            CANCELLED
+                        </p>
                         <p class="customer-bookings__status"
-                           th:if="${booking.status.name() == 'REQUESTED'}"
+                           th:if="${invoice != null and invoice.status.name() != 'PAID' and invoice.status.name() != 'CANCELLED'}"
+                           th:text="${invoice.status}">
+                            PENDING
+                        </p>
+                        <p class="customer-bookings__status"
+                           th:if="${invoice == null and booking.status.name() == 'REQUESTED'}"
                            th:text="${booking.status}">
                             Status
                         </p>
                         <p class="customer-bookings__status customer-bookings__status--approved"
-                           th:if="${booking.status.name() == 'APPROVED'}"
+                           th:if="${invoice == null and booking.status.name() == 'APPROVED'}"
                            th:text="${booking.status}">
                             Status
                         </p>
                         <p class="customer-bookings__status customer-bookings__status--rejected"
-                           th:if="${booking.status.name() == 'REJECTED'}"
+                           th:if="${invoice == null and booking.status.name() == 'REJECTED'}"
                            th:text="${booking.status}">
                             Status
                         </p>
                         <p class="customer-bookings__status customer-bookings__status--cancelled"
-                           th:if="${booking.status.name() == 'CANCELLED'}"
+                           th:if="${invoice == null and booking.status.name() == 'CANCELLED'}"
                            th:text="${booking.status}">
                             Status
                         </p>
@@ -55,7 +70,21 @@
                 <dl class="customer-bookings__details">
                     <div class="customer-bookings__row">
                         <dt>Organizer</dt>
-                        <dd th:text="${booking.organizerProfile.businessName}">Organizer</dd>
+                        <dd>
+                            <a th:href="@{/organizers/{organizerId}(organizerId=${booking.organizerProfile.id})}"
+                               class="customer-bookings__link"
+                               th:text="${booking.organizerProfile.businessName}">
+                                Organizer
+                            </a>
+                        </dd>
+                    </div>
+                    <div class="customer-bookings__row">
+                        <dt>Plan</dt>
+                        <dd th:text="${booking.planName}">Plan Name</dd>
+                    </div>
+                    <div class="customer-bookings__row">
+                        <dt>Price</dt>
+                        <dd>$<span th:text="${booking.price}">0.00</span></dd>
                     </div>
                     <div class="customer-bookings__row">
                         <dt>Event Date</dt>
@@ -80,7 +109,7 @@
                     <a th:href="@{/customer/bookings/{bookingId}(bookingId=${booking.id})}" class="customer-bookings__button button button--primary">
                         View Details
                     </a>
-                    <a th:if="${booking.status.name() == 'APPROVED'}"
+                    <a th:if="${invoicesByBookingId[booking.id] != null and invoicesByBookingId[booking.id].status.name() == 'PENDING'}"
                        th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
                        class="customer-bookings__button button button--accent">
                         Proceed to Payment

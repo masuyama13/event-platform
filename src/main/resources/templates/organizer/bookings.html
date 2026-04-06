@@ -28,15 +28,33 @@
                         <p class="organizer-bookings__value" th:text="${booking.id}">1</p>
                     </div>
 
-                    <div>
+                    <div th:with="invoice=${invoicesByBookingId[booking.id]}">
                         <p class="organizer-bookings__label">Status</p>
-                        <p class="organizer-bookings__status" th:if="${booking.status.name() == 'REQUESTED'}">REQUESTED</p>
                         <p class="organizer-bookings__status organizer-bookings__status--approved"
-                           th:if="${booking.status.name() == 'APPROVED'}">
+                           th:if="${invoice != null and invoice.status.name() == 'PAID'}"
+                           th:text="${invoice.status}">
+                            PAID
+                        </p>
+                        <p class="organizer-bookings__status organizer-bookings__status--cancelled"
+                           th:if="${invoice != null and invoice.status.name() == 'CANCELLED'}"
+                           th:text="${invoice.status}">
+                            CANCELLED
+                        </p>
+                        <p class="organizer-bookings__status"
+                           th:if="${invoice != null and invoice.status.name() != 'PAID' and invoice.status.name() != 'CANCELLED'}"
+                           th:text="${invoice.status}">
+                            PENDING
+                        </p>
+                        <p class="organizer-bookings__status organizer-bookings__status--requested"
+                           th:if="${invoice == null and booking.status.name() == 'REQUESTED'}">
+                            REQUESTED
+                        </p>
+                        <p class="organizer-bookings__status organizer-bookings__status--approved"
+                           th:if="${invoice == null and booking.status.name() == 'APPROVED'}">
                             APPROVED
                         </p>
                         <p class="organizer-bookings__status organizer-bookings__status--rejected"
-                           th:if="${booking.status.name() == 'REJECTED'}">
+                           th:if="${invoice == null and booking.status.name() == 'REJECTED'}">
                             REJECTED
                         </p>
                     </div>

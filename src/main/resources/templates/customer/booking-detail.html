@@ -64,13 +64,23 @@
                 </div>
                 <div class="booking-detail-card__row">
                     <dt>Organizer</dt>
-                    <dd th:text="${booking.organizerProfile != null ? booking.organizerProfile.businessName : 'N/A'}">
-                        Organizer Name
+                    <dd>
+                        <a th:if="${booking.organizerProfile != null}"
+                           th:href="@{/organizers/{organizerId}(organizerId=${booking.organizerProfile.id})}"
+                           class="booking-detail-card__link"
+                           th:text="${booking.organizerProfile.businessName}">
+                            Organizer Name
+                        </a>
+                        <span th:if="${booking.organizerProfile == null}">N/A</span>
                     </dd>
                 </div>
                 <div class="booking-detail-card__row">
                     <dt>Plan Name</dt>
                     <dd th:text="${booking.planName}">Plan Name</dd>
+                </div>
+                <div class="booking-detail-card__row">
+                    <dt>Plan Description</dt>
+                    <dd th:text="${booking.planDescription} ?: 'N/A'">Plan Description</dd>
                 </div>
                 <div class="booking-detail-card__row">
                     <dt>Event Date</dt>
@@ -81,12 +91,38 @@
                     <dd th:text="${booking.eventType} ?: 'N/A'">Event Category</dd>
                 </div>
                 <div class="booking-detail-card__row">
-                    <dt>Description</dt>
-                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Description</dd>
+                    <dt>Event Description</dt>
+                    <dd th:text="${booking.requestDetails} ?: 'N/A'">Event Description</dd>
                 </div>
                 <div class="booking-detail-card__row">
                     <dt>Requested Date</dt>
                     <dd th:text="${#temporals.format(booking.createdAt, 'yyyy-MM-dd HH:mm')}">Requested Date</dd>
+                </div>
+                <div class="booking-detail-card__row"
+                     th:if="${booking.status.name() == 'APPROVED' or booking.status.name() == 'COMPLETED' or invoice != null}">
+                    <dt>Invoice Status</dt>
+                    <dd th:if="${invoice == null}">Not issued yet</dd>
+                    <dd th:if="${invoice != null}">
+                        <span class="booking-detail-card__invoice-status booking-detail-card__invoice-status--paid"
+                              th:if="${invoice.status.name() == 'PAID'}"
+                              th:text="${invoice.status}">
+                            PAID
+                        </span>
+                        <span class="booking-detail-card__invoice-status booking-detail-card__invoice-status--cancelled"
+                              th:if="${invoice.status.name() == 'CANCELLED'}"
+                              th:text="${invoice.status}">
+                            CANCELLED
+                        </span>
+                        <span class="booking-detail-card__invoice-status booking-detail-card__invoice-status--pending"
+                              th:if="${invoice.status.name() != 'PAID' and invoice.status.name() != 'CANCELLED'}"
+                              th:text="${invoice.status}">
+                            PENDING
+                        </span>
+                    </dd>
+                </div>
+                <div class="booking-detail-card__row" th:if="${invoice != null and invoice.paidAt != null}">
+                    <dt>Paid At</dt>
+                    <dd th:text="${#temporals.format(invoice.paidAt, 'yyyy-MM-dd HH:mm')}">Paid At</dd>
                 </div>
             </dl>
 
@@ -107,7 +143,12 @@
                    class="booking-detail-card__button button button--primary">
                     Message Organizer
                 </a>
-                <a th:if="${booking.status.name() == 'APPROVED'}"
+                <a th:if="${invoice != null and invoice.status.name() == 'PAID'}"
+                   th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
+                   class="booking-detail-card__button button button--secondary">
+                    View Invoice
+                </a>
+                <a th:if="${invoice != null and invoice.status.name() == 'PENDING'}"
                    th:href="@{/invoices/view/{bookingId}(bookingId=${booking.id})}"
                    class="booking-detail-card__button button button--accent">
                     Proceed to Payment

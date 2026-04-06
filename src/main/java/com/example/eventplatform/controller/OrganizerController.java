@@ -34,7 +34,7 @@ public class OrganizerController {
         model.addAttribute("organizers", organizers);
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("selectedCategoryId", categoryId);
-        return "organizer-list";
+        return "customer/organizer-list";
     }
 
     @GetMapping("/{id}")
@@ -42,7 +42,7 @@ public class OrganizerController {
         OrganizerProfile organizer = organizerService.getOrganizerById(id);
         model.addAttribute("organizer", organizer);
         model.addAttribute("reviews", reviewService.getReviewsByOrganizer(id));
-        return "organizer-detail";
+        return "customer/organizer-detail";
     }
 
     @PostMapping
@@ -70,7 +70,7 @@ public class OrganizerController {
             model.addAttribute("isEdit", false);
             model.addAttribute("error", e.getMessage());
             model.addAttribute("categories", categoryService.getAllCategories());
-            return "organizer-form";
+            return "organizer/profile-form";
         }
     }
 }

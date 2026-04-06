@@ -128,24 +128,7 @@
 }
 
 .message-thread__button {
-    display: inline-block;
-    padding: 12px 18px;
-    border: 0;
-    border-radius: 999px;
-    text-decoration: none;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.message-thread__button--primary {
-    background: #111827;
-    color: #ffffff;
-}
-
-.message-thread__button--secondary {
-    background: #e5e7eb;
-    color: #111827;
+    text-align: center;
 }
 
 @media (max-width: 640px) {
@@ -287,7 +270,7 @@
     justify-content: flex-start;
 }
 
-.btn-back {
+.message-thread-page > .message-thread__button {
     margin-top: 20px;
 }
 
@@ -301,8 +284,7 @@
         flex-direction: column;
     }
 
-    .btn-confirm,
-    .btn-back {
+    .message-thread__button {
         width: 100%;
         box-sizing: border-box;
         text-align: center;

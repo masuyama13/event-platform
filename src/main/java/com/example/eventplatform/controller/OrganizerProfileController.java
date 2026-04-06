@@ -45,7 +45,7 @@ public class OrganizerProfileController {
         model.addAttribute("organizer", organizerService.getOrganizerByUserId(user.getId()));
         model.addAttribute("isEdit", true);
         model.addAttribute("categories", categoryService.getAllCategories());
-        return "organizer-form";
+        return "organizer/profile-form";
     }
 
     @PostMapping
@@ -83,7 +83,7 @@ public class OrganizerProfileController {
             model.addAttribute("isEdit", true);
             model.addAttribute("error", e.getMessage());
             model.addAttribute("categories", categoryService.getAllCategories());
-            return "organizer-form";
+            return "organizer/profile-form";
         }
     }
 

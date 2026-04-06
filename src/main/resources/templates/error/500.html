@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Error</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+<body class="app-shell">
+<header th:replace="~{layout/fragments :: siteHeader}"></header>
+<main class="app-main">
+    <section class="not-found">
+        <p class="not-found__code">500 SERVER ERROR</p>
+        <h1>Something went wrong</h1>
+        <p>The server hit an unexpected error while processing your request. Please try again later.</p>
+        <a class="not-found__link" th:href="@{/}">Back to Home</a>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments :: siteFooter}"></footer>
+</body>
+</html>

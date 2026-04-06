@@ -64,7 +64,7 @@ public class PaymentController {
             model.addAttribute("invoice", invoice);
         }
 
-        return "payment-success";
+        return "shared/payment-success";
     }
 
     @GetMapping("/payments/cancel")
@@ -72,7 +72,7 @@ public class PaymentController {
         Invoice invoice = invoiceService.getInvoiceById(invoiceId);
         ensureInvoiceOwner(invoice, authentication);
         model.addAttribute("invoice", invoice);
-        return "payment-cancel";
+        return "shared/payment-cancel";
     }
 
     @PostMapping("/stripe/webhook")

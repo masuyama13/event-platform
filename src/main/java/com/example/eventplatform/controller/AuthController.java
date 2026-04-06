@@ -3,9 +3,12 @@ package com.example.eventplatform.controller;
 import com.example.eventplatform.entity.*;
 import com.example.eventplatform.service.CategoryService;
 import com.example.eventplatform.service.OrganizerService;
+import com.example.eventplatform.util.EmailNormalizer;
 import com.example.eventplatform.repository.CustomerProfileRepository;
 import com.example.eventplatform.repository.UserRepository;
 import com.example.eventplatform.repository.OrganizerProfileRepository;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,19 +41,25 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
-        return "login";
+    public String loginPage(Authentication authentication) {
+        if (isAuthenticated(authentication)) {
+            return "redirect:/";
+        }
+        return "shared/login";
     }
 
     @GetMapping("/admin/login")
-    public String adminLoginPage() {
-        return "admin-login";
+    public String adminLoginPage(Authentication authentication) {
+        if (isAuthenticated(authentication)) {
+            return "redirect:/";
+        }
+        return "admin/login";
     }
 
     @GetMapping("/register")
     public String customerRegisterPage(Model model) {
         populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
-        return "register";
+        return "shared/register";
     }
 
     @PostMapping("/register")
@@ -63,13 +72,22 @@ public class AuthController {
             @RequestParam(required = false) String address,
             Model model
     ) {
-        if (userRepository.existsByEmail(email)) {
-            model.addAttribute("error", "Email is already in use.");
+        String normalizedEmail = EmailNormalizer.normalize(email);
+        populateCustomerRegisterForm(model, normalizedEmail, firstName, lastName, phone, address);
+
+        if (!isValidPassword(password)) {
+            model.addAttribute("error", "Password must be at least 8 characters.");
             populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
-            return "register";
+            return "shared/register";
         }
 
-        User user = createUser(email, password, UserRole.CUSTOMER);
+        if (userRepository.existsByEmail(normalizedEmail)) {
+            model.addAttribute("error", "Email is already in use.");
+            populateRegisterPage(model, "Customer Register", "/register", "/organizer/register", "Organizer");
+            return "shared/register";
+        }
+
+        User user = createUser(normalizedEmail, password, UserRole.CUSTOMER);
         CustomerProfile profile = new CustomerProfile();
         profile.setUser(user);
         profile.setFirstName(firstName);
@@ -84,7 +102,7 @@ public class AuthController {
     @GetMapping("/organizer/register")
     public String organizerRegisterPage(Model model) {
         populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
-        return "register";
+        return "shared/register";
     }
 
     @PostMapping("/organizer/register")
@@ -99,10 +117,28 @@ public class AuthController {
             @RequestParam String address,
             Model model
     ) {
-        if (userRepository.existsByEmail(email)) {
+        String normalizedEmail = EmailNormalizer.normalize(email);
+        populateOrganizerRegisterForm(
+                model,
+                normalizedEmail,
+                businessName,
+                description,
+                categoryIds,
+                phone,
+                website,
+                address
+        );
+
+        if (!isValidPassword(password)) {
+            model.addAttribute("error", "Password must be at least 8 characters.");
+            populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
+            return "shared/register";
+        }
+
+        if (userRepository.existsByEmail(normalizedEmail)) {
             model.addAttribute("error", "Email is already in use.");
             populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
-            return "register";
+            return "shared/register";
         }
 
         try {
@@ -114,7 +150,7 @@ public class AuthController {
                     website,
                     address
             );
-            User user = createUser(email, password, UserRole.ORGANIZER);
+            User user = createUser(normalizedEmail, password, UserRole.ORGANIZER);
             OrganizerProfile profile = new OrganizerProfile();
             profile.setUser(user);
             profile.setBusinessName(businessName);
@@ -130,7 +166,7 @@ public class AuthController {
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             populateRegisterPage(model, "Organizer Register", "/organizer/register", "/register", "Customer");
-            return "register";
+            return "shared/register";
         }
     }
 
@@ -152,5 +188,45 @@ public class AuthController {
         model.addAttribute("alternateRegisterPath", alternateRegisterPath);
         model.addAttribute("alternateRegisterLabel", alternateRegisterLabel);
         model.addAttribute("categories", categoryService.getAllCategories());
+    }
+
+    private void populateCustomerRegisterForm(Model model,
+                                              String email,
+                                              String firstName,
+                                              String lastName,
+                                              String phone,
+                                              String address) {
+        model.addAttribute("email", email);
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("lastName", lastName);
+        model.addAttribute("phone", phone);
+        model.addAttribute("address", address);
+    }
+
+    private void populateOrganizerRegisterForm(Model model,
+                                               String email,
+                                               String businessName,
+                                               String description,
+                                               List<Long> categoryIds,
+                                               String phone,
+                                               String website,
+                                               String address) {
+        model.addAttribute("email", email);
+        model.addAttribute("businessName", businessName);
+        model.addAttribute("description", description);
+        model.addAttribute("selectedCategoryIds", categoryIds);
+        model.addAttribute("phone", phone);
+        model.addAttribute("website", website);
+        model.addAttribute("address", address);
+    }
+
+    private boolean isAuthenticated(Authentication authentication) {
+        return authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken);
+    }
+
+    private boolean isValidPassword(String password) {
+        return password != null && password.length() >= 8;
     }
 }

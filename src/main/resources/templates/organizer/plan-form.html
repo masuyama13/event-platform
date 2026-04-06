@@ -42,6 +42,14 @@
                 <textarea name="description" rows="5" required th:text="${editingPlan != null ? editingPlan.description : ''}"></textarea>
             </label>
 
+            <label class="admin-form__field">
+                <span>Expires At</span>
+                <input type="datetime-local"
+                       name="expiresAt"
+                       th:value="${editingPlan != null && editingPlan.expiresAt != null ? #temporals.format(editingPlan.expiresAt, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                       required>
+            </label>
+
             <div class="admin-form__actions">
                 <a th:href="@{/plans/manage}" class="admin-form__button admin-form__button--secondary">Cancel</a>
                 <button type="submit"

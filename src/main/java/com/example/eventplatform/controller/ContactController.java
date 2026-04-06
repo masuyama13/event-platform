@@ -27,7 +27,7 @@ public class ContactController {
 
         model.addAttribute("organizerEmail", principal.getUsername());
         model.addAttribute("supportEmail", supportEmail);
-        return "organizer-contact";
+        return "organizer/contact";
     }
 
     @GetMapping("/customer")
@@ -38,6 +38,6 @@ public class ContactController {
 
         model.addAttribute("customerEmail", principal.getUsername());
         model.addAttribute("supportEmail", supportEmail);
-        return "customer-contact";
+        return "customer/contact";
     }
 }

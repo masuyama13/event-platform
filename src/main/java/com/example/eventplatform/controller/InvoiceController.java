@@ -5,11 +5,13 @@ import com.example.eventplatform.entity.BookingStatus;
 import com.example.eventplatform.entity.Invoice;
 import com.example.eventplatform.repository.BookingRepository;
 import com.example.eventplatform.service.InvoiceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/invoices")
@@ -28,10 +30,13 @@ public class InvoiceController {
     public String viewInvoice(@PathVariable Long bookingId, Authentication authentication, Model model) {
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Booking not found: " + bookingId));
 
         ensureBookingOwner(booking, authentication);
-        if (booking.getStatus() != BookingStatus.APPROVED) {
+        if (booking.getStatus() != BookingStatus.APPROVED
+                && booking.getStatus() != BookingStatus.COMPLETED) {
             throw new IllegalStateException("Payment is available only after organizer approval");
         }
 
@@ -40,7 +45,7 @@ public class InvoiceController {
         model.addAttribute("invoice", invoice);
         model.addAttribute("booking", booking);
 
-        return "invoice";
+        return "customer/invoice";
     }
 
     private void ensureBookingOwner(Booking booking, Authentication authentication) {
