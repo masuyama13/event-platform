@@ -23,7 +23,7 @@ class SecurityLoginFlowTest {
     void adminLoginPage_shouldRejectCustomerCredentials() throws Exception {
         mockMvc.perform(formLogin("/admin/login")
                         .user("customer@test.com")
-                        .password("temp1234"))
+                        .password("temp1111"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/login?error"))
                 .andExpect(unauthenticated());
@@ -33,7 +33,7 @@ class SecurityLoginFlowTest {
     void adminLoginPage_shouldAllowAdminCredentials() throws Exception {
         mockMvc.perform(formLogin("/admin/login")
                         .user("admin@test.com")
-                        .password("temp1234"))
+                        .password("temp1111"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(authenticated().withUsername("admin@test.com"));
@@ -43,7 +43,7 @@ class SecurityLoginFlowTest {
     void userLoginPage_shouldRejectAdminCredentials() throws Exception {
         mockMvc.perform(formLogin("/login")
                         .user("admin@test.com")
-                        .password("temp1234"))
+                        .password("temp1111"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"))
                 .andExpect(unauthenticated());
@@ -53,7 +53,7 @@ class SecurityLoginFlowTest {
     void userLoginPage_shouldAllowOrganizerCredentials() throws Exception {
         mockMvc.perform(formLogin("/login")
                         .user("organizer@test.com")
-                        .password("temp1234"))
+                        .password("temp1111"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(authenticated().withUsername("organizer@test.com"));
