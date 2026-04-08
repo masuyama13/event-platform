@@ -87,7 +87,7 @@ Use this flow to verify that Stripe Checkout and the webhook integration work en
 - You need two different Stripe credentials for this check:
 - `STRIPE_SECRET_KEY`: the Stripe test secret key used by the application to create Checkout Sessions.
 - `STRIPE_WEBHOOK_SECRET`: the webhook signing secret used by the application to verify webhook events.
-- To get `STRIPE_SECRET_KEY`, open the Stripe Dashboard, switch to test mode, and copy the secret key that starts with `sk_test_`. If you do not have access, ask your team for access to the Stripe test environment.
+- To get `STRIPE_SECRET_KEY`, open the Stripe Dashboard, switch to test mode, and copy the secret key that starts with `sk_test_`. 
 - To get `STRIPE_WEBHOOK_SECRET`, start a webhook tunnel with the Stripe CLI:
 
 ```bash
