@@ -73,11 +73,6 @@
     text-transform: uppercase;
 }
 
-.admin-table__action {
-    color: #111827;
-    font-weight: 700;
-}
-
 .admin-status {
     display: inline-flex;
     align-items: center;
