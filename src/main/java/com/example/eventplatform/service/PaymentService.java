@@ -63,6 +63,17 @@ public class PaymentService {
         return Session.create(params);
     }
 
+    public Session getCheckoutSession(String sessionId) throws StripeException {
+        requireSecretKey();
+        Stripe.apiKey = stripeSecretKey;
+        return Session.retrieve(sessionId);
+    }
+
+    public boolean isPaymentCompleted(Session session) {
+        return session != null
+                && "paid".equalsIgnoreCase(session.getPaymentStatus());
+    }
+
     public Event parseWebhookEvent(String payload, String signatureHeader) {
         if (stripeWebhookSecret == null || stripeWebhookSecret.isBlank()) {
             throw new IllegalStateException("Stripe webhook secret is not configured");

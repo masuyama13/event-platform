@@ -57,10 +57,23 @@ public class PaymentController {
     @GetMapping("/payments/success")
     public String paymentSuccess(@RequestParam(required = false, name = "session_id") String sessionId,
                                  Authentication authentication,
-                                 Model model) {
+                                 Model model) throws StripeException {
         if (sessionId != null && !sessionId.isBlank()) {
             Invoice invoice = invoiceService.getInvoiceBySessionId(sessionId);
             ensureInvoiceOwner(invoice, authentication);
+
+            if (invoice.getStatus() != InvoiceStatus.PAID) {
+                Session session = paymentService.getCheckoutSession(sessionId);
+                if (paymentService.isPaymentCompleted(session)) {
+                    invoice = invoiceService.markPaidByInvoiceId(
+                            invoice.getId(),
+                            session.getId(),
+                            session.getPaymentIntent()
+                    );
+                    log.info("Marked invoice id={} as paid from success callback", invoice.getId());
+                }
+            }
+
             model.addAttribute("invoice", invoice);
         }
 

@@ -18,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -69,7 +71,7 @@ class PaymentControllerTest {
     }
 
     @Test
-    void paymentSuccess_shouldAttachInvoiceWhenSessionIdProvided() {
+    void paymentSuccess_shouldAttachInvoiceWhenSessionIdProvided() throws Exception {
         Invoice invoice = invoice(10L, 21L, BookingStatus.CONFIRMED, InvoiceStatus.PAID, "customer@test.com");
         Model model = mock(Model.class);
 
@@ -81,6 +83,50 @@ class PaymentControllerTest {
         String view = controller.paymentSuccess("cs_test_123", authentication, model);
 
         assertThat(view).isEqualTo("shared/payment-success");
+        verify(model).addAttribute("invoice", invoice);
+    }
+
+    @Test
+    void paymentSuccess_shouldMarkInvoicePaidWhenStripeSessionIsAlreadyPaid() throws Exception {
+        Invoice invoice = invoice(10L, 21L, BookingStatus.APPROVED, InvoiceStatus.PENDING, "customer@test.com");
+        Invoice paidInvoice = invoice(10L, 21L, BookingStatus.CONFIRMED, InvoiceStatus.PAID, "customer@test.com");
+        Session session = mock(Session.class);
+        Model model = mock(Model.class);
+
+        when(authentication.getName()).thenReturn("customer@test.com");
+        when(invoiceService.getInvoiceBySessionId("cs_test_123")).thenReturn(invoice);
+        when(paymentService.getCheckoutSession("cs_test_123")).thenReturn(session);
+        when(paymentService.isPaymentCompleted(session)).thenReturn(true);
+        when(session.getId()).thenReturn("cs_test_123");
+        when(session.getPaymentIntent()).thenReturn("pi_123");
+        when(invoiceService.markPaidByInvoiceId(10L, "cs_test_123", "pi_123")).thenReturn(paidInvoice);
+
+        PaymentController controller = new PaymentController(invoiceService, paymentService);
+
+        String view = controller.paymentSuccess("cs_test_123", authentication, model);
+
+        assertThat(view).isEqualTo("shared/payment-success");
+        verify(invoiceService).markPaidByInvoiceId(10L, "cs_test_123", "pi_123");
+        verify(model).addAttribute("invoice", paidInvoice);
+    }
+
+    @Test
+    void paymentSuccess_shouldLeaveInvoicePendingWhenStripeSessionIsNotPaid() throws Exception {
+        Invoice invoice = invoice(10L, 21L, BookingStatus.APPROVED, InvoiceStatus.PENDING, "customer@test.com");
+        Session session = mock(Session.class);
+        Model model = mock(Model.class);
+
+        when(authentication.getName()).thenReturn("customer@test.com");
+        when(invoiceService.getInvoiceBySessionId("cs_test_123")).thenReturn(invoice);
+        when(paymentService.getCheckoutSession("cs_test_123")).thenReturn(session);
+        when(paymentService.isPaymentCompleted(session)).thenReturn(false);
+
+        PaymentController controller = new PaymentController(invoiceService, paymentService);
+
+        String view = controller.paymentSuccess("cs_test_123", authentication, model);
+
+        assertThat(view).isEqualTo("shared/payment-success");
+        verify(invoiceService, never()).markPaidByInvoiceId(anyLong(), any(), any());
         verify(model).addAttribute("invoice", invoice);
     }
 
