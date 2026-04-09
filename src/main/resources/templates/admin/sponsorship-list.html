@@ -46,7 +46,7 @@
                     <td th:text="${organizer.sponsoredUntil != null ? #temporals.format(organizer.sponsoredUntil, 'yyyy-MM-dd HH:mm') : '-'}">-</td>
                     <td>
                         <a th:href="@{/admin/sponsorships/{organizerId}(organizerId=${organizer.id})}"
-                           class="admin-table__action">
+                           class="button button--primary">
                             Manage
                         </a>
                     </td>
