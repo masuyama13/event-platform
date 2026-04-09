@@ -100,6 +100,24 @@ public class InvoiceService {
     }
 
     private Invoice markPaid(Invoice invoice, String stripeSessionId, String stripePaymentIntentId) {
+        if (invoice.getStatus() == InvoiceStatus.PAID) {
+            if ((invoice.getStripeSessionId() == null || invoice.getStripeSessionId().isBlank())
+                    && stripeSessionId != null && !stripeSessionId.isBlank()) {
+                invoice.setStripeSessionId(stripeSessionId);
+            }
+            if ((invoice.getStripePaymentIntentId() == null || invoice.getStripePaymentIntentId().isBlank())
+                    && stripePaymentIntentId != null && !stripePaymentIntentId.isBlank()) {
+                invoice.setStripePaymentIntentId(stripePaymentIntentId);
+            }
+
+            Booking paidBooking = invoice.getBooking();
+            if (paidBooking.getStatus() != BookingStatus.CONFIRMED) {
+                paidBooking.setStatus(BookingStatus.CONFIRMED);
+                bookingRepository.save(paidBooking);
+            }
+            return invoiceRepository.save(invoice);
+        }
+
         invoice.setStatus(InvoiceStatus.PAID);
         if (stripeSessionId != null && !stripeSessionId.isBlank()) {
             invoice.setStripeSessionId(stripeSessionId);
